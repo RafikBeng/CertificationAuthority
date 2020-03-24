@@ -2,6 +2,8 @@
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Math;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
@@ -10,9 +12,9 @@ using System.Text;
 
 namespace Certlib
 {
-    class CertGen
+    public static class CertGen
     {
-        public static TbsCertificateStructure tbsCertificate(String SubjectDN,
+        public static TbsCertificateStructure TbsCertificate(String SubjectDN,
                                                              String IssuerDN,
                                                              String[] subjectAlternativeNames,
                                                              AsymmetricCipherKeyPair SubjectKeyPair,
@@ -39,6 +41,15 @@ namespace Certlib
             AddExtendedKeyUsage(x509Extensions, ExtendedKeyUsage);
             tbsGenerator.SetExtensions(x509Extensions.Generate());
             return tbsGenerator.GenerateTbsCertificate();
+        }
+
+
+        public static BigInteger GenerateSerialNumber(SecureRandom random)
+        {
+            var serialNumber =
+                BigIntegers.CreateRandomInRange(
+                    BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), random);
+            return serialNumber;
         }
 
         public static void AddAuthorityKeyIdentifier(X509ExtensionsGenerator ExtensionsGenerator,
