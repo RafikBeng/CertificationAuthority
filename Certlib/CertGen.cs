@@ -12,7 +12,8 @@ namespace Certlib
 {
     class CertGen
     {
-        public static TbsCertificateStructure tbsCertificate(String subjectDN,
+        public static TbsCertificateStructure tbsCertificate(String SubjectDN,
+                                                             String IssuerDN,
                                                              String[] subjectAlternativeNames,
                                                              AsymmetricCipherKeyPair SubjectKeyPair,
                                                              BigInteger SubjectSerialNumber,
@@ -23,7 +24,8 @@ namespace Certlib
                                                              bool isCertificateAuthority)
         {
             V3TbsCertificateGenerator tbsGenerator = new V3TbsCertificateGenerator();
-            tbsGenerator.SetSubject(new X509Name(subjectDN));
+            tbsGenerator.SetSubject(new X509Name(SubjectDN));
+            tbsGenerator.SetIssuer(new X509Name(IssuerDN));
             tbsGenerator.SetSerialNumber(new DerInteger(SubjectSerialNumber));
             tbsGenerator.SetSignature(SignatureAlgorithm);
             tbsGenerator.SetSubjectPublicKeyInfo(SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(SubjectKeyPair.Public));
