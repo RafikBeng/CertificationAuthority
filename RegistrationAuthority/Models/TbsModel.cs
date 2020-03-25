@@ -64,7 +64,7 @@ namespace RegistrationAuthority.Models
         };
 
         [Display(Name = "Key Size")]
-        public int KeySizeForRSA { get; set; } = 1024;
+        public int KeySize{ get; set; } = 1024;
 
         [Display(Name = "EC Type")]
         public string ECType { get; set; }
@@ -133,6 +133,8 @@ namespace RegistrationAuthority.Models
         public string Hash { get; set; }
         public List<SelectListItem> Hashs { get; } = new List<SelectListItem>
         {
+            new SelectListItem { Value = "MD2", Text = "MD2" },
+            new SelectListItem { Value = "MD5", Text = "MD5" },
             new SelectListItem { Value = "SHA1", Text = "SHA1" },
             new SelectListItem { Value = "SHA224", Text = "SHA224" },
             new SelectListItem { Value = "SHA224", Text = "SHA224" },
