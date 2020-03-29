@@ -16,5 +16,10 @@ namespace RegistrationAuthority.Services
             var database = client.GetDatabase(settings.DatabaseName);
             _TbsModel = database.GetCollection<TbsModel>(settings.CollectionName);
         }
+
+        public void Create(TbsModel tbsModel)
+        {
+            _TbsModel.InsertOne(tbsModel);
+        }
     }
 }

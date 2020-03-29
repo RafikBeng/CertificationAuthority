@@ -12,7 +12,7 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="CommonName" class="control-label"></label>
                 <input asp-for="CommonName" class="form-control" />
@@ -55,27 +55,38 @@
             </div>
             <div class="form-group">
                 <label asp-for="Validity" class="control-label"></label>
-                <input asp-for="Validity" class="form-control" />
+                <select asp-for="Validity" asp-items="Model.Validitys" class="form-control">
+                </select>
                 <span asp-validation-for="Validity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Algorithme" class="control-label"></label>
-                <input asp-for="Algorithme" class="form-control" />
+                <select asp-for="Algorithme" asp-items="Model.Algorithmes" class="form-control">
+                </select>
                 <span asp-validation-for="Algorithme" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="KeySize" class="control-label"></label>
-                <input asp-for="KeySize" class="form-control" />
+                
+                <input type="range" asp-for="KeySize" class="form-control-range" />
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="ECTypeDiv">
                 <label asp-for="ECType" class="control-label"></label>
-                <input asp-for="ECType" class="form-control" />
+                <select asp-for="ECType" asp-items="Model.ECTypes" class="form-control">
+                </select>
                 <span asp-validation-for="ECType" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="CurveDiv">
+                <label asp-for="Curve" class="control-label"></label>
+                <input asp-for="Curve" class="form-control"/>
+               
+                <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Hash" class="control-label"></label>
-                <input asp-for="Hash" class="form-control" />
+                <select asp-for="Hash" asp-items="Model.Hashs" class="form-control">
+                </select>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -91,4 +102,30 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#CurveDiv').hide();
+        $('#ECTypeDiv').hide();
+    });
+
+    $("#Algorithme").change(function () {
+        var val = $("#Algorithme").val();
+        if (val == "RSA") {
+            $('#CurveDiv').hide();
+            $('#ECTypeDiv').hide();
+        }
+        else if (val == "DSA") {
+            $('#CurveDiv').hide();
+            $('#ECTypeDiv').hide();
+        }
+        else {
+            $('#CurveDiv').show();
+            $('#ECTypeDiv').show();
+        }
+       
+    });
+
+</script>
+
 }

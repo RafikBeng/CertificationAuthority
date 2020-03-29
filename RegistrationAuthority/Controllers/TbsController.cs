@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RegistrationAuthority.Models;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -12,6 +13,8 @@ namespace RegistrationAuthority.Controllers
         // GET: Tbs
         public ActionResult Index()
         {
+           
+           
             return View();
         }
 
@@ -24,7 +27,8 @@ namespace RegistrationAuthority.Controllers
         // GET: Tbs/Create
         public ActionResult Create()
         {
-            return View();
+            TbsModel tbs = new TbsModel();
+            return View(tbs);
         }
 
         // POST: Tbs/Create
@@ -35,7 +39,8 @@ namespace RegistrationAuthority.Controllers
             try
             {
                 // TODO: Add insert logic here
-
+                Console.WriteLine(collection.Count);
+                foreach(var v in collection) Console.WriteLine(v.Key);
                 return RedirectToAction(nameof(Index));
             }
             catch
