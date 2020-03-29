@@ -64,7 +64,7 @@ namespace RegistrationAuthority.Models
         };
 
         [Display(Name = "Key Size")]
-        public int KeySize{ get; set; } = 1024;
+        public int KeySize{ get; set; }
 
         [Display(Name = "EC Type")]
         public string ECType { get; set; }

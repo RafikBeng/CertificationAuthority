@@ -26,7 +26,7 @@ namespace UnitTest
 
             TimeIt("GenerateDsaKeyPair", () =>
             {
-                AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateDsaKeyPair(1024);
+                AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateDsaKeyPair(512);
 
             });
 
