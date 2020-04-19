@@ -15,7 +15,7 @@ namespace RegistrationAuthority.Controllers
     {
         public JsonResult GetRsaKeys(int KeySize)
         {
-            Console.WriteLine(KeySize);
+            
             AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(KeySize);
             string Private = KeyWriter(Key.Private);
             string Public = KeyWriter(Key.Public);
@@ -24,7 +24,16 @@ namespace RegistrationAuthority.Controllers
             Console.WriteLine(Public);
             return Json(new { s= Private, h= Public });
         }
-
+        public JsonResult GetEcKeyPair(string CurveName)
+        {
+            AsymmetricCipherKeyPair Key = GenerateEcKeyPair(CurveName);
+            string Private = KeyWriter(Key.Private);
+            string Public = KeyWriter(Key.Public);
+            Console.WriteLine(Private);
+            Console.WriteLine("****************");
+            Console.WriteLine(Public);
+            return Json(new { s = Private, h = Public });
+        }
         public string test(string name)
         {
             //string res = "rafik test";

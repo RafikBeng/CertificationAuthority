@@ -114,18 +114,34 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
     $("#keygen").click(function () {
-        var value = $('#KeySize').slider('getValue');
-       
-        $.get('@Url.Action("GetRsaKeys")', { KeySize: value }, function (data) {
-            document.getElementById("Private").value = data.s;
-            document.getElementById("Public").value = data.h;
-            $('#privdiv').show();
-            $('#pubdiv').show();
-            //alert(data.s);
-            //alert(data.h);
-        });
+        var algo = document.getElementById("Algorithme").value;
+        if (algo == "RSA") {
+            var value = $('#KeySize').slider('getValue');
+
+            $.get('@Url.Action("GetRsaKeys")', { KeySize: value }, function (data) {
+                document.getElementById("Private").value = data.s;
+                document.getElementById("Public").value = data.h;
+                $('#privdiv').show();
+                $('#pubdiv').show();
+                //alert(data.s);
+                //alert(data.h);
+            });
+        }
+        else {
+            var Curve = document.getElementById("Curve").value;
+            $.get('@Url.Action("GetEcKeyPair")', { CurveName: Curve }, function (data) {
+                document.getElementById("Private").value = data.s;
+                document.getElementById("Public").value = data.h;
+                $('#privdiv').show();
+                $('#pubdiv').show();
+                //alert(data.s);
+                //alert(data.h);
+            });
+
+        }
+
     });
-   
+
 
     $('#KeySize').slider({
         formatter: function (value) {
