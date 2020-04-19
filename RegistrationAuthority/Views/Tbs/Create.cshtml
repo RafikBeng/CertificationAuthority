@@ -82,8 +82,8 @@
             </div>
             <div class="form-group" id="CurveDiv">
                 <label asp-for="Curve" class="control-label"></label>
-                <input asp-for="Curve" class="form-control"/>
-               
+                <select asp-for="Curve" class="form-control" >
+                </select>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -106,6 +106,8 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
+
+
     $('#KeySize').slider({
         formatter: function (value) {
             return  + value;
@@ -114,6 +116,20 @@
     $(document).ready(function () {
         $('#CurveDiv').hide();
         $('#ECTypeDiv').hide();
+        var curves = {
+            'X962NamedCurves': ['c2pnb163v1', 'c2pnb163v2', 'c2pnb163v3', 'c2pnb176w1', 'c2pnb208w1', 'c2pnb272w1',
+                'c2pnb304w1', 'c2pnb368w1', 'c2tnb191v1', 'c2tnb191v2', 'c2tnb191v3', 'c2tnb239v1',
+                'c2tnb239v2', 'c2tnb239v3', 'c2tnb359v1', 'c2tnb431r1', 'prime192v1', 'prime192v2',
+                'prime192v3', 'prime239v1', 'prime239v2', 'prime239v3', 'prime256v1'],
+        }
+        var $curves = $('#Curve');
+        var curve = $('#ECType').val(), lcns = curves[curve] || [];
+
+        var html = $.map(lcns, function (lcn) {
+            return '<option value="' + lcn + '">' + lcn + '</option>'
+        }).join('');
+
+        $curves.html(html)
      
       
     });
@@ -126,8 +142,7 @@
             $('#CurveDiv').hide();
             $('#ECTypeDiv').hide();
          
-        }
-      
+        } 
         else {
             $('#CurveDiv').show();
             $('#ECTypeDiv').show();
@@ -136,7 +151,37 @@
        
     });
 
-    
+   
+       
+    $('#ECType').change(function () {
+       
+            var curves = {
+                'X962NamedCurves': ['c2pnb163v1', 'c2pnb163v2', 'c2pnb163v3', 'c2pnb176w1', 'c2pnb208w1', 'c2pnb272w1',
+                                    'c2pnb304w1', 'c2pnb368w1', 'c2tnb191v1', 'c2tnb191v2', 'c2tnb191v3', 'c2tnb239v1',
+                                    'c2tnb239v2', 'c2tnb239v3', 'c2tnb359v1', 'c2tnb431r1', 'prime192v1', 'prime192v2',
+                                    'prime192v3', 'prime239v1', 'prime239v2', 'prime239v3', 'prime256v1'],
+                'SecNamedCurves': ['secp112r1', 'secp112r2', 'secp128r1', 'secp128r2', 'secp160k1', 'secp160r1', 'secp160r2',
+                                   'secp192k1', 'secp192r1', 'secp224k1', 'secp224r1', 'secp256k1', 'secp256r1', 'secp384r1',
+                                   'secp521r1', 'sect113r1', 'sect113r2', 'sect131r1', 'sect131r2', 'sect163k1', 'sect163r1',
+                                   'sect163r2', 'sect193r1', 'sect193r2', 'sect233k1', 'sect233r1', 'sect239k1', 'sect283k1',
+                                   'sect283r1', 'sect409k1', 'sect409r1', 'sect571k1', 'sect571r1'],
+                'NistNamedCurves': ['B-163', 'B-233', 'B-283', 'B-409', 'B-571', 'K-163', 'K-233', 'K-283', 'K-409', 'K-571',
+                                    'P-192', 'P-224', 'P-256', 'P-384', 'P-521'],
+                'TeleTrusTNamedCurves': ['brainpoolP160r1', 'brainpoolP160t1', 'brainpoolP192r1', 'brainpoolP192t1', 'brainpoolP224r1',
+                                         'brainpoolP224t1', 'brainpoolP256r1', 'brainpoolP256t1', 'brainpoolP320r1', 'brainpoolP320t1',
+                                         'brainpoolP384r1', 'brainpoolP384t1', 'brainpoolP512r1', 'brainpoolP512t1'],
+
+            }
+            var $curves = $('#Curve');
+            var curve = $(this).val(), lcns = curves[curve] || [];
+
+            var html = $.map(lcns, function (lcn) {
+                return '<option value="' + lcn + '">' + lcn + '</option>'
+            }).join('');
+
+            $curves.html(html)
+        });
+ 
    
 </script>
 
