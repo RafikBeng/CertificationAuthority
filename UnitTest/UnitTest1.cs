@@ -21,6 +21,8 @@ namespace UnitTest
             TimeIt("GenerateElGamalKeyPair", () =>
             {
               AsymmetricCipherKeyPair asymmetricCipherKeyPair= GenerateElGamalKeyPair(512);
+               
+                
 
             });
 
@@ -33,6 +35,9 @@ namespace UnitTest
             TimeIt("GenerateRsaKeyPair", () =>
             {
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
+                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Private));
+                Console.WriteLine("********************************");
+                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Public));
 
             });
 

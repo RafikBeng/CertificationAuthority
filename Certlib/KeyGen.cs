@@ -3,12 +3,25 @@ using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Generators;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
+using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
+using System;
+using System.IO;
 
 namespace Certlib
 {
     public static class KeyGen
     {
+        public static string KeyWriter(AsymmetricKeyParameter Key)
+        {
+            TextWriter textWriter = new StringWriter();
+            PemWriter pemWriter = new PemWriter(textWriter);
+            pemWriter.WriteObject(Key);
+            pemWriter.Writer.Flush();
+            string str = textWriter.ToString();
+            str = str.Remove(str.LastIndexOf(Environment.NewLine));
+            return (str);
+        }
         public static AsymmetricCipherKeyPair GenerateElGamalKeyPair(int keysize)
         {
             SecureRandom secureRandom = new SecureRandom();

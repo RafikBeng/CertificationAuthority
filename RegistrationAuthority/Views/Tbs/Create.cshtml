@@ -68,10 +68,8 @@
             <div class="form-group" id="KeySizeDiv">
                 <label asp-for="KeySize" class="control-label"></label>
                 <p>
-                    <input type="range" asp-for="KeySize" class="form-control-range" />
+                    <input type="range" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="8192" data-slider-step="256" data-slider-value="2048" />
                 </p>
-                
-             
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
             <div class="form-group" id="ECTypeDiv">
@@ -82,7 +80,7 @@
             </div>
             <div class="form-group" id="CurveDiv">
                 <label asp-for="Curve" class="control-label"></label>
-                <select asp-for="Curve" class="form-control" >
+                <select asp-for="Curve" class="form-control">
                 </select>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
@@ -91,6 +89,15 @@
                 <select asp-for="Hash" asp-items="Model.Hashs" class="form-control">
                 </select>
                 <span asp-validation-for="Hash" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="button" value="Gen Keys" class="btn btn-primary" id="keygen" />
+            </div>
+            <div class="form-group" id="privdiv">
+                <TEXTAREA id="Private" wrap="hard" rows=10 class="form-control text-monospace" ></TEXTAREA>
+            </div>
+            <div class="form-group" id="pubdiv">
+                <TEXTAREA id="Public" rows=10 class="form-control text-monospace" ></TEXTAREA>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -106,7 +113,19 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
-
+    $("#keygen").click(function () {
+        var value = $('#KeySize').slider('getValue');
+       
+        $.get('@Url.Action("GetRsaKeys")', { KeySize: value }, function (data) {
+            document.getElementById("Private").value = data.s;
+            document.getElementById("Public").value = data.h;
+            $('#privdiv').show();
+            $('#pubdiv').show();
+            //alert(data.s);
+            //alert(data.h);
+        });
+    });
+   
 
     $('#KeySize').slider({
         formatter: function (value) {
@@ -114,6 +133,8 @@
         }
     });
     $(document).ready(function () {
+        $('#privdiv').hide();
+        $('#pubdiv').hide();
         $('#CurveDiv').hide();
         $('#ECTypeDiv').hide();
         var curves = {
@@ -129,32 +150,35 @@
             return '<option value="' + lcn + '">' + lcn + '</option>'
         }).join('');
 
-        $curves.html(html)
-     
-      
+        $curves.html(html);
+
+
+
     });
 
     $("#Algorithme").change(function () {
         var val = $("#Algorithme").val();
-      
+
         if (val == "RSA") {
             $('#KeySizeDiv').show();
             $('#CurveDiv').hide();
             $('#ECTypeDiv').hide();
-         
-        } 
+
+
+
+        }
         else {
             $('#CurveDiv').show();
             $('#ECTypeDiv').show();
             $('#KeySizeDiv').hide();
         }
-       
+
     });
 
-   
-       
+
+
     $('#ECType').change(function () {
-       
+
             var curves = {
                 'X962NamedCurves': ['c2pnb163v1', 'c2pnb163v2', 'c2pnb163v3', 'c2pnb176w1', 'c2pnb208w1', 'c2pnb272w1',
                                     'c2pnb304w1', 'c2pnb368w1', 'c2tnb191v1', 'c2tnb191v2', 'c2tnb191v3', 'c2tnb239v1',
@@ -181,8 +205,8 @@
 
             $curves.html(html)
         });
- 
-   
+
+
 </script>
 
 }

@@ -5,11 +5,32 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RegistrationAuthority.Models;
+using static Certlib.KeyGen;
+using static Certlib.CertGen;
+using Org.BouncyCastle.Crypto;
 
 namespace RegistrationAuthority.Controllers
 {
     public class TbsController : Controller
     {
+        public JsonResult GetRsaKeys(int KeySize)
+        {
+            Console.WriteLine(KeySize);
+            AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(KeySize);
+            string Private = KeyWriter(Key.Private);
+            string Public = KeyWriter(Key.Public);
+            Console.WriteLine(Private);
+            Console.WriteLine("****************");
+            Console.WriteLine(Public);
+            return Json(new { s= Private, h= Public });
+        }
+
+        public string test(string name)
+        {
+            //string res = "rafik test";
+            //Console.WriteLine(res);
+            return name;
+        }
         // GET: Tbs
         public ActionResult Index()
         {
