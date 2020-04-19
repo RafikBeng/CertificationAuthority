@@ -65,10 +65,13 @@
                 </select>
                 <span asp-validation-for="Algorithme" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="KeySizeDiv">
                 <label asp-for="KeySize" class="control-label"></label>
+                <p>
+                    <input type="range" asp-for="KeySize" class="form-control-range" />
+                </p>
                 
-                <input type="range" asp-for="KeySize" class="form-control-range" />
+             
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
             <div class="form-group" id="ECTypeDiv">
@@ -103,48 +106,38 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
-
+    $('#KeySize').slider({
+        formatter: function (value) {
+            return  + value;
+        }
+    });
     $(document).ready(function () {
         $('#CurveDiv').hide();
         $('#ECTypeDiv').hide();
-        var KeySize = document.getElementById("KeySize");
-        KeySize.value = "1024";
-        KeySize.min = "1024";
-        KeySize.max = "8192";
-        KeySize.step = "256";
+     
       
     });
 
     $("#Algorithme").change(function () {
         var val = $("#Algorithme").val();
-        var KeySize = document.getElementById("KeySize");
+      
         if (val == "RSA") {
+            $('#KeySizeDiv').show();
             $('#CurveDiv').hide();
             $('#ECTypeDiv').hide();
-            KeySize.min = "1024";
-            KeySize.max ="8192"
-            KeySize.step = "256";
-            KeySize.value = "1024";
+         
         }
-        else if (val == "DSA") {
-            $('#CurveDiv').hide();
-            $('#ECTypeDiv').hide();
-            KeySize.min = "512";
-            KeySize.max = "1024"
-            KeySize.step = "64";
-            KeySize.value = "512";
-        }
+      
         else {
             $('#CurveDiv').show();
             $('#ECTypeDiv').show();
+            $('#KeySizeDiv').hide();
         }
        
     });
 
     
-    $("#KeySize").change(function () {
-       
-    });
+   
 </script>
 
 }

@@ -58,7 +58,7 @@ namespace RegistrationAuthority.Models
         public List<SelectListItem> Algorithmes { get; } = new List<SelectListItem>
         {
             new SelectListItem { Value = "RSA", Text = "RSA" },
-            new SelectListItem { Value = "DSA", Text = "DSA" },
+            //new SelectListItem { Value = "DSA", Text = "DSA" },
             new SelectListItem { Value = "EC", Text = "Elliptic curve"},
 
         };
@@ -140,18 +140,17 @@ namespace RegistrationAuthority.Models
         
         public List<SelectListItem> Hashs { get; } = new List<SelectListItem>
         {
-            new SelectListItem { Value = "MD2", Text = "MD2" },
-            new SelectListItem { Value = "MD5", Text = "MD5" },
-            new SelectListItem { Value = "SHA1", Text = "SHA1" },
-            new SelectListItem { Value = "SHA224", Text = "SHA224" },
+            //new SelectListItem { Value = "MD2", Text = "MD2" },
+            //new SelectListItem { Value = "MD5", Text = "MD5" },
+            //new SelectListItem { Value = "SHA1", Text = "SHA1" },
             new SelectListItem { Value = "SHA224", Text = "SHA224" },
             new SelectListItem { Value = "SHA256", Text = "SHA256" },
             new SelectListItem { Value = "SHA384", Text = "SHA384" },
             new SelectListItem { Value = "SHA384", Text = "SHA384" },
             new SelectListItem { Value = "SHA512", Text = "SHA512" },
-            new SelectListItem { Value = "RIPEMD160", Text = "RIPEMD160" },
-            new SelectListItem { Value = "RIPEMD128", Text = "RIPEMD128" },
-            new SelectListItem { Value = "RIPEMD256", Text = "RIPEMD256" },
+            //new SelectListItem { Value = "RIPEMD160", Text = "RIPEMD160" },
+            //new SelectListItem { Value = "RIPEMD128", Text = "RIPEMD128" },
+            //new SelectListItem { Value = "RIPEMD256", Text = "RIPEMD256" },
         };
 
         public string Privatekey { get; set; }
