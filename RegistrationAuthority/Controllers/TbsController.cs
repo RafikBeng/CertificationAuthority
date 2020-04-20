@@ -8,11 +8,17 @@ using RegistrationAuthority.Models;
 using static Certlib.KeyGen;
 using static Certlib.CertGen;
 using Org.BouncyCastle.Crypto;
+using RegistrationAuthority.Services;
 
 namespace RegistrationAuthority.Controllers
 {
     public class TbsController : Controller
     {
+        private readonly TbsService _tbsService;
+        public TbsController(TbsService tbsService)
+        {
+            _tbsService = tbsService;
+        }
         public JsonResult GetRsaKeys(int KeySize)
         {
             
@@ -64,13 +70,14 @@ namespace RegistrationAuthority.Controllers
         // POST: Tbs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(TbsModel collection)
         {
             try
             {
                 // TODO: Add insert logic here
-                Console.WriteLine(collection.Count);
-                foreach(var v in collection) Console.WriteLine(v.Key);
+               // Console.WriteLine(collection.Count);
+                //foreach (var v in collection) Console.WriteLine(v.Key);
+                _tbsService.Create(collection);
                 return RedirectToAction(nameof(Index));
             }
             catch

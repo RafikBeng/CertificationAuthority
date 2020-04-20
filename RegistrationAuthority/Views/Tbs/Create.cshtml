@@ -94,10 +94,10 @@
                 <input type="button" value="Gen Keys" class="btn btn-primary" id="keygen" />
             </div>
             <div class="form-group" id="privdiv">
-                <TEXTAREA id="Private" wrap="hard" rows=10 class="form-control text-monospace" ></TEXTAREA>
+                <TEXTAREA asp-for="Privatekey" id="Private" wrap="hard" rows=10 class="form-control text-monospace" ></TEXTAREA>
             </div>
             <div class="form-group" id="pubdiv">
-                <TEXTAREA id="Public" rows=10 class="form-control text-monospace" ></TEXTAREA>
+                <TEXTAREA asp-for="Publickey" id="Public" rows=10 class="form-control text-monospace" ></TEXTAREA>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -113,6 +113,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
+
     $("#keygen").click(function () {
         var algo = document.getElementById("Algorithme").value;
         if (algo == "RSA") {

@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using RegistrationAuthority.Models;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace RegistrationAuthority.Services
             _TbsModel = database.GetCollection<TbsModel>(settings.CollectionName);
         }
 
-        public void Create(TbsModel tbsModel)
+        public void Create(TbsModel collection)
         {
-            _TbsModel.InsertOne(tbsModel);
+            _TbsModel.InsertOne(collection);
         }
     }
 }
