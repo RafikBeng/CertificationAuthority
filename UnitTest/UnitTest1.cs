@@ -22,7 +22,6 @@ namespace UnitTest
             {
               AsymmetricCipherKeyPair asymmetricCipherKeyPair= GenerateElGamalKeyPair(512);
                
-                
 
             });
 
@@ -35,15 +34,23 @@ namespace UnitTest
             TimeIt("GenerateRsaKeyPair", () =>
             {
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
-                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Private));
-                Console.WriteLine("********************************");
-                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Public));
-
+               
             });
 
             TimeIt("GenerateEcKeyPair", () =>
             {
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateEcKeyPair("sect571r1");
+                string Private = KeyWriter(asymmetricCipherKeyPair.Private);
+                Console.WriteLine(Private);
+                Console.WriteLine("********************************");
+                AsymmetricKeyParameter P = PrivateKeyReader(Private);
+                Console.WriteLine(KeyWriter(P));
+                Console.WriteLine("********************************");
+                string Public = KeyWriter(asymmetricCipherKeyPair.Public);
+                Console.WriteLine(Public);
+                Console.WriteLine("********************************");
+                AsymmetricKeyParameter B = PublicKeyReader(Public);
+                Console.WriteLine(KeyWriter(B));
             });
 
             Debugger.Break();
@@ -62,8 +69,10 @@ namespace UnitTest
             String subjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
             String issuerDN = $"CN={issuer},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
             String[] subjectAlternativeNames = new List<String>().ToArray();
-            KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress
-}.ToArray();
+            KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,
+                                                                    KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,
+                                                                    KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
+                                                                    KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
             int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
             int us = 0;
             for (int i = 0; i < 9; i++) us = us | usage[i];

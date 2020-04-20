@@ -109,6 +109,55 @@ namespace RegistrationAuthority.Models
             //new SelectListItem { Value = "RIPEMD128", Text = "RIPEMD128" },
             //new SelectListItem { Value = "RIPEMD256", Text = "RIPEMD256" },
         };
+        /// <summary>
+        //KeyUsage
+        /// </summary>
+        /// 
+        [BsonIgnore]
+        public bool DigitalSignature ;
+        public bool NonRepudiation ;
+        [BsonIgnore]
+        public bool KeyEncipherment ;
+        [BsonIgnore]
+        public bool DataEncipherment ;
+        [BsonIgnore]
+        public bool KeyAgreement ;
+        [BsonIgnore]
+        public bool KeyCertSign ;
+        [BsonIgnore]
+        public bool CrlSign ;
+        [BsonIgnore]
+        public bool EncipherOnly;
+        [BsonIgnore]
+        public bool DecipherOnly ;
+        /// <summary>
+        /// ///////////ExtendedKeyUsage
+        /// </summary>
+        [BsonIgnore]
+        public bool AnyExtendedKeyUsage;
+        [BsonIgnore]
+        public bool IdKPServerAuth;
+        [BsonIgnore]
+        public bool IdKPClientAuth;
+        [BsonIgnore]
+        public bool IdKPCodeSigning;
+        [BsonIgnore]
+        public bool IdKPEmailProtection;
+        [BsonIgnore]
+        public bool IdKPIpsecEndSystem;
+        [BsonIgnore]
+        public bool IdKPIpsecTunnel;
+        [BsonIgnore]
+        public bool IdKPIpsecUser;
+        [BsonIgnore]
+        public bool IdKPTimeStamping;
+        [BsonIgnore]
+        public bool IdKPOcspSigning;
+        [BsonIgnore]
+        public bool IdKPSmartCardLogon;
+        [BsonIgnore]
+        public bool IdKPMacAddress;
+
 
         public string Privatekey { get; set; }
         public string Publickey { get; set; }

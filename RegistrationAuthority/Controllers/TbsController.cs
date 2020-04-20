@@ -74,9 +74,7 @@ namespace RegistrationAuthority.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-               // Console.WriteLine(collection.Count);
-                //foreach (var v in collection) Console.WriteLine(v.Key);
+                
                 _tbsService.Create(collection);
                 return RedirectToAction(nameof(Index));
             }

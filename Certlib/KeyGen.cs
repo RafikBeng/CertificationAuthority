@@ -5,6 +5,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.IO;
 
@@ -12,8 +13,10 @@ namespace Certlib
 {
     public static class KeyGen
     {
+       
         public static string KeyWriter(AsymmetricKeyParameter Key)
         {
+             
             TextWriter textWriter = new StringWriter();
             PemWriter pemWriter = new PemWriter(textWriter);
             pemWriter.WriteObject(Key);
@@ -21,6 +24,20 @@ namespace Certlib
             string str = textWriter.ToString();
             str = str.Remove(str.LastIndexOf(Environment.NewLine));
             return (str);
+        }
+        public static AsymmetricKeyParameter PrivateKeyReader(string Key)
+        {
+            TextReader textReader = new StringReader(Key);
+            PemReader pemReader = new PemReader(textReader);
+            var KeyParameter = (AsymmetricCipherKeyPair) pemReader.ReadObject();
+            return KeyParameter.Private;
+        }
+        public static AsymmetricKeyParameter PublicKeyReader(string Key)
+        {
+            TextReader textReader = new StringReader(Key);
+            PemReader pemReader = new PemReader(textReader);
+            var KeyParameter = (AsymmetricKeyParameter) pemReader.ReadObject();
+            return KeyParameter;
         }
         public static AsymmetricCipherKeyPair GenerateElGamalKeyPair(int keysize)
         {
