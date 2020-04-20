@@ -8,176 +8,201 @@
 
 <h4>TbsModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+
+    <div >
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="CommonName" class="control-label"></label>
                 <input asp-for="CommonName" class="form-control" />
                 <span asp-validation-for="CommonName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="DomainComponent" class="control-label"></label>
                 <input asp-for="DomainComponent" class="form-control" />
                 <span asp-validation-for="DomainComponent" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
+                <label asp-for="OrganizationName" class="control-label"></label>
+                <input asp-for="OrganizationName" class="form-control" />
+                <span asp-validation-for="OrganizationName" class="text-danger"></span>
+            </div>
+            <div class="form-group alert alert-primary">
                 <label asp-for="OrganizationalUnitName" class="control-label"></label>
                 <input asp-for="OrganizationalUnitName" class="form-control" />
                 <span asp-validation-for="OrganizationalUnitName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="CountryName" class="control-label"></label>
                 <input asp-for="CountryName" class="form-control" />
                 <span asp-validation-for="CountryName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="StateName" class="control-label"></label>
                 <input asp-for="StateName" class="form-control" />
                 <span asp-validation-for="StateName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="City" class="control-label"></label>
                 <input asp-for="City" class="form-control" />
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="StreetAddress" class="control-label"></label>
                 <input asp-for="StreetAddress" class="form-control" />
                 <span asp-validation-for="StreetAddress" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="LocalityName" class="control-label"></label>
-                <input asp-for="LocalityName" class="form-control" />
-                <span asp-validation-for="LocalityName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
+
+            <div class="form-group alert alert-primary">
                 <label asp-for="Validity" class="control-label"></label>
                 <select asp-for="Validity" asp-items="Model.Validitys" class="form-control">
                 </select>
                 <span asp-validation-for="Validity" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="Algorithme" class="control-label"></label>
                 <select asp-for="Algorithme" asp-items="Model.Algorithmes" class="form-control">
                 </select>
                 <span asp-validation-for="Algorithme" class="text-danger"></span>
             </div>
-            <div class="form-group" id="KeySizeDiv">
+            <div class="form-group alert alert-primary" id="KeySizeDiv">
                 <label asp-for="KeySize" class="control-label"></label>
-                <p>
-                    <input type="range" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="8192" data-slider-step="256" data-slider-value="2048" />
-                </p>
+
+                <input type="text" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="8192" data-slider-step="256" data-slider-value="2048" />
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
-            <div class="form-group" id="ECTypeDiv">
+            <div class="form-group alert alert-primary" id="ECTypeDiv">
                 <label asp-for="ECType" class="control-label"></label>
                 <select asp-for="ECType" asp-items="Model.ECTypes" class="form-control">
                 </select>
                 <span asp-validation-for="ECType" class="text-danger"></span>
             </div>
-            <div class="form-group" id="CurveDiv">
+            <div class="form-group alert alert-primary" id="CurveDiv">
                 <label asp-for="Curve" class="control-label"></label>
                 <select asp-for="Curve" class="form-control">
                 </select>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <label asp-for="Hash" class="control-label"></label>
                 <select asp-for="Hash" asp-items="Model.Hashs" class="form-control">
                 </select>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group alert alert-primary">
                 <input type="button" value="Gen Keys" class="btn btn-primary" id="keygen" />
             </div>
-            <div class="form-group" id="privdiv">
+            <div class="form-group alert alert-primary" id="privdiv">
                 <TEXTAREA asp-for="Privatekey" id="Private" wrap="hard" rows=10 class="form-control text-monospace"></TEXTAREA>
             </div>
-            <div class="form-group" id="pubdiv">
+            <div class="form-group alert alert-primary" id="pubdiv">
                 <TEXTAREA asp-for="Publickey" id="Public" rows=10 class="form-control text-monospace"></TEXTAREA>
             </div>
-            <div class="form-check">
-                <label>KeyUsage</label>
-                <input asp-for="DigitalSignature" type="checkbox" class="form-check-input" id="DigitalSignature">
-                <label class="form-check-label" for="DigitalSignature">DigitalSignature</label>
-
-                <input asp-for="NonRepudiation" type="checkbox" class="form-check-input" id="NonRepudiation">
-                <label class="form-check-label" for="NonRepudiation">NonRepudiation</label>
-
-                <input asp-for="KeyEncipherment" type="checkbox" class="form-check-input" id="KeyEncipherment">
-                <label class="form-check-label" for="KeyEncipherment">KeyEncipherment</label>
-
-                <input asp-for="DataEncipherment" type="checkbox" class="form-check-input" id="DataEncipherment">
-                <label class="form-check-label" for="DataEncipherment">DataEncipherment</label>
-
-                <input asp-for="KeyAgreement" type="checkbox" class="form-check-input" id="KeyAgreement">
-                <label class="form-check-label" for="KeyAgreement">KeyAgreement</label>
-
-                <input asp-for="KeyCertSign" asp- type="checkbox" class="form-check-input" id="KeyCertSign">
-                <label class="form-check-label" for="KeyCertSign">KeyCertSign</label>
-
-                <input asp-for="CrlSign" type="checkbox" class="form-check-input" id="CrlSign">
-                <label class="form-check-label" for="CrlSign">CrlSign</label>
-
-                <input asp-for="EncipherOnly" type="checkbox" class="form-check-input" id="EncipherOnly">
-                <label class="form-check-label" for="EncipherOnly">EncipherOnly</label>
-
-                <input asp-for="DecipherOnly" type="checkbox" class="form-check-input" id="DecipherOnly">
-                <label class="form-check-label" for="DecipherOnly">DecipherOnly</label>
+            <div class="form-check alert alert-primary">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <label>KeyUsage</label>
+                    </li>
+                    <li class="list-group-item list-group-item-primary">
+                        <input asp-for="DigitalSignature" type="checkbox" class="form-check-input" id="DigitalSignature">
+                        <label class="form-check-label" for="DigitalSignature">DigitalSignature</label>
+                    </li>
+                    <li class="list-group-item list-group-item-secondary">
+                        <input asp-for="NonRepudiation" type="checkbox" class="form-check-input" id="NonRepudiation">
+                        <label class="form-check-label" for="NonRepudiation">NonRepudiation</label>
+                    </li>
+                    <li class="list-group-item list-group-item-success">
+                        <input asp-for="KeyEncipherment" type="checkbox" class="form-check-input" id="KeyEncipherment">
+                        <label class="form-check-label" for="KeyEncipherment">KeyEncipherment</label>
+                    </li>
+                    <li class="list-group-item list-group-item-danger">
+                        <input asp-for="DataEncipherment" type="checkbox" class="form-check-input" id="DataEncipherment">
+                        <label class="form-check-label" for="DataEncipherment">DataEncipherment</label>
+                    </li>
+                    <li class="list-group-item list-group-item-warning">
+                        <input asp-for="KeyAgreement" type="checkbox" class="form-check-input" id="KeyAgreement">
+                        <label class="form-check-label" for="KeyAgreement">KeyAgreement</label>
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <input asp-for="KeyCertSign" asp- type="checkbox" class="form-check-input" id="KeyCertSign">
+                        <label class="form-check-label" for="KeyCertSign">KeyCertSign</label>
+                    </li>
+                    <li class="list-group-item list-group-item-light">
+                        <input asp-for="CrlSign" type="checkbox" class="form-check-input" id="CrlSign">
+                        <label class="form-check-label" for="CrlSign">CrlSign</label>
+                    </li>
+                    <li class="list-group-item list-group-item-dark">
+                        <input asp-for="EncipherOnly" type="checkbox" class="form-check-input" id="EncipherOnly">
+                        <label class="form-check-label" for="EncipherOnly">EncipherOnly</label>
+                    </li>
+                    <li class="list-group-item list-group-item-dark">
+                        <input asp-for="DecipherOnly" type="checkbox" class="form-check-input" id="DecipherOnly">
+                        <label class="form-check-label" for="DecipherOnly">DecipherOnly</label>
+                    </li>
+                </ul>
             </div>
-
-            <div class="form-check">
-                <label>ExtendedKeyUsage</label>
-                <input asp-for="AnyExtendedKeyUsage" type="checkbox" class="form-check-input" id="AnyExtendedKeyUsage">
-                <label class="form-check-label" for="AnyExtendedKeyUsage">AnyExtendedKeyUsage</label>
-
-                <input asp-for="IdKPServerAuth" type="checkbox" class="form-check-input" id="IdKPServerAuth">
-                <label class="form-check-label" for="IdKPServerAuth">IdKPServerAuth</label>
-
-                <input asp-for="IdKPClientAuth" type="checkbox" class="form-check-input" id="IdKPClientAuth">
-                <label class="form-check-label" for="IdKPClientAuth">IdKPClientAuth</label>
-
-                <input asp-for="IdKPCodeSigning" type="checkbox" class="form-check-input" id="IdKPCodeSigning">
-                <label class="form-check-label" for="IdKPCodeSigning">IdKPCodeSigning</label>
-
-                <input asp-for="IdKPEmailProtection" type="checkbox" class="form-check-input" id="IdKPEmailProtection">
-                <label class="form-check-label" for="IdKPEmailProtection">IdKPEmailProtection</label>
-
-                <input asp-for="IdKPIpsecEndSystem" asp- type="checkbox" class="form-check-input" id="IdKPIpsecEndSystem">
-                <label class="form-check-label" for="IdKPIpsecEndSystem">IdKPIpsecEndSystem</label>
-
-                <input asp-for="IdKPIpsecTunnel" type="checkbox" class="form-check-input" id="IdKPIpsecTunnel">
-                <label class="form-check-label" for="IdKPIpsecTunnel">IdKPIpsecTunnel</label>
-
-                <input asp-for="IdKPIpsecUser" type="checkbox" class="form-check-input" id="IdKPIpsecUser">
-                <label class="form-check-label" for="IdKPIpsecUser">IdKPIpsecUser</label>
-
-                <input asp-for="IdKPTimeStamping" type="checkbox" class="form-check-input" id="IdKPTimeStamping">
-                <label class="form-check-label" for="IdKPTimeStamping">IdKPTimeStamping</label>
-
-                <input asp-for="IdKPOcspSigning" type="checkbox" class="form-check-input" id="IdKPOcspSigning">
-                <label class="form-check-label" for="IdKPOcspSigning">IdKPOcspSigning</label>
-
-                <input asp-for="IdKPSmartCardLogon" type="checkbox" class="form-check-input" id="IdKPSmartCardLogon">
-                <label class="form-check-label" for="IdKPSmartCardLogon">IdKPSmartCardLogon</label>
-
-                <input asp-for="IdKPMacAddress" type="checkbox" class="form-check-input" id="IdKPMacAddress">
-                <label class="form-check-label" for="IdKPMacAddress">IdKPMacAddress</label>
+            <div class="form-check alert alert-primary">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <label>ExtendedKeyUsage</label>
+                    </li>
+                    <li class="list-group-item list-group-item-primary">
+                        <input asp-for="AnyExtendedKeyUsage" type="checkbox" class="form-check-input" id="AnyExtendedKeyUsage">
+                        <label class="form-check-label" for="AnyExtendedKeyUsage">AnyExtendedKeyUsage</label>
+                    </li>
+                    <li class="list-group-item list-group-item-secondary">
+                        <input asp-for="IdKPServerAuth" type="checkbox" class="form-check-input" id="IdKPServerAuth">
+                        <label class="form-check-label" for="IdKPServerAuth">IdKPServerAuth</label>
+                    </li>
+                    <li class="list-group-item list-group-item-success">
+                        <input asp-for="IdKPClientAuth" type="checkbox" class="form-check-input" id="IdKPClientAuth">
+                        <label class="form-check-label" for="IdKPClientAuth">IdKPClientAuth</label>
+                    </li>
+                    <li class="list-group-item list-group-item-danger">
+                        <input asp-for="IdKPCodeSigning" type="checkbox" class="form-check-input" id="IdKPCodeSigning">
+                        <label class="form-check-label" for="IdKPCodeSigning">IdKPCodeSigning</label>
+                    </li>
+                    <li class="list-group-item list-group-item-warning">
+                        <input asp-for="IdKPEmailProtection" type="checkbox" class="form-check-input" id="IdKPEmailProtection">
+                        <label class="form-check-label" for="IdKPEmailProtection">IdKPEmailProtection</label>
+                    </li>
+                    <li class="list-group-item list-group-item-info">
+                        <input asp-for="IdKPIpsecEndSystem" asp- type="checkbox" class="form-check-input" id="IdKPIpsecEndSystem">
+                        <label class="form-check-label" for="IdKPIpsecEndSystem">IdKPIpsecEndSystem</label>
+                    </li>
+                    <li class="list-group-item list-group-item-light">
+                        <input asp-for="IdKPIpsecTunnel" type="checkbox" class="form-check-input" id="IdKPIpsecTunnel">
+                        <label class="form-check-label" for="IdKPIpsecTunnel">IdKPIpsecTunnel</label>
+                    </li>
+                    <li class="list-group-item list-group-item-dark">
+                        <input asp-for="IdKPIpsecUser" type="checkbox" class="form-check-input" id="IdKPIpsecUser">
+                        <label class="form-check-label" for="IdKPIpsecUser">IdKPIpsecUser</label>
+                    </li>
+                    <li class="list-group-item list-group-item-secondary">
+                        <input asp-for="IdKPTimeStamping" type="checkbox" class="form-check-input" id="IdKPTimeStamping">
+                        <label class="form-check-label" for="IdKPTimeStamping">IdKPTimeStamping</label>
+                    </li>
+                    <li class="list-group-item list-group-item-success">
+                        <input asp-for="IdKPOcspSigning" type="checkbox" class="form-check-input" id="IdKPOcspSigning">
+                        <label class="form-check-label" for="IdKPOcspSigning">IdKPOcspSigning</label>
+                    </li>
+                    <li class="list-group-item list-group-item-danger">
+                        <input asp-for="IdKPSmartCardLogon" type="checkbox" class="form-check-input" id="IdKPSmartCardLogon">
+                        <label class="form-check-label" for="IdKPSmartCardLogon">IdKPSmartCardLogon</label>
+                    </li>
+                    <li class="list-group-item list-group-item-warning">
+                        <input asp-for="IdKPMacAddress" type="checkbox" class="form-check-input" id="IdKPMacAddress">
+                        <label class="form-check-label" for="IdKPMacAddress">IdKPMacAddress</label>
+                    </li>
+                </ul>
             </div>
-
-
-
-
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
-</div>
+
 
 <div>
     <a asp-action="Index">Back to List</a>

@@ -1,7 +1,9 @@
 ﻿using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Math;
+using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
@@ -25,6 +27,7 @@ namespace Certlib
                                                              int Validity,
                                                              bool isCertificateAuthority)
         {
+            
             V3TbsCertificateGenerator tbsGenerator = new V3TbsCertificateGenerator();
             tbsGenerator.SetSubject(new X509Name(SubjectDN));
             tbsGenerator.SetIssuer(new X509Name(IssuerDN));

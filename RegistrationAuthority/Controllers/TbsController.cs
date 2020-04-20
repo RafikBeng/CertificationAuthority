@@ -70,12 +70,12 @@ namespace RegistrationAuthority.Controllers
         // POST: Tbs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TbsModel collection)
+        public ActionResult Create(TbsModel tbs)
         {
             try
             {
-                
-                _tbsService.Create(collection);
+                 String subjectDN = $"CN={tbs.CommonName},DC={tbs.DomainComponent},O={tbs.OrganizationName},OU={tbs.OrganizationalUnitName},C={tbs.CountryName},ST={tbs.StateName},L={tbs.City},STREET={tbs.StreetAddress}";
+                _tbsService.Create(tbs);
                 return RedirectToAction(nameof(Index));
             }
             catch

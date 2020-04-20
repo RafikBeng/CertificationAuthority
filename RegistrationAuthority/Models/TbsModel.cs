@@ -22,7 +22,10 @@ namespace RegistrationAuthority.Models
         [BsonIgnore]
         [Display(Name = "Domain Component")]
         public string DomainComponent { get; set; }
-
+    
+        [BsonIgnore]
+        [Display(Name = "Organization")]
+        public string OrganizationName { get; set; }
         [BsonIgnore]
         [Display(Name = "Organizational Unit")]
         public string OrganizationalUnitName { get; set; }
@@ -42,10 +45,6 @@ namespace RegistrationAuthority.Models
         [BsonIgnore]
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
-
-        [BsonIgnore]
-        [Display(Name = "Locality Name")]
-        public string LocalityName { get; set; }
 
         [BsonIgnore]
         [Display(Name = "Validity")]
