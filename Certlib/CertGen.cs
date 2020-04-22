@@ -2,6 +2,7 @@
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
@@ -15,7 +16,31 @@ using System.Text;
 namespace Certlib
 {
     public static class CertGen
+
     {
+      
+        public static Pkcs10CertificationRequest CertRequest(X509Name SubjectDN,
+                                                             String[] subjectAlternativeNames,
+                                                             AsymmetricCipherKeyPair Key,
+                                                             string algorithm,
+                                                             KeyUsage KeyUsage,
+                                                             KeyPurposeID[] ExtendedKeyUsage,
+                                                             bool isCertificateAuthority)
+        {
+
+            X509ExtensionsGenerator generator = new X509ExtensionsGenerator();
+            AddKeyUsage(generator, KeyUsage);
+            AddExtendedKeyUsage(generator, ExtendedKeyUsage);
+            AddSubjectAlternativeNames(generator, subjectAlternativeNames);
+            AddSubjectKeyIdentifier(generator, Key);
+            AddBasicConstraints(generator, isCertificateAuthority);
+            Org.BouncyCastle.Asn1.Cms.Attribute attributes = new Org.BouncyCastle.Asn1.Cms.Attribute(PkcsObjectIdentifiers.Pkcs9AtExtensionRequest, new DerSet(generator.Generate()));
+            Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(algorithm, SubjectDN, Key.Public, new DerSet(attributes), Key.Private);
+            //CertificationRequestInfo certificationRequestInfo = pkcs10.GetCertificationRequestInfo();
+            //CertificationRequest request = new CertificationRequest(certificationRequestInfo, pkcs10.SignatureAlgorithm, pkcs10.Signature);
+            
+            return pkcs10;
+        }
         public static TbsCertificateStructure TbsCertificate(String SubjectDN,
                                                              String IssuerDN,
                                                              String[] subjectAlternativeNames,

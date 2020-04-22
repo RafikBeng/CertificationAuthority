@@ -9,6 +9,9 @@ using static Certlib.CertGen;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Asn1.X9;
+using Org.BouncyCastle.Asn1.Pkcs;
+using Org.BouncyCastle.Pkcs;
+using Org.BouncyCastle.Crypto.Operators;
 
 namespace UnitTest
 {
@@ -18,40 +21,62 @@ namespace UnitTest
         [TestMethod]
         public void KeyGenTest()
         {
-            TimeIt("GenerateElGamalKeyPair", () =>
-            {
-              AsymmetricCipherKeyPair asymmetricCipherKeyPair= GenerateElGamalKeyPair(512);
+            //TimeIt("GenerateElGamalKeyPair", () =>
+            //{
+            //  AsymmetricCipherKeyPair asymmetricCipherKeyPair= GenerateElGamalKeyPair(512);
                
 
-            });
+            //});
 
-            TimeIt("GenerateDsaKeyPair", () =>
-            {
-                AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateDsaKeyPair(512);
+            //TimeIt("GenerateDsaKeyPair", () =>
+            //{
+            //    AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateDsaKeyPair(512);
 
-            });
+            //});
 
             TimeIt("GenerateRsaKeyPair", () =>
             {
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
-               
+                String name = "rafik";
+                String organization = "ANP";
+                String organizationalUnit = "ESDAT";
+                String city = "Réghaïa";
+                String stateCode = "35";
+                String countryCode = "DZ";
+                String SubjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
+                string algorithm = "SHA512WITHRSA";
+                String[] subjectAlternativeNames = new List<String>().ToArray();
+                
+                int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
+                int us = 0;
+                for (int i = 0; i < 9; i++) us = us | usage[i];
+                KeyUsage keyUsage = new KeyUsage(us);
+                KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,
+                                                                    KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,
+                                                                    KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
+                                                                    KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
+
+                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage,false) ;
+                
+               //Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(algorithm.ToString(), new X509Name(SubjectDN), asymmetricCipherKeyPair.Public, null, asymmetricCipherKeyPair.Private);
+               Console.WriteLine(pkcs10.GetCertificationRequestInfo().Version);
             });
 
-            TimeIt("GenerateEcKeyPair", () =>
-            {
-                AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateEcKeyPair("sect571r1");
-                string Private = KeyWriter(asymmetricCipherKeyPair.Private);
-                Console.WriteLine(Private);
-                Console.WriteLine("********************************");
-                AsymmetricKeyParameter P = PrivateKeyReader(Private);
-                Console.WriteLine(KeyWriter(P));
-                Console.WriteLine("********************************");
-                string Public = KeyWriter(asymmetricCipherKeyPair.Public);
-                Console.WriteLine(Public);
-                Console.WriteLine("********************************");
-                AsymmetricKeyParameter B = PublicKeyReader(Public);
-                Console.WriteLine(KeyWriter(B));
-            });
+            //TimeIt("GenerateEcKeyPair", () =>
+            //{
+            //    AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateEcKeyPair("sect571r1");
+            //    string Private = KeyWriter(asymmetricCipherKeyPair.Private);
+            //    Console.WriteLine(Private);
+            //    Console.WriteLine("********************************");
+            //    AsymmetricKeyParameter P = PrivateKeyReader(Private);
+            //    Console.WriteLine(KeyWriter(P));
+            //    Console.WriteLine("********************************");
+            //    string Public = KeyWriter(asymmetricCipherKeyPair.Public);
+            //    Console.WriteLine(Public);
+            //    Console.WriteLine("********************************");
+            //    AsymmetricKeyParameter B = PublicKeyReader(Public);
+            //    Console.WriteLine(KeyWriter(B));
+            //});
 
             Debugger.Break();
         }
