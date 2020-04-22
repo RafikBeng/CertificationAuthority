@@ -12,9 +12,13 @@ using RegistrationAuthority.Services;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Crypto.Operators;
+using Microsoft.AspNetCore.Routing;
+using Newtonsoft.Json;
+
 
 namespace RegistrationAuthority.Controllers
 {
+    
     public class CsrController : Controller
     {
         private readonly CsrService _CsrService;
@@ -58,9 +62,18 @@ namespace RegistrationAuthority.Controllers
         }
 
         // GET: Tbs/Details/5
-        public ActionResult Details(int id)
+       [HttpGet]
+        public ActionResult Details()
         {
-            return View();
+            string data = TempData["MyTempData"].ToString();
+            string pkcs = TempData["Mypkcs"].ToString();
+            CsrModel Model = JsonConvert.DeserializeObject<CsrModel>(data);
+            byte[] bits = JsonConvert.DeserializeObject<byte[]>(pkcs);
+            Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(bits);
+            Console.WriteLine(Model.Privatekey);
+            Console.WriteLine(KeyWriter(pkcs10.GetPublicKey()));
+
+            return View(Model);
         }
 
         // GET: Tbs/Create
@@ -109,19 +122,25 @@ namespace RegistrationAuthority.Controllers
                 if (Csr.IdKPMacAddress) ExtendUsage.Add(KeyPurposeID.IdKPMacAddress);
 
                 AsymmetricCipherKeyPair Key = new AsymmetricCipherKeyPair(PublicKeyReader(Csr.Publickey), PrivateKeyReader(Csr.Privatekey));
-                
+
 
                 var v = Asn1SignatureFactory.SignatureAlgNames;
                 List<string> SignatureAlgNames = new List<string>();
                 foreach (var a in v) SignatureAlgNames.Add(a.ToString());
                 List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains(Csr.Algorithme));
                 string Signature = tmp.Find(x => x.Contains(Csr.Hash));
-                //Console.WriteLine(Signature);
+                Console.WriteLine(Signature);
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
                 Csr.RawData = pkcs10.GetDerEncoded();
-                _CsrService.Create(Csr);
-                
-                return RedirectToAction(nameof(Index));
+                Console.WriteLine(Csr.CommonName);
+                // _CsrService.Create(Csr);
+               
+              
+                string data = JsonConvert.SerializeObject(Csr);
+                string pkcs = JsonConvert.SerializeObject(pkcs10.GetDerEncoded());
+                TempData.Add("MyTempData", data);
+                TempData.Add("Mypkcs", pkcs);
+                return RedirectToAction(nameof(Details));
             }
             catch
             {

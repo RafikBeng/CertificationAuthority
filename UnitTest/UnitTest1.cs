@@ -12,6 +12,7 @@ using Org.BouncyCastle.Asn1.X9;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Crypto.Operators;
+using Org.BouncyCastle.Asn1.Utilities;
 
 namespace UnitTest
 {
@@ -56,12 +57,14 @@ namespace UnitTest
                                                                     KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
                                                                     KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
 
-                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage,false) ;
-                
-               //Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(algorithm.ToString(), new X509Name(SubjectDN), asymmetricCipherKeyPair.Public, null, asymmetricCipherKeyPair.Private);
-               Console.WriteLine(pkcs10.GetCertificationRequestInfo().Version);
-            });
+                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage,false);
 
+
+                // string dump = Asn1Dump.DumpAsString(pkcs10, true);
+                string dump = CsrWriter(pkcs10);
+                Console.WriteLine(dump);
+            });
+            
             //TimeIt("GenerateEcKeyPair", () =>
             //{
             //    AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateEcKeyPair("sect571r1");

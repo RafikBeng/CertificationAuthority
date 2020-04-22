@@ -4,12 +4,14 @@ using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Math;
+using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 
@@ -18,7 +20,20 @@ namespace Certlib
     public static class CertGen
 
     {
-      
+        public static string CsrWriter(Pkcs10CertificationRequest Csr)
+        {
+
+            TextWriter textWriter = new StringWriter();
+            PemWriter pemWriter = new PemWriter(textWriter);
+            pemWriter.WriteObject(Csr);
+            pemWriter.Writer.Flush();
+            string str = textWriter.ToString();
+           // str = str.Remove(str.LastIndexOf(Environment.NewLine));
+            return (str);
+        }
+
+        
+
         public static Pkcs10CertificationRequest CertRequest(X509Name SubjectDN,
                                                              String[] subjectAlternativeNames,
                                                              AsymmetricCipherKeyPair Key,
