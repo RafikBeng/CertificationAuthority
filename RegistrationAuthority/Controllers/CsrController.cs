@@ -12,12 +12,12 @@ using RegistrationAuthority.Services;
 
 namespace RegistrationAuthority.Controllers
 {
-    public class TbsController : Controller
+    public class CsrController : Controller
     {
-        private readonly TbsService _tbsService;
-        public TbsController(TbsService tbsService)
+        private readonly CsrService _CsrService;
+        public CsrController(CsrService CsrService)
         {
-            _tbsService = tbsService;
+            _CsrService = CsrService;
         }
         public JsonResult GetRsaKeys(int KeySize)
         {
@@ -63,19 +63,19 @@ namespace RegistrationAuthority.Controllers
         // GET: Tbs/Create
         public ActionResult Create()
         {
-            TbsModel tbs = new TbsModel();
-            return View(tbs);
+            CsrModel Csr = new CsrModel();
+            return View(Csr);
         }
 
         // POST: Tbs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TbsModel tbs)
+        public ActionResult Create(CsrModel Csr)
         {
             try
             {
-                 String subjectDN = $"CN={tbs.CommonName},DC={tbs.DomainComponent},O={tbs.OrganizationName},OU={tbs.OrganizationalUnitName},C={tbs.CountryName},ST={tbs.StateName},L={tbs.City},STREET={tbs.StreetAddress}";
-                _tbsService.Create(tbs);
+                 String subjectDN = $"CN={Csr.CommonName},DC={Csr.DomainComponent},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress}";
+                _CsrService.Create(Csr);
                 return RedirectToAction(nameof(Index));
             }
             catch

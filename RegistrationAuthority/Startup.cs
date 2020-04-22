@@ -32,7 +32,7 @@ namespace RegistrationAuthority
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddSingleton<TbsService>();
+            services.AddSingleton<CsrService>();
 
             services.AddControllersWithViews();
 

@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace RegistrationAuthority.Services
 {
-    public class TbsService
+    public class CsrService
     {
-        private readonly IMongoCollection<TbsModel> _TbsModel;
-        public TbsService(IDatabaseSettings settings)
+        private readonly IMongoCollection<CsrModel> _CsrModel;
+        public CsrService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _TbsModel = database.GetCollection<TbsModel>(settings.CollectionName);
+            _CsrModel = database.GetCollection<CsrModel>(settings.CollectionName);
         }
 
-        public void Create(TbsModel collection)
+        public void Create(CsrModel collection)
         {
-            _TbsModel.InsertOne(collection);
+            _CsrModel.InsertOne(collection);
         }
     }
 }

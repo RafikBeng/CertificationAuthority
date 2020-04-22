@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RegistrationAuthority.Models
 {
-    public class TbsModel
+    public class CsrModel
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
