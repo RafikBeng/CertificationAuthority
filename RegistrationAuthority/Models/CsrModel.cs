@@ -46,7 +46,7 @@ namespace RegistrationAuthority.Models
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
 
-        [BsonIgnore]
+        //[BsonIgnore]
         [Display(Name = "Validity")]
         public string Validity { get; set; }
 
@@ -66,7 +66,7 @@ namespace RegistrationAuthority.Models
         {
             new SelectListItem { Value = "RSA", Text = "RSA" },
             //new SelectListItem { Value = "DSA", Text = "DSA" },
-            new SelectListItem { Value = "EC", Text = "Elliptic curve"},
+            new SelectListItem { Value = "ECDSA", Text = "Elliptic curve"},
 
         };
 
@@ -114,6 +114,7 @@ namespace RegistrationAuthority.Models
         /// 
         [BsonIgnore]
         public bool DigitalSignature ;
+        [BsonIgnore]
         public bool NonRepudiation ;
         [BsonIgnore]
         public bool KeyEncipherment ;
