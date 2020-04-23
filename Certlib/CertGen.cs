@@ -28,7 +28,7 @@ namespace Certlib
             pemWriter.WriteObject(Csr);
             pemWriter.Writer.Flush();
             string str = textWriter.ToString();
-           // str = str.Remove(str.LastIndexOf(Environment.NewLine));
+            str = str.Remove(str.LastIndexOf(Environment.NewLine));
             return (str);
         }
 

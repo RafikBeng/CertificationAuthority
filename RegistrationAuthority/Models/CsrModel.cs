@@ -161,6 +161,6 @@ namespace RegistrationAuthority.Models
 
         public string Privatekey { get; set; }
         public string Publickey { get; set; }
-        public byte[] RawData { get; set; }
+        public string RawData { get; set; }
     }
 }

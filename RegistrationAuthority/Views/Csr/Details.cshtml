@@ -5,121 +5,69 @@
 }
 
 <h1>Details</h1>
+<div class="container">
+   
+        <table class="table table-striped table-dark">
 
-<div>
-    <h4>CsrModel</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CommonName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CommonName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DomainComponent)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DomainComponent)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrganizationName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrganizationName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrganizationalUnitName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrganizationalUnitName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CountryName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CountryName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StateName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StateName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StreetAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StreetAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Validity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Validity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Algorithme)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Algorithme)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.KeySize)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.KeySize)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ECType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ECType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Curve)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Curve)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hash)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hash)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Privatekey)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Privatekey)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Publickey)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Publickey)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RawData)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RawData)
-        </dd>
-    </dl>
-</div>
+            <tbody>
+                <tr>
+                    <th scope="row">Distinguished Name</th>
+                    <td>
+                        @Html.DisplayFor(model => model.CommonName)
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Signature Algorithm</th>
+                    <td>Jacob</td>
+
+
+                </tr>
+                <tr>
+                    <th scope="row">Public key Algorithm</th>
+                    <td>
+                        @Html.DisplayFor(model => model.Algorithme)
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">key Size</th>
+                    <td>Larry</td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Thumbprint</th>
+                    <td>Larry</td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Public Key</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly  class="form-control text-monospace">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Private Key</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly  class="form-control text-monospace">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
+                       
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Certificate Signing Request</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly  class="form-control text-monospace">@Html.DisplayFor(model => model.RawData)</TEXTAREA>
+                      
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>

@@ -70,6 +70,7 @@ namespace RegistrationAuthority.Controllers
             CsrModel Model = JsonConvert.DeserializeObject<CsrModel>(data);
             byte[] bits = JsonConvert.DeserializeObject<byte[]>(pkcs);
             Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(bits);
+            Console.WriteLine(pkcs10.GetCertificationRequestInfo().Subject.ToString());
             Console.WriteLine(Model.Privatekey);
             Console.WriteLine(KeyWriter(pkcs10.GetPublicKey()));
 
@@ -131,7 +132,7 @@ namespace RegistrationAuthority.Controllers
                 string Signature = tmp.Find(x => x.Contains(Csr.Hash));
                 Console.WriteLine(Signature);
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
-                Csr.RawData = pkcs10.GetDerEncoded();
+                Csr.RawData = CsrWriter(pkcs10);
                 Console.WriteLine(Csr.CommonName);
                 // _CsrService.Create(Csr);
                
