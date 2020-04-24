@@ -153,7 +153,7 @@ namespace RegistrationAuthority.Controllers
                     Csr.KeySize = Int32.Parse(resultString);
                 }
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
-
+                Csr.RawData = CsrWriter(pkcs10);
 
                 _CsrService.Create(Csr);
 
