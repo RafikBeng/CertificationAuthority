@@ -13,13 +13,15 @@
                 <tr>
                     <th scope="row">Distinguished Name</th>
                     <td>
-                        @Html.DisplayFor(model => model.CommonName)
+                        @Html.DisplayFor(model => model.Distinguished_Name)
                     </td>
 
                 </tr>
                 <tr>
                     <th scope="row">Signature Algorithm</th>
-                    <td>Jacob</td>
+                    <td>
+                        @Html.DisplayFor(model => model.Signature)
+                    </td>
 
 
                 </tr>
@@ -32,12 +34,17 @@
                 </tr>
                 <tr>
                     <th scope="row">key Size</th>
-                    <td>Larry</td>
+                    <td>
+                        @Html.DisplayFor(model => model.KeySize)
+                    </td>
 
                 </tr>
                 <tr>
                     <th scope="row">Thumbprint</th>
-                    <td>Larry</td>
+                    <td>
+                        
+                        <TEXTAREA wrap="hard" rows="5" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
+                    </td>
 
                 </tr>
                 <tr>

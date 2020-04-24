@@ -14,7 +14,7 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Crypto.Operators;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
-
+using System.Text.RegularExpressions;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -65,16 +65,30 @@ namespace RegistrationAuthority.Controllers
        [HttpGet]
         public ActionResult Details()
         {
-            string data = TempData["MyTempData"].ToString();
-            string pkcs = TempData["Mypkcs"].ToString();
-            CsrModel Model = JsonConvert.DeserializeObject<CsrModel>(data);
-            byte[] bits = JsonConvert.DeserializeObject<byte[]>(pkcs);
-            Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(bits);
-            Console.WriteLine(pkcs10.GetCertificationRequestInfo().Subject.ToString());
-            Console.WriteLine(Model.Privatekey);
-            Console.WriteLine(KeyWriter(pkcs10.GetPublicKey()));
+            try
+            {
+                string data = TempData["MyTempData"].ToString();
+                string pkcs = TempData["Mypkcs"].ToString();
+                
+                CsrModel Model = JsonConvert.DeserializeObject<CsrModel>(data);
+                byte[] bits = JsonConvert.DeserializeObject<byte[]>(pkcs);
+                Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(bits);
+                Model.Distinguished_Name = pkcs10.GetCertificationRequestInfo().Subject.ToString();
+                Model.RawData = CsrWriter(pkcs10);
+                
+                Model.Thumbprint = Convert.ToBase64String(pkcs10.Signature.GetOctets());
+                Console.WriteLine(Model.Privatekey);
+                Console.WriteLine(KeyWriter(pkcs10.GetPublicKey()));
 
-            return View(Model);
+                return View(Model);
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch(NullReferenceException e)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
         }
 
         // GET: Tbs/Create
@@ -129,14 +143,21 @@ namespace RegistrationAuthority.Controllers
                 List<string> SignatureAlgNames = new List<string>();
                 foreach (var a in v) SignatureAlgNames.Add(a.ToString());
                 List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains(Csr.Algorithme));
+                tmp.RemoveAll(x => x.Contains("MGF1"));
                 string Signature = tmp.Find(x => x.Contains(Csr.Hash));
-                Console.WriteLine(Signature);
+                
+                Csr.Signature = Signature;
+               if(Csr.Algorithme == "ECDSA")
+                {
+                    string resultString = Regex.Match(Csr.Curve, @"\d+").Value;
+                    Csr.KeySize = Int32.Parse(resultString);
+                }
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
-                Csr.RawData = CsrWriter(pkcs10);
-                Console.WriteLine(Csr.CommonName);
+
+
                 // _CsrService.Create(Csr);
-               
-              
+
+                
                 string data = JsonConvert.SerializeObject(Csr);
                 string pkcs = JsonConvert.SerializeObject(pkcs10.GetDerEncoded());
                 TempData.Add("MyTempData", data);
