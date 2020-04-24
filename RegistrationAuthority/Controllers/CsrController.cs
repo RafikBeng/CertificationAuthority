@@ -155,7 +155,7 @@ namespace RegistrationAuthority.Controllers
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
 
 
-                // _CsrService.Create(Csr);
+                _CsrService.Create(Csr);
 
                 
                 string data = JsonConvert.SerializeObject(Csr);
