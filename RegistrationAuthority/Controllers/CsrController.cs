@@ -15,6 +15,7 @@ using Org.BouncyCastle.Crypto.Operators;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -95,6 +96,20 @@ namespace RegistrationAuthority.Controllers
         public ActionResult Create()
         {
             CsrModel Csr = new CsrModel();
+            var contries = _CsrService.GetContries();
+            var List_contries = new List<SelectListItem>();
+            foreach (var v in contries)
+            {
+                SelectListItem selectListItem = new SelectListItem(v.ElementAt(0).Value.AsString, v.ElementAt(1).Value.AsString);
+                List_contries.Add(selectListItem);
+            }
+            Csr.Countries = List_contries;
+            Csr.CountryName = List_contries.ElementAt(0).Text;
+            var states = _CsrService.Getstates(Csr.CountryName);
+            Csr.states = states.ToList<SelectListItem>();
+            Csr.StateName = states.ElementAt(0).Text;
+            var cities = _CsrService.GetCities(Csr.CountryName, Csr.StateName);
+            Csr.cities=cities.ToList<SelectListItem>();
             return View(Csr);
         }
 
@@ -214,6 +229,18 @@ namespace RegistrationAuthority.Controllers
             {
                 return View();
             }
+        }
+
+        public JsonResult Getstates(string name)
+        {
+            // string name = "Algeria";
+            return Json(_CsrService.Getstates(name));
+        }
+
+        public JsonResult GetCities(string country, string state)
+        {
+            // string name = "Algeria";
+            return Json(_CsrService.GetCities(country, state));
         }
     }
 }

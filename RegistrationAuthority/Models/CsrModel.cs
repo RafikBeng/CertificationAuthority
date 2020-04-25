@@ -33,15 +33,15 @@ namespace RegistrationAuthority.Models
         [BsonIgnore]
         [Display(Name = "Country")]
         public string CountryName { get; set; }
-
+        public List<SelectListItem> Countries { get; set; } = new List<SelectListItem>();
         [BsonIgnore]
         [Display(Name = "State")]
         public string StateName { get; set; }
-
+        public List<SelectListItem> states { get; set; } = new List<SelectListItem>();
         [BsonIgnore]
         [Display(Name = "City")]
         public string City { get; set; }
-
+        public List<SelectListItem> cities { get; set; } = new List<SelectListItem>();
         [BsonIgnore]
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
