@@ -244,7 +244,7 @@
                
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" id="sub" />
             </div>
         </form>
     </div>
@@ -258,8 +258,11 @@
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         <script type="text/javascript">
-
-    $("#keygen").click(function () {
+           
+            $("#keygen").click(function () {
+                this.disabled = true;
+                document.getElementById("Private").value = "";
+                document.getElementById("Public").value = "";
         var algo = document.getElementById("Algorithme").value;
         if (algo == "RSA") {
             var value = $('#KeySize').slider('getValue');
@@ -269,9 +272,10 @@
                 document.getElementById("Public").value = data.h;
                 $('#privdiv').show();
                 $('#pubdiv').show();
+                document.getElementById("keygen").disabled = false;
                 //alert(data.s);
                 //alert(data.h);
-            });
+            })
         }
         else {
             var Curve = document.getElementById("Curve").value;
@@ -280,11 +284,14 @@
                 document.getElementById("Public").value = data.h;
                 $('#privdiv').show();
                 $('#pubdiv').show();
+                document.getElementById("keygen").disabled = false;
                 //alert(data.s);
                 //alert(data.h);
-            });
+            })
 
-        }
+                }
+               
+        //
 
     });
 
