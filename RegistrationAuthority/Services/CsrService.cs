@@ -45,16 +45,21 @@ namespace RegistrationAuthority.Services
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("name", name);
             ProjectionDefinition<BsonDocument> projection = Builders<BsonDocument>.Projection.Include("states").Exclude("_id");
             var result = _Contries.Find<BsonDocument>(filter).Project(projection).ToList();
-            BsonDocument bson = result.ElementAt(0);
-            BsonDocument bson1 = bson.ElementAt(0).Value.AsBsonDocument;
-            
             var tmp1 = new List<SelectListItem>();
-            foreach (var v in bson1)
+            BsonDocument bson = result.ElementAt(0);
+            if(bson.ElementCount>0)
             {
-                
-                SelectListItem selectListItem = new SelectListItem(v.Name, v.Name);
-                tmp1.Add(selectListItem);
+                BsonDocument bson1 = bson.ElementAt(0).Value.AsBsonDocument;
+
+
+                foreach (var v in bson1)
+                {
+
+                    SelectListItem selectListItem = new SelectListItem(v.Name, v.Name);
+                    tmp1.Add(selectListItem);
+                }
             }
+            
             return tmp1;
 
         }
@@ -64,17 +69,22 @@ namespace RegistrationAuthority.Services
             FilterDefinition<BsonDocument> filter = Builders<BsonDocument>.Filter.Eq("name", country);
             ProjectionDefinition<BsonDocument> projection = Builders<BsonDocument>.Projection.Include("states").Exclude("_id");
             var result = _Contries.Find<BsonDocument>(filter).Project(projection).ToList();
-            BsonDocument bson = result.ElementAt(0);
-            BsonDocument bson1 = bson.ElementAt(0).Value.AsBsonDocument;
-            BsonArray bson2 = bson1.GetElement(state).Value.AsBsonArray;
-           
             var tmp1 = new List<SelectListItem>();
-            foreach (var v in bson2)
+            BsonDocument bson = result.ElementAt(0);
+            if (bson.ElementCount > 0)
             {
-                
-                SelectListItem selectListItem = new SelectListItem(v.AsString, v.AsString);
-                tmp1.Add(selectListItem);
+                BsonDocument bson1 = bson.ElementAt(0).Value.AsBsonDocument;
+                BsonArray bson2 = bson1.GetElement(state).Value.AsBsonArray;
+
+
+                foreach (var v in bson2)
+                {
+
+                    SelectListItem selectListItem = new SelectListItem(v.AsString, v.AsString);
+                    tmp1.Add(selectListItem);
+                }
             }
+            
             return tmp1;
         }
     }
