@@ -10,6 +10,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest", "UnitTest\UnitTest.csproj", "{1C94B8A1-D94D-4F2B-8942-BA8792F159E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Certificationauthority", "Certificationauthority\Certificationauthority.csproj", "{C67D1538-A281-45B7-B3B9-7D185F6C36FE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3FF3D502-5C41-4D26-9F32-BDCAACBCA96E} = {3FF3D502-5C41-4D26-9F32-BDCAACBCA96E}
+		{59D7AEF8-14B0-47ED-B5E7-781DF044ED0A} = {59D7AEF8-14B0-47ED-B5E7-781DF044ED0A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
