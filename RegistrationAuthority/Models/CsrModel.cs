@@ -116,50 +116,50 @@ namespace RegistrationAuthority.Models
         /// </summary>
         /// 
         [BsonIgnore]
-        public bool DigitalSignature ;
+        public bool DigitalSignature { get; set; }
         [BsonIgnore]
-        public bool NonRepudiation ;
+        public bool NonRepudiation { get; set; }
         [BsonIgnore]
-        public bool KeyEncipherment ;
+        public bool KeyEncipherment { get; set; }
         [BsonIgnore]
-        public bool DataEncipherment ;
+        public bool DataEncipherment { get; set; }
         [BsonIgnore]
-        public bool KeyAgreement ;
+        public bool KeyAgreement { get; set; }
         [BsonIgnore]
-        public bool KeyCertSign ;
+        public bool KeyCertSign { get; set; }
         [BsonIgnore]
-        public bool CrlSign ;
+        public bool CrlSign { get; set; }
         [BsonIgnore]
-        public bool EncipherOnly;
+        public bool EncipherOnly { get; set; }
         [BsonIgnore]
-        public bool DecipherOnly ;
+        public bool DecipherOnly { get; set; }
         /// <summary>
         /// ///////////ExtendedKeyUsage
         /// </summary>
         [BsonIgnore]
-        public bool AnyExtendedKeyUsage;
+        public bool AnyExtendedKeyUsage { get; set; }
         [BsonIgnore]
-        public bool IdKPServerAuth;
+        public bool IdKPServerAuth { get; set; }
         [BsonIgnore]
-        public bool IdKPClientAuth;
+        public bool IdKPClientAuth { get; set; }
         [BsonIgnore]
-        public bool IdKPCodeSigning;
+        public bool IdKPCodeSigning { get; set; }
         [BsonIgnore]
-        public bool IdKPEmailProtection;
+        public bool IdKPEmailProtection { get; set; }
         [BsonIgnore]
-        public bool IdKPIpsecEndSystem;
+        public bool IdKPIpsecEndSystem { get; set; }
         [BsonIgnore]
-        public bool IdKPIpsecTunnel;
+        public bool IdKPIpsecTunnel { get; set; }
         [BsonIgnore]
-        public bool IdKPIpsecUser;
+        public bool IdKPIpsecUser { get; set; }
         [BsonIgnore]
-        public bool IdKPTimeStamping;
+        public bool IdKPTimeStamping { get; set; }
         [BsonIgnore]
-        public bool IdKPOcspSigning;
+        public bool IdKPOcspSigning { get; set; }
         [BsonIgnore]
-        public bool IdKPSmartCardLogon;
+        public bool IdKPSmartCardLogon { get; set; }
         [BsonIgnore]
-        public bool IdKPMacAddress;
+        public bool IdKPMacAddress { get; set; }
         [BsonIgnore]
         public string Distinguished_Name { get; set; }
         [BsonIgnore]

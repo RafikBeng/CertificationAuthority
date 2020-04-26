@@ -51,7 +51,7 @@ namespace RegistrationAuthority.Services
             var tmp1 = new List<SelectListItem>();
             foreach (var v in bson1)
             {
-                Console.WriteLine(v.Name);
+                
                 SelectListItem selectListItem = new SelectListItem(v.Name, v.Name);
                 tmp1.Add(selectListItem);
             }

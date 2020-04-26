@@ -23,12 +23,14 @@ namespace Certlib
         public static string ShowExtensions(Pkcs10CertificationRequest pkcs10)
         {
             string Info = "Extensions:" + Environment.NewLine;
+           
             X509Extensions Extensions = GetX509ExtensionsFromCsr(pkcs10);
             foreach (var v in Extensions.GetExtensionOids())
             {
 
                 X509Extension extension = Extensions.GetExtension(v);
                 System.Security.Cryptography.X509Certificates.X509Extension x509 = new System.Security.Cryptography.X509Certificates.X509Extension(v.Id, extension.Value.GetOctets(), extension.IsCritical);
+               
                 // Console.WriteLine(x509.Format(true));
                 if (x509.Oid.Value == "2.5.29.15")
                 {
@@ -78,19 +80,22 @@ namespace Certlib
                     
                 }
             }
+            
             return Info;
         }
 
       public static  X509Extensions GetX509ExtensionsFromCsr(Pkcs10CertificationRequest certificateSigningRequest)
         {
             CertificationRequestInfo certificationRequestInfo = certificateSigningRequest.GetCertificationRequestInfo();
-
+           
             Asn1Set attributesAsn1Set = certificationRequestInfo.Attributes;
             X509Extensions certificateRequestExtensions = null;
             for (int i = 0; i < attributesAsn1Set.Count; ++i)
             {
-               Asn1Encodable derEncodable = attributesAsn1Set[i];
-               Org.BouncyCastle.Asn1.Cms.Attribute attribute = (Org.BouncyCastle.Asn1.Cms.Attribute)derEncodable;
+               Asn1Encodable asn1Encodable = attributesAsn1Set[i];
+                Org.BouncyCastle.Asn1.Cms.Attribute attribute = Org.BouncyCastle.Asn1.Cms.Attribute.GetInstance(asn1Encodable);
+             //  Org.BouncyCastle.Asn1.Cms.Attribute attribute = (Org.BouncyCastle.Asn1.Cms.Attribute)asn1Encodable;
+
                 if (attribute.AttrType.Equals(PkcsObjectIdentifiers.Pkcs9AtExtensionRequest))
                 {
                     
@@ -99,7 +104,9 @@ namespace Certlib
                    
                     if (attributeValues.Count >= 1)
                     {
-                        certificateRequestExtensions = (X509Extensions)attributeValues[0];
+
+                        certificateRequestExtensions = X509Extensions.GetInstance(attributeValues[0]);
+                       //  certificateRequestExtensions = (X509Extensions)attributeValues[0];
                        
                         break;
                     }

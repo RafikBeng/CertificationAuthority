@@ -116,14 +116,20 @@ namespace RegistrationAuthority.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CsrModel Csr)
         {
+            //foreach(var v in collection)
+            //{
+            //    Console.WriteLine(v.Key + ":" + v.Value);
+            //}
+            //return RedirectToAction(nameof(Index));
             try
             {
-                
+
                 String SubjectDN = $"CN={Csr.CommonName},DC={Csr.DomainComponent},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
                 int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
                 List<int> L = new List<int>();
                 if (Csr.DigitalSignature) L.Add(128);
+                Console.WriteLine("DigitalSignature:" + Csr.DigitalSignature);
                 if (Csr.NonRepudiation) L.Add(64);
                 if (Csr.KeyEncipherment) L.Add(32);
                 if (Csr.DataEncipherment) L.Add(16);
@@ -132,7 +138,7 @@ namespace RegistrationAuthority.Controllers
                 if (Csr.CrlSign) L.Add(2);
                 if (Csr.EncipherOnly) L.Add(1);
                 if (Csr.DecipherOnly) L.Add(32768);
-                
+               
                 KeyUsage keyUsage = new KeyUsage(L.Sum());
 
                 List<KeyPurposeID> ExtendUsage = new List<KeyPurposeID>();
@@ -148,7 +154,7 @@ namespace RegistrationAuthority.Controllers
                 if (Csr.IdKPOcspSigning) ExtendUsage.Add(KeyPurposeID.IdKPOcspSigning);
                 if (Csr.IdKPSmartCardLogon) ExtendUsage.Add(KeyPurposeID.IdKPSmartCardLogon);
                 if (Csr.IdKPMacAddress) ExtendUsage.Add(KeyPurposeID.IdKPMacAddress);
-
+                
                 AsymmetricCipherKeyPair Key = new AsymmetricCipherKeyPair(PublicKeyReader(Csr.Publickey), PrivateKeyReader(Csr.Privatekey));
 
 
@@ -158,19 +164,19 @@ namespace RegistrationAuthority.Controllers
                 List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains(Csr.Algorithme));
                 tmp.RemoveAll(x => x.Contains("MGF1"));
                 string Signature = tmp.Find(x => x.Contains(Csr.Hash));
-                
+
                 Csr.Signature = Signature;
-               if(Csr.Algorithme == "ECDSA")
+                if (Csr.Algorithme == "ECDSA")
                 {
                     string resultString = Regex.Match(Csr.Curve, @"\d\d\d+").Value;
                     Csr.KeySize = Int32.Parse(resultString);
                 }
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
-                Csr.Certificat= CsrWriter(pkcs10);
+                Csr.Certificat = CsrWriter(pkcs10);
 
                 _CsrService.Create(Csr);
 
-                
+
                 string data = JsonConvert.SerializeObject(Csr);
                 string pkcs = JsonConvert.SerializeObject(pkcs10.GetDerEncoded());
                 TempData.Add("MyTempData", data);
