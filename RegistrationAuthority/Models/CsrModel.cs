@@ -33,14 +33,17 @@ namespace RegistrationAuthority.Models
         [BsonIgnore]
         [Display(Name = "Country")]
         public string CountryName { get; set; }
+        [BsonIgnore]
         public List<SelectListItem> Countries { get; set; } = new List<SelectListItem>();
         [BsonIgnore]
         [Display(Name = "State")]
         public string StateName { get; set; }
+        [BsonIgnore]
         public List<SelectListItem> states { get; set; } = new List<SelectListItem>();
         [BsonIgnore]
         [Display(Name = "City")]
         public string City { get; set; }
+        [BsonIgnore]
         public List<SelectListItem> cities { get; set; } = new List<SelectListItem>();
         [BsonIgnore]
         [Display(Name = "Street Address")]
@@ -163,8 +166,10 @@ namespace RegistrationAuthority.Models
         public string Thumbprint { get; set; }
         [BsonIgnore]
         public string Signature { get; set; }
+        [BsonIgnore]
+        public string Extensions { get; set; }
         public string Privatekey { get; set; }
         public string Publickey { get; set; }
-        public string RawData { get; set; }
+        public string Certificat { get; set; }
     }
 }

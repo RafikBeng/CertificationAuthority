@@ -20,7 +20,99 @@ namespace Certlib
     public static class CertGen
 
     {
-        public static string CsrWriter(Pkcs10CertificationRequest Csr)
+        public static string ShowExtensions(Pkcs10CertificationRequest pkcs10)
+        {
+            string Info = "Extensions:" + Environment.NewLine;
+            X509Extensions Extensions = GetX509ExtensionsFromCsr(pkcs10);
+            foreach (var v in Extensions.GetExtensionOids())
+            {
+
+                X509Extension extension = Extensions.GetExtension(v);
+                System.Security.Cryptography.X509Certificates.X509Extension x509 = new System.Security.Cryptography.X509Certificates.X509Extension(v.Id, extension.Value.GetOctets(), extension.IsCritical);
+                // Console.WriteLine(x509.Format(true));
+                if (x509.Oid.Value == "2.5.29.15")
+                {
+                    System.Security.Cryptography.X509Certificates.X509KeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509KeyUsageExtension(x509, x509.Critical);
+                    Info += "\t";
+                    Info += "KeyUsages "+ x509.Oid.Value+ Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += ext.KeyUsages.ToString()+ Environment.NewLine;  
+                }
+
+                if (x509.Oid.Value == "2.5.29.19")
+                {
+                    System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension ext = new System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension(x509, x509.Critical);
+                    Info += "\t";
+                    Info += "BasicConstraints "+ x509.Oid.Value + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += "CertificateAuthority:"+ ext.CertificateAuthority.ToString() + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += "HasPathLengthConstraint:"+ ext.HasPathLengthConstraint.ToString() + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += "PathLengthConstraint:"+ ext.PathLengthConstraint.ToString() + Environment.NewLine;
+                   
+                }
+
+                if (x509.Oid.Value == "2.5.29.14")
+                {
+                    System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension ext = new System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension(x509, x509.Critical);
+                    Info += "\t";
+                    Info += "SubjectKeyIdentifier "+ x509.Oid.Value + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += ext.SubjectKeyIdentifier.ToString() + Environment.NewLine;
+                    
+                }
+
+                if (x509.Oid.Value == "2.5.29.37")
+                {
+                    System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension(x509, x509.Critical);
+                    System.Security.Cryptography.OidCollection oids = ext.EnhancedKeyUsages;
+                    Info += "\t";
+                    Info += "ExtendedKeyUsage "+ x509.Oid.Value + Environment.NewLine;
+                    foreach (System.Security.Cryptography.Oid oid in oids)
+                    {
+                        Info += "\t"; Info += "\t";
+                        Info +=oid.FriendlyName+" "+oid.Value+Environment.NewLine;
+                        
+                    }
+                    
+                }
+            }
+            return Info;
+        }
+
+      public static  X509Extensions GetX509ExtensionsFromCsr(Pkcs10CertificationRequest certificateSigningRequest)
+        {
+            CertificationRequestInfo certificationRequestInfo = certificateSigningRequest.GetCertificationRequestInfo();
+
+            Asn1Set attributesAsn1Set = certificationRequestInfo.Attributes;
+            X509Extensions certificateRequestExtensions = null;
+            for (int i = 0; i < attributesAsn1Set.Count; ++i)
+            {
+               Asn1Encodable derEncodable = attributesAsn1Set[i];
+               Org.BouncyCastle.Asn1.Cms.Attribute attribute = (Org.BouncyCastle.Asn1.Cms.Attribute)derEncodable;
+                if (attribute.AttrType.Equals(PkcsObjectIdentifiers.Pkcs9AtExtensionRequest))
+                {
+                    
+                    Asn1Set attributeValues = attribute.AttrValues;
+
+                   
+                    if (attributeValues.Count >= 1)
+                    {
+                        certificateRequestExtensions = (X509Extensions)attributeValues[0];
+                       
+                        break;
+                    }
+                }
+            }
+        
+    
+
+                return certificateRequestExtensions;
+        }
+    
+
+    public static string CsrWriter(Pkcs10CertificationRequest Csr)
         {
 
             TextWriter textWriter = new StringWriter();

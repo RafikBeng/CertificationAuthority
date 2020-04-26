@@ -42,7 +42,7 @@
                 <tr>
                     <th scope="row">Thumbprint</th>
                     <td>
-                        
+
                         <TEXTAREA wrap="hard" rows="5" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
                     </td>
 
@@ -50,7 +50,7 @@
                 <tr>
                     <th scope="row">Public Key</th>
                     <td>
-                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly  class="form-control text-monospace">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
 
                     </td>
 
@@ -58,16 +58,24 @@
                 <tr>
                     <th scope="row">Private Key</th>
                     <td>
-                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly  class="form-control text-monospace">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
-                       
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
+
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Extensions</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
+
                     </td>
 
                 </tr>
                 <tr>
                     <th scope="row">Certificate Signing Request</th>
                     <td>
-                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly  class="form-control text-monospace">@Html.DisplayFor(model => model.RawData)</TEXTAREA>
-                      
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
+
                     </td>
 
                 </tr>

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Org.BouncyCastle.Asn1;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -75,12 +76,9 @@ namespace RegistrationAuthority.Controllers
                 byte[] bits = JsonConvert.DeserializeObject<byte[]>(pkcs);
                 Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(bits);
                 Model.Distinguished_Name = pkcs10.GetCertificationRequestInfo().Subject.ToString();
-                Model.RawData = CsrWriter(pkcs10);
-                
+                Model.Certificat = CsrWriter(pkcs10);
                 Model.Thumbprint = Convert.ToBase64String(pkcs10.Signature.GetOctets());
-                Console.WriteLine(Model.Privatekey);
-                Console.WriteLine(KeyWriter(pkcs10.GetPublicKey()));
-
+                Model.Extensions = ShowExtensions(pkcs10);
                 return View(Model);
             }
 #pragma warning disable CS0168 // Variable is declared but never used
@@ -164,11 +162,11 @@ namespace RegistrationAuthority.Controllers
                 Csr.Signature = Signature;
                if(Csr.Algorithme == "ECDSA")
                 {
-                    string resultString = Regex.Match(Csr.Curve, @"\d+").Value;
+                    string resultString = Regex.Match(Csr.Curve, @"\d\d\d+").Value;
                     Csr.KeySize = Int32.Parse(resultString);
                 }
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
-                Csr.RawData = CsrWriter(pkcs10);
+                Csr.Certificat= CsrWriter(pkcs10);
 
                 _CsrService.Create(Csr);
 

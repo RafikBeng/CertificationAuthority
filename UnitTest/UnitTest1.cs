@@ -13,6 +13,8 @@ using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Asn1.Utilities;
+using Org.BouncyCastle.Asn1;
+using System.Linq;
 
 namespace UnitTest
 {
@@ -58,11 +60,11 @@ namespace UnitTest
                                                                     KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
 
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage,false);
+                
+                Console.WriteLine(ShowExtensions(pkcs10));
+               
+               
 
-
-                // string dump = Asn1Dump.DumpAsString(pkcs10, true);
-                string dump = CsrWriter(pkcs10);
-                Console.WriteLine(dump);
             });
             
             //TimeIt("GenerateEcKeyPair", () =>
