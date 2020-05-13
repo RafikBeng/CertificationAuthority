@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Certificationauthority.Models;
+using Certificationauthority.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+
 
 namespace Certificationauthority
 {
@@ -30,7 +32,9 @@ namespace Certificationauthority
 
             services.AddSingleton<IDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            
+
+            services.AddSingleton<CertService>();
+
             services.AddControllersWithViews();
 
             services.AddRazorPages().AddRazorRuntimeCompilation();

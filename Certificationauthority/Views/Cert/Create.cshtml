@@ -1,0 +1,243 @@
+﻿@model Certificationauthority.Models.CertModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>CertModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CommonName" class="control-label"></label>
+                <input asp-for="CommonName" class="form-control" />
+                <span asp-validation-for="CommonName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DomainComponent" class="control-label"></label>
+                <input asp-for="DomainComponent" class="form-control" />
+                <span asp-validation-for="DomainComponent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationName" class="control-label"></label>
+                <input asp-for="OrganizationName" class="form-control" />
+                <span asp-validation-for="OrganizationName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganizationalUnitName" class="control-label"></label>
+                <input asp-for="OrganizationalUnitName" class="form-control" />
+                <span asp-validation-for="OrganizationalUnitName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CountryName" class="control-label"></label>
+                <input asp-for="CountryName" class="form-control" />
+                <span asp-validation-for="CountryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StateName" class="control-label"></label>
+                <input asp-for="StateName" class="form-control" />
+                <span asp-validation-for="StateName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StreetAddress" class="control-label"></label>
+                <input asp-for="StreetAddress" class="form-control" />
+                <span asp-validation-for="StreetAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Validity" class="control-label"></label>
+                <input asp-for="Validity" class="form-control" />
+                <span asp-validation-for="Validity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Algorithme" class="control-label"></label>
+                <input asp-for="Algorithme" class="form-control" />
+                <span asp-validation-for="Algorithme" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KeySize" class="control-label"></label>
+                <input asp-for="KeySize" class="form-control" />
+                <span asp-validation-for="KeySize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ECType" class="control-label"></label>
+                <input asp-for="ECType" class="form-control" />
+                <span asp-validation-for="ECType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Curve" class="control-label"></label>
+                <input asp-for="Curve" class="form-control" />
+                <span asp-validation-for="Curve" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hash" class="control-label"></label>
+                <input asp-for="Hash" class="form-control" />
+                <span asp-validation-for="Hash" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="DigitalSignature" /> @Html.DisplayNameFor(model => model.DigitalSignature)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="NonRepudiation" /> @Html.DisplayNameFor(model => model.NonRepudiation)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="KeyEncipherment" /> @Html.DisplayNameFor(model => model.KeyEncipherment)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="DataEncipherment" /> @Html.DisplayNameFor(model => model.DataEncipherment)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="KeyAgreement" /> @Html.DisplayNameFor(model => model.KeyAgreement)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="KeyCertSign" /> @Html.DisplayNameFor(model => model.KeyCertSign)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="CrlSign" /> @Html.DisplayNameFor(model => model.CrlSign)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="EncipherOnly" /> @Html.DisplayNameFor(model => model.EncipherOnly)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="DecipherOnly" /> @Html.DisplayNameFor(model => model.DecipherOnly)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="AnyExtendedKeyUsage" /> @Html.DisplayNameFor(model => model.AnyExtendedKeyUsage)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPServerAuth" /> @Html.DisplayNameFor(model => model.IdKPServerAuth)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPClientAuth" /> @Html.DisplayNameFor(model => model.IdKPClientAuth)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPCodeSigning" /> @Html.DisplayNameFor(model => model.IdKPCodeSigning)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPEmailProtection" /> @Html.DisplayNameFor(model => model.IdKPEmailProtection)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPIpsecEndSystem" /> @Html.DisplayNameFor(model => model.IdKPIpsecEndSystem)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPIpsecTunnel" /> @Html.DisplayNameFor(model => model.IdKPIpsecTunnel)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPIpsecUser" /> @Html.DisplayNameFor(model => model.IdKPIpsecUser)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPTimeStamping" /> @Html.DisplayNameFor(model => model.IdKPTimeStamping)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPOcspSigning" /> @Html.DisplayNameFor(model => model.IdKPOcspSigning)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPSmartCardLogon" /> @Html.DisplayNameFor(model => model.IdKPSmartCardLogon)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IdKPMacAddress" /> @Html.DisplayNameFor(model => model.IdKPMacAddress)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Distinguished_Name" class="control-label"></label>
+                <input asp-for="Distinguished_Name" class="form-control" />
+                <span asp-validation-for="Distinguished_Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Thumbprint" class="control-label"></label>
+                <input asp-for="Thumbprint" class="form-control" />
+                <span asp-validation-for="Thumbprint" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Signature" class="control-label"></label>
+                <input asp-for="Signature" class="form-control" />
+                <span asp-validation-for="Signature" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Extensions" class="control-label"></label>
+                <input asp-for="Extensions" class="form-control" />
+                <span asp-validation-for="Extensions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Privatekey" class="control-label"></label>
+                <input asp-for="Privatekey" class="form-control" />
+                <span asp-validation-for="Privatekey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publickey" class="control-label"></label>
+                <input asp-for="Publickey" class="form-control" />
+                <span asp-validation-for="Publickey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Certificat" class="control-label"></label>
+                <input asp-for="Certificat" class="form-control" />
+                <span asp-validation-for="Certificat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

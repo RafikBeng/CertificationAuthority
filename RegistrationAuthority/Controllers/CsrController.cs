@@ -126,7 +126,7 @@ namespace RegistrationAuthority.Controllers
 
                 String SubjectDN = $"CN={Csr.CommonName},DC={Csr.DomainComponent},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
-                int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
+                
                 List<int> L = new List<int>();
                 if (Csr.DigitalSignature) L.Add(128);
                 Console.WriteLine("DigitalSignature:" + Csr.DigitalSignature);

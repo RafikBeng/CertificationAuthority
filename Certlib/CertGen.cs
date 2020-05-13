@@ -1,6 +1,7 @@
 ﻿using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
+using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Math;
@@ -12,6 +13,7 @@ using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -20,6 +22,70 @@ namespace Certlib
     public static class CertGen
 
     {
+        public static string ShowExtensions(X509Certificate Certificate)
+        {
+            string Info = "Extensions:" + Environment.NewLine;
+
+            X509Extensions Extensions = Certificate.CertificateStructure.TbsCertificate.Extensions;
+            foreach (var v in Extensions.GetExtensionOids())
+            {
+
+                X509Extension extension = Extensions.GetExtension(v);
+                System.Security.Cryptography.X509Certificates.X509Extension x509 = new System.Security.Cryptography.X509Certificates.X509Extension(v.Id, extension.Value.GetOctets(), extension.IsCritical);
+
+                // Console.WriteLine(x509.Format(true));
+                if (x509.Oid.Value == "2.5.29.15")
+                {
+                    System.Security.Cryptography.X509Certificates.X509KeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509KeyUsageExtension(x509, x509.Critical);
+                    Info += "\t";
+                    Info += "KeyUsages " + x509.Oid.Value + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += ext.KeyUsages.ToString() + Environment.NewLine;
+                }
+
+                if (x509.Oid.Value == "2.5.29.19")
+                {
+                    System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension ext = new System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension(x509, x509.Critical);
+                    Info += "\t";
+                    Info += "BasicConstraints " + x509.Oid.Value + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += "CertificateAuthority:" + ext.CertificateAuthority.ToString() + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += "HasPathLengthConstraint:" + ext.HasPathLengthConstraint.ToString() + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += "PathLengthConstraint:" + ext.PathLengthConstraint.ToString() + Environment.NewLine;
+
+                }
+
+                if (x509.Oid.Value == "2.5.29.14")
+                {
+                    System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension ext = new System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension(x509, x509.Critical);
+                    Info += "\t";
+                    Info += "SubjectKeyIdentifier " + x509.Oid.Value + Environment.NewLine;
+                    Info += "\t"; Info += "\t";
+                    Info += ext.SubjectKeyIdentifier.ToString() + Environment.NewLine;
+
+                }
+
+                if (x509.Oid.Value == "2.5.29.37")
+                {
+                    System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension(x509, x509.Critical);
+                    System.Security.Cryptography.OidCollection oids = ext.EnhancedKeyUsages;
+                    Info += "\t";
+                    Info += "ExtendedKeyUsage " + x509.Oid.Value + Environment.NewLine;
+                    foreach (System.Security.Cryptography.Oid oid in oids)
+                    {
+                        Info += "\t"; Info += "\t";
+                        Info += oid.FriendlyName + " " + oid.Value + Environment.NewLine;
+
+                    }
+
+                }
+            }
+
+            return Info;
+        }
+
         public static string ShowExtensions(Pkcs10CertificationRequest pkcs10)
         {
             string Info = "Extensions:" + Environment.NewLine;
@@ -131,7 +197,18 @@ namespace Certlib
             return (str);
         }
 
-        
+        public static string CertWriter(X509Certificate Cert)
+        {
+
+            TextWriter textWriter = new StringWriter();
+            PemWriter pemWriter = new PemWriter(textWriter);
+            pemWriter.WriteObject(Cert);
+            pemWriter.Writer.Flush();
+            string str = textWriter.ToString();
+            str = str.Remove(str.LastIndexOf(Environment.NewLine));
+            return (str);
+        }
+
 
         public static Pkcs10CertificationRequest CertRequest(X509Name SubjectDN,
                                                              String[] subjectAlternativeNames,
@@ -154,6 +231,75 @@ namespace Certlib
             //CertificationRequest request = new CertificationRequest(certificationRequestInfo, pkcs10.SignatureAlgorithm, pkcs10.Signature);
             
             return pkcs10;
+        }
+        public static X509Certificate SigneTbs(TbsCertificateStructure tbs, X509Certificate RootCA,AsymmetricKeyParameter CAKey,string algorithm)
+        {
+            SecureRandom Random = new SecureRandom();
+            ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
+         
+            AlgorithmIdentifier algorithm1 = new DefaultSignatureAlgorithmIdentifierFinder().Find(algorithm);
+            byte[] encoded = tbs.GetDerEncoded();
+            IStreamCalculator streamCalculator = signatureCalculatorFactory.CreateCalculator();
+            streamCalculator.Stream.Write(encoded, 0, encoded.Length);
+            streamCalculator.Stream.Dispose();
+            DerBitString bitSig = new DerBitString(((IBlockResult)streamCalculator.GetResult()).Collect());
+            X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
+            return new X509Certificate(structure);
+        }
+
+        public static X509Certificate RootCA(BigInteger SerialNumber,
+                                             AsymmetricCipherKeyPair KeyPair,
+                                             string SubjectName,
+                                             string[] SubjectAlternativeNames,
+                                             KeyUsage KeyUsage,
+                                             KeyPurposeID[] ExtendedKeyUsage,
+                                             string algorithm,
+                                             int Validity)
+        {
+            X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
+            certificateGenerator.SetSerialNumber(SerialNumber);
+            certificateGenerator.SetIssuerDN(new X509Name(SubjectName));
+            certificateGenerator.SetSubjectDN(new X509Name(SubjectName));
+            DateTime dateTime = DateTime.UtcNow;
+            certificateGenerator.SetNotBefore(dateTime);
+            certificateGenerator.SetNotAfter(dateTime.AddYears(Validity));
+            certificateGenerator.SetPublicKey(KeyPair.Public);
+            AddAuthorityKeyIdentifier(certificateGenerator, new X509Name(SubjectName), KeyPair, SerialNumber);
+            AddSubjectKeyIdentifier(certificateGenerator, KeyPair);
+            AddBasicConstraints(certificateGenerator, true);
+
+            if (KeyUsage != null)
+                AddKeyUsage(certificateGenerator, KeyUsage);
+
+            if (ExtendedKeyUsage != null && ExtendedKeyUsage.Any())
+                AddExtendedKeyUsage(certificateGenerator, ExtendedKeyUsage);
+
+            if (SubjectAlternativeNames != null && SubjectAlternativeNames.Any())
+                AddSubjectAlternativeNames(certificateGenerator, SubjectAlternativeNames);
+            SecureRandom random = new SecureRandom();
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithm, KeyPair.Private, random);
+            X509Certificate certificate = certificateGenerator.Generate(signatureFactory);
+            return (certificate);
+        }
+        public static TbsCertificateStructure TbsCertificate(Pkcs10CertificationRequest Csr,
+                                                             int Validity,
+                                                             BigInteger SubjectSerialNumber,
+                                                             X509Certificate RootCA,
+                                                             AlgorithmIdentifier algorithm)
+        {
+
+
+            V3TbsCertificateGenerator tbsGenerator = new V3TbsCertificateGenerator();            
+            tbsGenerator.SetSubject(Csr.GetCertificationRequestInfo().Subject);
+            tbsGenerator.SetIssuer(RootCA.SubjectDN);
+            tbsGenerator.SetSerialNumber(new DerInteger(SubjectSerialNumber));
+            tbsGenerator.SetSubjectPublicKeyInfo(Csr.GetCertificationRequestInfo().SubjectPublicKeyInfo);
+            tbsGenerator.SetSignature(algorithm);
+            DateTime dateTime = DateTime.UtcNow;
+            tbsGenerator.SetStartDate(new DerUtcTime(dateTime));
+            tbsGenerator.SetEndDate(new DerUtcTime(dateTime.AddYears(Validity)));
+            tbsGenerator.SetExtensions(GetX509ExtensionsFromCsr(Csr));
+            return tbsGenerator.GenerateTbsCertificate();
         }
         public static TbsCertificateStructure TbsCertificate(String SubjectDN,
                                                              String IssuerDN,
@@ -193,8 +339,75 @@ namespace Certlib
                     BigInteger.One, BigInteger.ValueOf(Int64.MaxValue), random);
             return serialNumber;
         }
+        public static void AddAuthorityKeyIdentifier(X509V3CertificateGenerator certificateGenerator,
+                                                     X509Name issuerDN,
+                                                     AsymmetricCipherKeyPair issuerKeyPair,
+                                                     BigInteger issuerSerialNumber)
+        {
+            var authorityKeyIdentifierExtension =
+                new AuthorityKeyIdentifier(
+                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(issuerKeyPair.Public));
+            //                    new GeneralNames(new GeneralName(issuerDN)),
+            //                   issuerSerialNumber);
+            certificateGenerator.AddExtension(
+                X509Extensions.AuthorityKeyIdentifier.Id, false, authorityKeyIdentifierExtension);
+        }
 
-        public static void AddAuthorityKeyIdentifier(X509ExtensionsGenerator ExtensionsGenerator,
+        public static void AddBasicConstraints(X509V3CertificateGenerator certificateGenerator,
+                                               bool isCertificateAuthority)
+        {
+            certificateGenerator.AddExtension(
+                X509Extensions.BasicConstraints.Id, true, new BasicConstraints(isCertificateAuthority));
+        }
+        public static void AddSubjectKeyIdentifier(X509V3CertificateGenerator certificateGenerator,
+                                                    AsymmetricCipherKeyPair subjectKeyPair)
+        {
+            var subjectKeyIdentifierExtension =
+                new SubjectKeyIdentifier(
+                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(subjectKeyPair.Public));
+            certificateGenerator.AddExtension(
+                X509Extensions.SubjectKeyIdentifier.Id, false, subjectKeyIdentifierExtension);
+        }
+
+        public static void AddExtendedKeyUsage(X509V3CertificateGenerator certificateGenerator, KeyPurposeID[] usages)
+        {
+
+            certificateGenerator.AddExtension(
+                X509Extensions.ExtendedKeyUsage.Id, false, new ExtendedKeyUsage(usages));
+
+        }
+        public static void AddKeyUsage(X509V3CertificateGenerator certificateGenerator, KeyUsage usages)
+        {
+            certificateGenerator.AddExtension(X509Extensions.KeyUsage.Id, false, usages.ToAsn1Object());
+
+        }
+
+        public static void AddSubjectAlternativeNames(X509V3CertificateGenerator certificateGenerator,
+                                                       IEnumerable<string> subjectAlternativeNames)
+        {
+            List<Asn1Encodable> sanEntries = new List<Asn1Encodable>();
+            foreach (string subjectAlternativeName in subjectAlternativeNames)
+            {
+                // Test if an IP Address
+                IPAddress ip = null;
+                if (IPAddress.TryParse(subjectAlternativeName, out ip))
+                {
+                    sanEntries.Add(new GeneralName(GeneralName.IPAddress, subjectAlternativeName));
+                }
+                else
+                {
+                    sanEntries.Add(new GeneralName(GeneralName.DnsName, subjectAlternativeName));
+                }
+
+
+                DerSequence subjectAlternativeNamesExtension = new DerSequence(sanEntries.ToArray());
+
+
+                certificateGenerator.AddExtension(
+                X509Extensions.SubjectAlternativeName.Id, false, subjectAlternativeNamesExtension);
+            }
+        }
+        public static  void AddAuthorityKeyIdentifier(X509ExtensionsGenerator ExtensionsGenerator,
                                                      X509Name issuerDN,
                                                      AsymmetricCipherKeyPair issuerKeyPair,
                                                      BigInteger issuerSerialNumber)

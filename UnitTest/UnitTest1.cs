@@ -15,7 +15,8 @@ using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Asn1.Utilities;
 using Org.BouncyCastle.Asn1;
 using System.Linq;
-
+using Org.BouncyCastle.X509;
+using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
 namespace UnitTest
 {
     [TestClass]
@@ -24,20 +25,7 @@ namespace UnitTest
         [TestMethod]
         public void KeyGenTest()
         {
-            //TimeIt("GenerateElGamalKeyPair", () =>
-            //{
-            //  AsymmetricCipherKeyPair asymmetricCipherKeyPair= GenerateElGamalKeyPair(512);
-               
-
-            //});
-
-            //TimeIt("GenerateDsaKeyPair", () =>
-            //{
-            //    AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateDsaKeyPair(512);
-
-            //});
-
-            TimeIt("GenerateRsaKeyPair", () =>
+            TimeIt("SigneTbs", () =>
             {
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
                 String name = "rafik";
@@ -49,7 +37,7 @@ namespace UnitTest
                 String SubjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
                 string algorithm = "SHA512WITHRSA";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
-                
+
                 int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
                 int us = 0;
                 for (int i = 0; i < 9; i++) us = us | usage[i];
@@ -59,13 +47,65 @@ namespace UnitTest
                                                                     KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
                                                                     KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
 
-                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage,false);
+                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage, false);
+                //*********************************************************************************************************************
+                String name1 = "RoortCA";
+                String organization1 = "ANP";
+                String organizationalUnit1 = "ESDAT";
+                String city1 = "alger";
+                String countryCode1 = "DZ";
+                String SubjectDN1 = $"CN={name1},O={organization1},OU={organizationalUnit1},L={city1},C={countryCode1}";
+                AsymmetricCipherKeyPair asymmetricCipherKeyPair1 = GenerateEcKeyPair("sect571r1");
+                string algorithm1 = "SHA512WITHECDSA";
+               
+                SecureRandom random = new SecureRandom();
+                BigInteger SerialNumber = GenerateSerialNumber(random);
+                X509Certificate Root = RootCA(SerialNumber, asymmetricCipherKeyPair1, SubjectDN1, subjectAlternativeNames, keyUsage, ExtendUsage, algorithm1, 20);
+                //*********************************************************************************************************************
+                BigInteger SerialNumber1 = GenerateSerialNumber(random);
+                AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
+                TbsCertificateStructure tbs = TbsCertificate(pkcs10, 5, SerialNumber1, Root, algorithm2);
+                //*********************************************************************************************************************
+                X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private, algorithm1);
+                X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
+                Console.WriteLine(Certificate2.ToString(true));
+            });
+
+            //TimeIt("GenerateDsaKeyPair", () =>
+            //{
+            //    AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateDsaKeyPair(512);
+
+            //});
+
+            //TimeIt("GenerateRsaKeyPair", () =>
+            //{
+            //    AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
+            //    String name = "rafik";
+            //    String organization = "ANP";
+            //    String organizationalUnit = "ESDAT";
+            //    String city = "Réghaïa";
+            //    String stateCode = "35";
+            //    String countryCode = "DZ";
+            //    String SubjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
+            //    string algorithm = "SHA512WITHRSA";
+            //    String[] subjectAlternativeNames = new List<String>().ToArray();
                 
-                Console.WriteLine(ShowExtensions(pkcs10));
+            //    int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
+            //    int us = 0;
+            //    for (int i = 0; i < 9; i++) us = us | usage[i];
+            //    KeyUsage keyUsage = new KeyUsage(us);
+            //    KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,
+            //                                                        KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,
+            //                                                        KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
+            //                                                        KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
+
+            //    Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage,false);
+                
+            //    Console.WriteLine(ShowExtensions(pkcs10));
                
                
 
-            });
+            //});
             
             //TimeIt("GenerateEcKeyPair", () =>
             //{
