@@ -11,18 +11,18 @@ namespace Certificationauthority.Services
 {
     public class CertService
     {
-        private readonly IMongoCollection<CertModel> _CsrModel;
+        private readonly IMongoCollection<CertModel> _CertModel;
         private readonly IMongoCollection<BsonDocument> _Contries;
         public CertService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _CsrModel = database.GetCollection<CertModel>(settings.CollectionName);
+            _CertModel = database.GetCollection<CertModel>(settings.CollectionName);
             _Contries = database.GetCollection<BsonDocument>(settings.CollectionTwo);
         }
         public void Create(CertModel collection)
         {
-            _CsrModel.InsertOne(collection);
+            _CertModel.InsertOne(collection);
         }
 
         public List<BsonDocument> GetContries()

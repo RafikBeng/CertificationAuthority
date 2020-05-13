@@ -111,55 +111,7 @@ namespace Certificationauthority.Models
             //new SelectListItem { Value = "RIPEMD128", Text = "RIPEMD128" },
             //new SelectListItem { Value = "RIPEMD256", Text = "RIPEMD256" },
         };
-        /// <summary>
-        //KeyUsage
-        /// </summary>
-        /// 
-        [BsonIgnore]
-        public bool DigitalSignature { get; set; }
-        [BsonIgnore]
-        public bool NonRepudiation { get; set; }
-        [BsonIgnore]
-        public bool KeyEncipherment { get; set; }
-        [BsonIgnore]
-        public bool DataEncipherment { get; set; }
-        [BsonIgnore]
-        public bool KeyAgreement { get; set; }
-        [BsonIgnore]
-        public bool KeyCertSign { get; set; }
-        [BsonIgnore]
-        public bool CrlSign { get; set; }
-        [BsonIgnore]
-        public bool EncipherOnly { get; set; }
-        [BsonIgnore]
-        public bool DecipherOnly { get; set; }
-        /// <summary>
-        /// ///////////ExtendedKeyUsage
-        /// </summary>
-        [BsonIgnore]
-        public bool AnyExtendedKeyUsage { get; set; }
-        [BsonIgnore]
-        public bool IdKPServerAuth { get; set; }
-        [BsonIgnore]
-        public bool IdKPClientAuth { get; set; }
-        [BsonIgnore]
-        public bool IdKPCodeSigning { get; set; }
-        [BsonIgnore]
-        public bool IdKPEmailProtection { get; set; }
-        [BsonIgnore]
-        public bool IdKPIpsecEndSystem { get; set; }
-        [BsonIgnore]
-        public bool IdKPIpsecTunnel { get; set; }
-        [BsonIgnore]
-        public bool IdKPIpsecUser { get; set; }
-        [BsonIgnore]
-        public bool IdKPTimeStamping { get; set; }
-        [BsonIgnore]
-        public bool IdKPOcspSigning { get; set; }
-        [BsonIgnore]
-        public bool IdKPSmartCardLogon { get; set; }
-        [BsonIgnore]
-        public bool IdKPMacAddress { get; set; }
+       
         [BsonIgnore]
         public string Distinguished_Name { get; set; }
         [BsonIgnore]

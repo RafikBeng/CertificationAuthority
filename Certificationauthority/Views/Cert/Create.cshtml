@@ -8,231 +8,127 @@
 
 <h4>CertModel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container-fluid row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CommonName" class="control-label"></label>
-                <input asp-for="CommonName" class="form-control" />
+
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"> <label asp-for="CommonName" class="control-label "></label></div>
+                <div class="col-sm-9"><input asp-for="CommonName" class="form-control " /></div>
                 <span asp-validation-for="CommonName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DomainComponent" class="control-label"></label>
-                <input asp-for="DomainComponent" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"><label asp-for="DomainComponent" class="control-label"></label></div>
+                <div class="col-sm-9"> <input asp-for="DomainComponent" class="form-control" /></div>
                 <span asp-validation-for="DomainComponent" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="OrganizationName" class="control-label"></label>
-                <input asp-for="OrganizationName" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"> <label asp-for="OrganizationName" class="control-label"></label></div>
+                <div class="col-sm-9"> <input asp-for="OrganizationName" class="form-control" /></div>
                 <span asp-validation-for="OrganizationName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="OrganizationalUnitName" class="control-label"></label>
-                <input asp-for="OrganizationalUnitName" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"><label asp-for="OrganizationalUnitName" class="control-label"></label></div>
+                <div class="col-sm-9">  <input asp-for="OrganizationalUnitName" class="form-control" /></div>
                 <span asp-validation-for="OrganizationalUnitName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="CountryName" class="control-label"></label>
-                <input asp-for="CountryName" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"> <label asp-for="CountryName" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="CountryName" asp-items="Model.Countries" class="form-control">
+                    </select>
+                </div>
                 <span asp-validation-for="CountryName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StateName" class="control-label"></label>
-                <input asp-for="StateName" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3">  <label asp-for="StateName" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="StateName" asp-items="Model.states" class="form-control">
+                    </select>
+                </div>
                 <span asp-validation-for="StateName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"><label asp-for="City" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="City" asp-items="Model.cities" class="form-control">
+                    </select>
+                </div>
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="StreetAddress" class="control-label"></label>
-                <input asp-for="StreetAddress" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"> <label asp-for="StreetAddress" class="control-label"></label></div>
+                <div class="col-sm-9">   <input asp-for="StreetAddress" class="form-control" /></div>
                 <span asp-validation-for="StreetAddress" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Validity" class="control-label"></label>
-                <input asp-for="Validity" class="form-control" />
+
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3">  <label asp-for="Validity" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="Validity" asp-items="Model.Validitys" class="form-control">
+                    </select>
+                </div>
                 <span asp-validation-for="Validity" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Algorithme" class="control-label"></label>
-                <input asp-for="Algorithme" class="form-control" />
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3">  <label asp-for="Algorithme" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="Algorithme" asp-items="Model.Algorithmes" class="form-control">
+                    </select>
+                </div>
                 <span asp-validation-for="Algorithme" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="KeySize" class="control-label"></label>
-                <input asp-for="KeySize" class="form-control" />
+            <div class="form-group alert alert-primary row" id="KeySizeDiv">
+                <div class="col-sm-3">  <label asp-for="KeySize" class="control-label"></label></div>
+
+                <div class="col-sm-9"> <input type="text" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="8192" data-slider-step="256" data-slider-value="2048" /></div>
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ECType" class="control-label"></label>
-                <input asp-for="ECType" class="form-control" />
+            <div class="form-group alert alert-primary row" id="ECTypeDiv">
+                <div class="col-sm-3"> <label asp-for="ECType" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="ECType" asp-items="Model.ECTypes" class="form-control">
+                    </select>
+                </div>
                 <span asp-validation-for="ECType" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Curve" class="control-label"></label>
-                <input asp-for="Curve" class="form-control" />
-                <span asp-validation-for="Curve" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hash" class="control-label"></label>
-                <input asp-for="Hash" class="form-control" />
+            <div class="form-group alert alert-primary row" id="CurveDiv">
+                <div class="col-sm-3"> <label asp-for="Curve" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="Curve" class="form-control">
+                    </select>
+                </div>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="DigitalSignature" /> @Html.DisplayNameFor(model => model.DigitalSignature)
-                </label>
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3">   <label asp-for="Hash" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="Hash" asp-items="Model.Hashs" class="form-control">
+                    </select>
+                </div>
+                <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NonRepudiation" /> @Html.DisplayNameFor(model => model.NonRepudiation)
-                </label>
+            <div class="form-group alert alert-primary row">
+                <input type="button" value="Gen Keys" class="btn btn-primary" id="keygen" />
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="KeyEncipherment" /> @Html.DisplayNameFor(model => model.KeyEncipherment)
-                </label>
+
+            <div class="form-group alert alert-primary row" id="privdiv">
+                <TEXTAREA asp-for="Privatekey" id="Private" wrap="hard" rows=10 class="form-control text-monospace" style="font-size: 13pt"></TEXTAREA>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="DataEncipherment" /> @Html.DisplayNameFor(model => model.DataEncipherment)
-                </label>
+            <div class="form-group alert alert-primary row" id="pubdiv">
+                <TEXTAREA asp-for="Publickey" id="Public" rows=9 class="form-control text-monospace" style="font-size: 13pt"></TEXTAREA>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="KeyAgreement" /> @Html.DisplayNameFor(model => model.KeyAgreement)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="KeyCertSign" /> @Html.DisplayNameFor(model => model.KeyCertSign)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="CrlSign" /> @Html.DisplayNameFor(model => model.CrlSign)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EncipherOnly" /> @Html.DisplayNameFor(model => model.EncipherOnly)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="DecipherOnly" /> @Html.DisplayNameFor(model => model.DecipherOnly)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="AnyExtendedKeyUsage" /> @Html.DisplayNameFor(model => model.AnyExtendedKeyUsage)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPServerAuth" /> @Html.DisplayNameFor(model => model.IdKPServerAuth)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPClientAuth" /> @Html.DisplayNameFor(model => model.IdKPClientAuth)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPCodeSigning" /> @Html.DisplayNameFor(model => model.IdKPCodeSigning)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPEmailProtection" /> @Html.DisplayNameFor(model => model.IdKPEmailProtection)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPIpsecEndSystem" /> @Html.DisplayNameFor(model => model.IdKPIpsecEndSystem)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPIpsecTunnel" /> @Html.DisplayNameFor(model => model.IdKPIpsecTunnel)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPIpsecUser" /> @Html.DisplayNameFor(model => model.IdKPIpsecUser)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPTimeStamping" /> @Html.DisplayNameFor(model => model.IdKPTimeStamping)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPOcspSigning" /> @Html.DisplayNameFor(model => model.IdKPOcspSigning)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPSmartCardLogon" /> @Html.DisplayNameFor(model => model.IdKPSmartCardLogon)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdKPMacAddress" /> @Html.DisplayNameFor(model => model.IdKPMacAddress)
-                </label>
-            </div>
+
+           
             <div class="form-group">
-                <label asp-for="Distinguished_Name" class="control-label"></label>
-                <input asp-for="Distinguished_Name" class="form-control" />
-                <span asp-validation-for="Distinguished_Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Thumbprint" class="control-label"></label>
-                <input asp-for="Thumbprint" class="form-control" />
-                <span asp-validation-for="Thumbprint" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Signature" class="control-label"></label>
-                <input asp-for="Signature" class="form-control" />
-                <span asp-validation-for="Signature" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Extensions" class="control-label"></label>
-                <input asp-for="Extensions" class="form-control" />
-                <span asp-validation-for="Extensions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Privatekey" class="control-label"></label>
-                <input asp-for="Privatekey" class="form-control" />
-                <span asp-validation-for="Privatekey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Publickey" class="control-label"></label>
-                <input asp-for="Publickey" class="form-control" />
-                <span asp-validation-for="Publickey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Certificat" class="control-label"></label>
-                <input asp-for="Certificat" class="form-control" />
-                <span asp-validation-for="Certificat" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" id="sub" />
             </div>
         </form>
     </div>
 </div>
+
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -240,4 +136,180 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+
+            $("#keygen").click(function () {
+                this.disabled = true;
+                document.getElementById("Private").value = "";
+                document.getElementById("Public").value = "";
+        var algo = document.getElementById("Algorithme").value;
+        if (algo == "RSA") {
+            var value = $('#KeySize').slider('getValue');
+
+            $.get('@Url.Action("GetRsaKeys")', { KeySize: value }, function (data) {
+                document.getElementById("Private").value = data.s;
+                document.getElementById("Public").value = data.h;
+                $('#privdiv').show();
+                $('#pubdiv').show();
+                document.getElementById("keygen").disabled = false;
+                //alert(data.s);
+                //alert(data.h);
+            })
+        }
+        else {
+            var Curve = document.getElementById("Curve").value;
+            $.get('@Url.Action("GetEcKeyPair")', { CurveName: Curve }, function (data) {
+                document.getElementById("Private").value = data.s;
+                document.getElementById("Public").value = data.h;
+                $('#privdiv').show();
+                $('#pubdiv').show();
+                document.getElementById("keygen").disabled = false;
+                //alert(data.s);
+                //alert(data.h);
+            })
+
+                }
+
+        //
+
+    });
+
+
+    $('#KeySize').slider({
+        formatter: function (value) {
+            return  + value;
+        }
+    });
+    $(document).ready(function () {
+        $('#privdiv').hide();
+        $('#pubdiv').hide();
+        $('#CurveDiv').hide();
+        $('#ECTypeDiv').hide();
+        var curves = {
+            'X962NamedCurves': ['c2pnb163v1', 'c2pnb163v2', 'c2pnb163v3', 'c2pnb176w1', 'c2pnb208w1', 'c2pnb272w1',
+                'c2pnb304w1', 'c2pnb368w1', 'c2tnb191v1', 'c2tnb191v2', 'c2tnb191v3', 'c2tnb239v1',
+                'c2tnb239v2', 'c2tnb239v3', 'c2tnb359v1', 'c2tnb431r1', 'prime192v1', 'prime192v2',
+                'prime192v3', 'prime239v1', 'prime239v2', 'prime239v3', 'prime256v1'],
+        }
+        var $curves = $('#Curve');
+        var curve = $('#ECType').val(), lcns = curves[curve] || [];
+
+        var html = $.map(lcns, function (lcn) {
+            return '<option value="' + lcn + '">' + lcn + '</option>'
+        }).join('');
+
+        $curves.html(html);
+
+
+
+    });
+
+    $("#Algorithme").change(function () {
+        var val = $("#Algorithme").val();
+
+        if (val == "RSA") {
+            $('#KeySizeDiv').show();
+            $('#CurveDiv').hide();
+            $('#ECTypeDiv').hide();
+
+
+
+        }
+        else {
+            $('#CurveDiv').show();
+            $('#ECTypeDiv').show();
+            $('#KeySizeDiv').hide();
+        }
+
+    });
+
+
+
+    $('#ECType').change(function () {
+
+            var curves = {
+                'X962NamedCurves': ['c2pnb163v1', 'c2pnb163v2', 'c2pnb163v3', 'c2pnb176w1', 'c2pnb208w1', 'c2pnb272w1',
+                                    'c2pnb304w1', 'c2pnb368w1', 'c2tnb191v1', 'c2tnb191v2', 'c2tnb191v3', 'c2tnb239v1',
+                                    'c2tnb239v2', 'c2tnb239v3', 'c2tnb359v1', 'c2tnb431r1', 'prime192v1', 'prime192v2',
+                                    'prime192v3', 'prime239v1', 'prime239v2', 'prime239v3', 'prime256v1'],
+                'SecNamedCurves': ['secp112r1', 'secp112r2', 'secp128r1', 'secp128r2', 'secp160k1', 'secp160r1', 'secp160r2',
+                                   'secp192k1', 'secp192r1', 'secp224k1', 'secp224r1', 'secp256k1', 'secp256r1', 'secp384r1',
+                                   'secp521r1', 'sect113r1', 'sect113r2', 'sect131r1', 'sect131r2', 'sect163k1', 'sect163r1',
+                                   'sect163r2', 'sect193r1', 'sect193r2', 'sect233k1', 'sect233r1', 'sect239k1', 'sect283k1',
+                                   'sect283r1', 'sect409k1', 'sect409r1', 'sect571k1', 'sect571r1'],
+                'NistNamedCurves': ['B-163', 'B-233', 'B-283', 'B-409', 'B-571', 'K-163', 'K-233', 'K-283', 'K-409', 'K-571',
+                                    'P-192', 'P-224', 'P-256', 'P-384', 'P-521'],
+                'TeleTrusTNamedCurves': ['brainpoolP160r1', 'brainpoolP160t1', 'brainpoolP192r1', 'brainpoolP192t1', 'brainpoolP224r1',
+                                         'brainpoolP224t1', 'brainpoolP256r1', 'brainpoolP256t1', 'brainpoolP320r1', 'brainpoolP320t1',
+                                         'brainpoolP384r1', 'brainpoolP384t1', 'brainpoolP512r1', 'brainpoolP512t1'],
+
+            }
+            var $curves = $('#Curve');
+            var curve = $(this).val(), lcns = curves[curve] || [];
+
+            var html = $.map(lcns, function (lcn) {
+                return '<option value="' + lcn + '">' + lcn + '</option>'
+            }).join('');
+
+            $curves.html(html)
+        });
+
+
+    $('#CountryName').change(function () {
+        var selectedCountry = $("#CountryName option:selected").html();
+
+                var State = $('#StateName');
+                State.empty();
+                $.getJSON('@Url.Action("Getstates")',{ name: selectedCountry },function (data) {
+
+                    $.each(data, function (index,datas) {
+                   // alert(datas.value);
+                        State.append($('<option/>', {
+                                    value: datas.value,
+                                    text: datas.text
+                                }));
+                    });
+                    var selectedState = $("#StateName option:selected").html();
+                   // alert(selectedState);
+                    var city = $('#City');
+                    city.empty();
+                    $.getJSON('@Url.Action("GetCities")', { country: selectedCountry, state: selectedState },function (data) {
+
+                    $.each(data, function (index,datas) {
+                   // alert(datas.value);
+                        city.append($('<option/>', {
+                                    value: datas.value,
+                                    text: datas.text
+                                }));
+                    });
+
+                });
+                });
+
+
+
+
+
+
+    });
+    $('#StateName').change(function () {
+        var selectedCountry = $("#CountryName option:selected").html();
+        var selectedState = $("#StateName option:selected").html();
+        var city = $('#City');
+        city.empty();
+        $.getJSON('@Url.Action("GetCities")', { country: selectedCountry, state: selectedState },function (data) {
+
+                    $.each(data, function (index,datas) {
+                   // alert(datas.value);
+                        city.append($('<option/>', {
+                                    value: datas.value,
+                                    text: datas.text
+                                }));
+                    });
+
+                });
+    });
+
+</script>
 }

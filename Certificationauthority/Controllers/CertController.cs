@@ -111,33 +111,37 @@ namespace Certificationauthority.Controllers
             {
                 String SubjectDN = $"CN={Cert.CommonName},DC={Cert.DomainComponent},O={Cert.OrganizationName},OU={Cert.OrganizationalUnitName},C={Cert.CountryName},ST={Cert.StateName},L={Cert.City},STREET={Cert.StreetAddress}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
-                
-                List<int> L = new List<int>();
-                if (Cert.DigitalSignature) L.Add(128);
-                if (Cert.NonRepudiation) L.Add(64);
-                if (Cert.KeyEncipherment) L.Add(32);
-                if (Cert.DataEncipherment) L.Add(16);
-                if (Cert.KeyAgreement) L.Add(8);
-                if (Cert.KeyCertSign) L.Add(4);
-                if (Cert.CrlSign) L.Add(2);
-                if (Cert.EncipherOnly) L.Add(1);
-                if (Cert.DecipherOnly) L.Add(32768);
+
+                List<int> L = new List<int>
+                {
+                    128,
+                    64,
+                    32,
+                    16,
+                    8,
+                    4,
+                    2,
+                    1,
+                    32768
+                };
 
                 KeyUsage keyUsage = new KeyUsage(L.Sum());
 
-                List<KeyPurposeID> ExtendUsage = new List<KeyPurposeID>();
-                if (Cert.AnyExtendedKeyUsage) ExtendUsage.Add(KeyPurposeID.AnyExtendedKeyUsage);
-                if (Cert.IdKPServerAuth) ExtendUsage.Add(KeyPurposeID.IdKPServerAuth);
-                if (Cert.IdKPClientAuth) ExtendUsage.Add(KeyPurposeID.IdKPClientAuth);
-                if (Cert.IdKPCodeSigning) ExtendUsage.Add(KeyPurposeID.IdKPCodeSigning);
-                if (Cert.IdKPEmailProtection) ExtendUsage.Add(KeyPurposeID.IdKPEmailProtection);
-                if (Cert.IdKPIpsecEndSystem) ExtendUsage.Add(KeyPurposeID.IdKPIpsecEndSystem);
-                if (Cert.IdKPIpsecTunnel) ExtendUsage.Add(KeyPurposeID.IdKPIpsecTunnel);
-                if (Cert.IdKPIpsecUser) ExtendUsage.Add(KeyPurposeID.IdKPIpsecUser);
-                if (Cert.IdKPTimeStamping) ExtendUsage.Add(KeyPurposeID.IdKPTimeStamping);
-                if (Cert.IdKPOcspSigning) ExtendUsage.Add(KeyPurposeID.IdKPOcspSigning);
-                if (Cert.IdKPSmartCardLogon) ExtendUsage.Add(KeyPurposeID.IdKPSmartCardLogon);
-                if (Cert.IdKPMacAddress) ExtendUsage.Add(KeyPurposeID.IdKPMacAddress);
+                List<KeyPurposeID> ExtendUsage = new List<KeyPurposeID>
+                {
+                    KeyPurposeID.AnyExtendedKeyUsage,
+                    KeyPurposeID.IdKPServerAuth,
+                    KeyPurposeID.IdKPClientAuth,
+                    KeyPurposeID.IdKPCodeSigning,
+                    KeyPurposeID.IdKPEmailProtection,
+                    KeyPurposeID.IdKPIpsecEndSystem,
+                    KeyPurposeID.IdKPIpsecTunnel,
+                    KeyPurposeID.IdKPIpsecUser,
+                    KeyPurposeID.IdKPTimeStamping,
+                    KeyPurposeID.IdKPOcspSigning,
+                    KeyPurposeID.IdKPSmartCardLogon,
+                    KeyPurposeID.IdKPMacAddress
+                };
 
                 AsymmetricCipherKeyPair Key = new AsymmetricCipherKeyPair(PublicKeyReader(Cert.Publickey), PrivateKeyReader(Cert.Privatekey));
 
@@ -221,6 +225,18 @@ namespace Certificationauthority.Controllers
             {
                 return View();
             }
+        }
+
+        public JsonResult Getstates(string name)
+        {
+            // string name = "Algeria";
+            return Json(_CertService.Getstates(name));
+        }
+
+        public JsonResult GetCities(string country, string state)
+        {
+            // string name = "Algeria";
+            return Json(_CertService.GetCities(country, state));
         }
     }
 }
