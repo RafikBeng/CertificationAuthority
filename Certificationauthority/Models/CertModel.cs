@@ -15,6 +15,7 @@ namespace Certificationauthority.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         // [Required]
+        public Int64 Serial { get; set; }
         [BsonIgnore]
         [Display(Name = "Common Name")]
         public string CommonName { get; set; }
@@ -55,11 +56,11 @@ namespace Certificationauthority.Models
 
         public List<SelectListItem> Validitys { get; } = new List<SelectListItem>
         {
-            new SelectListItem { Value = "1", Text = "1 Year" },
-            new SelectListItem { Value = "2", Text = "2 Years" },
-            new SelectListItem { Value = "3", Text = "3 Years"  },
-            new SelectListItem { Value = "3", Text = "4 Years"  },
-            new SelectListItem { Value = "3", Text = "5 Years"  },
+            new SelectListItem { Value = "5", Text = "5 Years" },
+            new SelectListItem { Value = "10", Text = "10 Years" },
+            new SelectListItem { Value = "15", Text = "15 Years"  },
+            new SelectListItem { Value = "20", Text = "20 Years"  },
+            
         };
         [BsonIgnore]
         [Display(Name = "Public Key Algorithme")]

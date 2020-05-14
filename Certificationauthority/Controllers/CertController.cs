@@ -163,7 +163,8 @@ namespace Certificationauthority.Controllers
                 
                 SecureRandom random = new SecureRandom();
                 BigInteger Serial = GenerateSerialNumber(random);
-
+               
+                Cert.Serial = Int64.Parse(Serial.ToString());
                 X509Certificate certificate = RootCA(Serial, Key, SubjectDN, subjectAlternativeNames, keyUsage, ExtendUsage.ToArray(), Signature, int.Parse(Cert.Validity));
                 Cert.Certificat = CertWriter(certificate);
                 _CertService.Create(Cert);
