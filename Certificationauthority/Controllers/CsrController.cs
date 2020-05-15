@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Certificationauthority.Models;
 using Certificationauthority.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Cms;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Pkcs;
+using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 using static Certlib.CertGen;
 using static Certlib.KeyGen;
@@ -33,7 +37,10 @@ namespace Certificationauthority.Controllers
             CsrModel result = _CertService.GetCsr(id);
           
             Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(CsrReader(result.Certificat));
-
+            string Sig = SignerUtilities.GetEncodingName(pkcs10.SignatureAlgorithm.Algorithm);
+            
+            
+          
             CertModel Model = new CertModel
             {
                 SubjectDN = pkcs10.GetCertificationRequestInfo().Subject.ToString(),
@@ -41,9 +48,28 @@ namespace Certificationauthority.Controllers
                 Extensions = ShowExtensions(pkcs10),
                 Publickey = KeyWriter(pkcs10.GetPublicKey()),
                 Privatekey = result.Privatekey,
-              //  Algorithme= pkcs10.SignatureAlgorithm
+                Signature = Sig,
+               
+                Validity=result.Validity,
+                Certificat= result.Certificat,
             };
-            return View(Model);
+            AsymmetricKeyParameter key = pkcs10.GetPublicKey();
+            if (Sig.Contains("RSA"))
+            {
+                Model.Algorithme = "RSA";
+                RsaKeyParameters rsaKey = (RsaKeyParameters)key;
+               // RSAParameters rsaParams = DotNetUtilities.ToRSAParameters((RsaKeyParameters)key);
+                Model.KeySize = rsaKey.Modulus.BitLength;
+            }
+            else
+            {
+                Model.Algorithme = "ECDSA";
+
+                ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)key;
+                Model.KeySize = publicKeyParam.Parameters.Curve.FieldSize;
+               // publicKeyParam.Parameters.
+            }
+                return View(Model);
         }
 
         // GET: ListCsr/Create

@@ -10,11 +10,18 @@
     <table class="table table-striped table-dark">
 
         <tbody>
-           
+
             <tr>
                 <th scope="row">Distinguished Name</th>
                 <td>
                     @Html.DisplayFor(model => model.SubjectDN)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row">Validity</th>
+                <td>
+                    @Html.DisplayFor(model => model.Validity)
                 </td>
 
             </tr>

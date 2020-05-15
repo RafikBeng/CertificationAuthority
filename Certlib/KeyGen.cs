@@ -71,7 +71,7 @@ namespace Certlib
             return keyGenerator.GenerateKeyPair();
         }
 
-        public static AsymmetricCipherKeyPair GenerateEcKeyPair(string curveName, string algorithme = "ECDH")
+        public static AsymmetricCipherKeyPair GenerateEcKeyPair(string curveName, string algorithme = "ECDSA")
         {
             SecureRandom secureRandom = new SecureRandom();
           //  var ecParam = ECNamedCurveTable.GetByName(curveName);
@@ -84,7 +84,7 @@ namespace Certlib
             return keyGenerator.GenerateKeyPair();
         }
 
-        public static AsymmetricCipherKeyPair GenerateEcKeyPair(int KeySize, string algorithme = "ECDH")
+        public static AsymmetricCipherKeyPair GenerateEcKeyPair(int KeySize, string algorithme = "ECDSA")
         {
             ECKeyPairGenerator EC = new ECKeyPairGenerator(algorithme);
             EC.Init(new KeyGenerationParameters(new SecureRandom(), KeySize));

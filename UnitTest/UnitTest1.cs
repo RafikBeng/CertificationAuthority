@@ -17,6 +17,9 @@ using Org.BouncyCastle.Asn1;
 using System.Linq;
 using Org.BouncyCastle.X509;
 using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
+using Org.BouncyCastle.Cms;
+using Org.BouncyCastle.Crypto.Parameters;
+
 namespace UnitTest
 {
     [TestClass]
@@ -56,6 +59,7 @@ namespace UnitTest
                 String countryCode1 = "DZ";
                 String SubjectDN1 = $"CN={name1},O={organization1},OU={organizationalUnit1},L={city1},C={countryCode1}";
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair1 = GenerateEcKeyPair("sect571r1");
+                
                 string algorithm1 = "SHA512WITHECDSA";
                
                 SecureRandom random = new SecureRandom();
@@ -64,13 +68,18 @@ namespace UnitTest
                 //*********************************************************************************************************************
                 BigInteger SerialNumber1 = GenerateSerialNumber(random);
                 AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
+                
                 TbsCertificateStructure tbs = TbsCertificate(pkcs10, 5, SerialNumber1, Root, algorithm2);
                 //*********************************************************************************************************************
                 X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private, algorithm1);
                 X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
-                Console.WriteLine(Certificate2.ToString(true));
+               // Console.WriteLine(Certificate2.ToString(true));
                 Console.WriteLine("*********************************************************************************************************************");
-                Console.WriteLine(pkcs10.SignatureAlgorithm);
+                ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)asymmetricCipherKeyPair1.Public;
+                Console.WriteLine(publicKeyParam.Parameters.Curve.FieldSize);
+
+
+                Console.WriteLine();
             });
 
             //TimeIt("GenerateDsaKeyPair", () =>
