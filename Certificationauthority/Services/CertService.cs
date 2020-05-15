@@ -13,12 +13,14 @@ namespace Certificationauthority.Services
     {
         private readonly IMongoCollection<CertModel> _CertModel;
         private readonly IMongoCollection<BsonDocument> _Contries;
+        private readonly IMongoCollection<CsrModel> _Csr;
         public CertService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _CertModel = database.GetCollection<CertModel>(settings.CollectionName);
-            _Contries = database.GetCollection<BsonDocument>(settings.CollectionTwo);
+            _CertModel = database.GetCollection<CertModel>(settings.Collection);
+            _Contries = database.GetCollection<BsonDocument>(settings.Countries);
+            _Csr = database.GetCollection<CsrModel>(settings.Csr);
         }
         public void Create(CertModel collection)
         {
@@ -36,7 +38,19 @@ namespace Certificationauthority.Services
             var result = _Contries.Find<BsonDocument>(filter).Project(projection).ToList();
             return result;
         }
-
+        public IEnumerable<CsrModel> GetCsrs()
+        {
+            FilterDefinition<CsrModel> filter = Builders<CsrModel>.Filter.Empty;
+            var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Csr.Find<CsrModel>(filter).ToEnumerable();
+            return result;
+        }
+        public CsrModel GetCsr(string id)
+        {
+            CsrModel result= _Csr.Find<CsrModel>(CsrModel => CsrModel.Id == id).FirstOrDefault();
+            return result;
+            
+        }
         public IEnumerable<SelectListItem> Getstates(string name)
         {
 
@@ -61,7 +75,7 @@ namespace Certificationauthority.Services
             return tmp1;
 
         }
-
+       
         public IEnumerable<SelectListItem> GetCities(string country, string state)
         {
 

@@ -183,9 +183,14 @@ namespace Certlib
 
                 return certificateRequestExtensions;
         }
-    
 
-    public static string CsrWriter(Pkcs10CertificationRequest Csr)
+        public static byte[] CsrReader(string Csr)
+        {
+            TextReader textReader = new StringReader(Csr);
+            PemReader pemReader = new PemReader(textReader);
+             return pemReader.ReadPemObject().Content;
+        }
+        public static string CsrWriter(Pkcs10CertificationRequest Csr)
         {
 
             TextWriter textWriter = new StringWriter();

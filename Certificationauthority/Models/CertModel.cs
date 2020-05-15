@@ -114,7 +114,7 @@ namespace Certificationauthority.Models
         };
        
         [BsonIgnore]
-        public string Distinguished_Name { get; set; }
+        public string SubjectDN { get; set; }
         [BsonIgnore]
         public string Thumbprint { get; set; }
         [BsonIgnore]

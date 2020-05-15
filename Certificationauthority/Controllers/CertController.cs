@@ -35,9 +35,7 @@ namespace Certificationauthority.Controllers
             AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(KeySize);
             string Private = KeyWriter(Key.Private);
             string Public = KeyWriter(Key.Public);
-            //Console.WriteLine(Private);
-            //Console.WriteLine("****************");
-            //Console.WriteLine(Public);
+           
             return Json(new { s = Private, h = Public });
         }
 
@@ -46,9 +44,7 @@ namespace Certificationauthority.Controllers
             AsymmetricCipherKeyPair Key = GenerateEcKeyPair(CurveName);
             string Private = KeyWriter(Key.Private);
             string Public = KeyWriter(Key.Public);
-            //Console.WriteLine(Private);
-            //Console.WriteLine("****************");
-            //Console.WriteLine(Public);
+           
             return Json(new { s = Private, h = Public });
         }
         // GET: Cert
@@ -67,7 +63,7 @@ namespace Certificationauthority.Controllers
                 CertModel Model = JsonConvert.DeserializeObject<CertModel>(data);
                 byte[] bits = JsonConvert.DeserializeObject<byte[]>(Root);
                 X509Certificate certificate = new X509CertificateParser().ReadCertificate(bits);
-                Model.Distinguished_Name = certificate.SubjectDN.ToString();
+                Model.SubjectDN = certificate.SubjectDN.ToString();
                 Model.Certificat = CertWriter(certificate);
                 Model.Thumbprint = Convert.ToBase64String(certificate.GetSignature());
                 Model.Extensions = ShowExtensions(certificate);

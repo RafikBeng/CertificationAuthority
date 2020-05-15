@@ -160,14 +160,14 @@ namespace RegistrationAuthority.Models
         public bool IdKPSmartCardLogon { get; set; }
         [BsonIgnore]
         public bool IdKPMacAddress { get; set; }
-        [BsonIgnore]
-        public string Distinguished_Name { get; set; }
+       
         [BsonIgnore]
         public string Thumbprint { get; set; }
         [BsonIgnore]
         public string Signature { get; set; }
         [BsonIgnore]
         public string Extensions { get; set; }
+        public string SubjectDN { get; set; }
         public string Privatekey { get; set; }
         public string Publickey { get; set; }
         public string Certificat { get; set; }

@@ -7,16 +7,18 @@ namespace Certificationauthority.Models
 {
     public class DatabaseSettings : IDatabaseSettings
     {
-        public string CollectionName { get; set; }
-        public string CollectionTwo { get; set; }
+        public string Collection { get; set; }
+        public string Countries { get; set; }
+        public string Csr { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
 
     public interface IDatabaseSettings
     {
-        string CollectionName { get; set; }
-        string CollectionTwo { get; set; }
+        string Collection { get; set; }
+        string Countries { get; set; }
+        string Csr { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }

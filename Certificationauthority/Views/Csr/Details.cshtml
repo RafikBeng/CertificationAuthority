@@ -5,19 +5,12 @@
 }
 
 <h1>Details</h1>
-
 <div class="container">
 
     <table class="table table-striped table-dark">
 
         <tbody>
-            <tr>
-                <th scope="row">Serial Number</th>
-                <td>
-                    @Html.DisplayFor(model => model.Serial)
-                </td>
-
-            </tr>
+           
             <tr>
                 <th scope="row">Distinguished Name</th>
                 <td>
@@ -91,6 +84,6 @@
     </table>
 </div>
 <div>
-   
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index">Back to List</a>
 </div>

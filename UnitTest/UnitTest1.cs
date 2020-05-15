@@ -69,6 +69,8 @@ namespace UnitTest
                 X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private, algorithm1);
                 X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
                 Console.WriteLine(Certificate2.ToString(true));
+                Console.WriteLine("*********************************************************************************************************************");
+                Console.WriteLine(pkcs10.SignatureAlgorithm);
             });
 
             //TimeIt("GenerateDsaKeyPair", () =>

@@ -34,9 +34,6 @@ namespace RegistrationAuthority.Controllers
             AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(KeySize);
             string Private = KeyWriter(Key.Private);
             string Public = KeyWriter(Key.Public);
-            //Console.WriteLine(Private);
-            //Console.WriteLine("****************");
-            //Console.WriteLine(Public);
             return Json(new { s= Private, h= Public });
         }
         public JsonResult GetEcKeyPair(string CurveName)
@@ -44,22 +41,13 @@ namespace RegistrationAuthority.Controllers
             AsymmetricCipherKeyPair Key = GenerateEcKeyPair(CurveName);
             string Private = KeyWriter(Key.Private);
             string Public = KeyWriter(Key.Public);
-            //Console.WriteLine(Private);
-            //Console.WriteLine("****************");
-            //Console.WriteLine(Public);
+           
             return Json(new { s = Private, h = Public });
         }
-        public string test(string name)
-        {
-            //string res = "rafik test";
-            //Console.WriteLine(res);
-            return name;
-        }
+       
         // GET: Tbs
         public ActionResult Index()
         {
-           
-           
             return View();
         }
 
@@ -71,12 +59,11 @@ namespace RegistrationAuthority.Controllers
             {
                 string data = TempData["MyTempData"].ToString();
                 string pkcs = TempData["Mypkcs"].ToString();
-                
                 CsrModel Model = JsonConvert.DeserializeObject<CsrModel>(data);
                 byte[] bits = JsonConvert.DeserializeObject<byte[]>(pkcs);
                 Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(bits);
-                Model.Distinguished_Name = pkcs10.GetCertificationRequestInfo().Subject.ToString();
-                Model.Certificat = CsrWriter(pkcs10);
+                Model.SubjectDN = pkcs10.GetCertificationRequestInfo().Subject.ToString();
+                //Model.Certificat = CsrWriter(pkcs10);
                 Model.Thumbprint = Convert.ToBase64String(pkcs10.Signature.GetOctets());
                 Model.Extensions = ShowExtensions(pkcs10);
                 return View(Model);
@@ -126,10 +113,10 @@ namespace RegistrationAuthority.Controllers
 
                 String SubjectDN = $"CN={Csr.CommonName},DC={Csr.DomainComponent},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
-                
+                Csr.SubjectDN = SubjectDN;
                 List<int> L = new List<int>();
                 if (Csr.DigitalSignature) L.Add(128);
-                Console.WriteLine("DigitalSignature:" + Csr.DigitalSignature);
+               
                 if (Csr.NonRepudiation) L.Add(64);
                 if (Csr.KeyEncipherment) L.Add(32);
                 if (Csr.DataEncipherment) L.Add(16);
@@ -154,10 +141,7 @@ namespace RegistrationAuthority.Controllers
                 if (Csr.IdKPOcspSigning) ExtendUsage.Add(KeyPurposeID.IdKPOcspSigning);
                 if (Csr.IdKPSmartCardLogon) ExtendUsage.Add(KeyPurposeID.IdKPSmartCardLogon);
                 if (Csr.IdKPMacAddress) ExtendUsage.Add(KeyPurposeID.IdKPMacAddress);
-                
                 AsymmetricCipherKeyPair Key = new AsymmetricCipherKeyPair(PublicKeyReader(Csr.Publickey), PrivateKeyReader(Csr.Privatekey));
-
-
                 var v = Asn1SignatureFactory.SignatureAlgNames;
                 List<string> SignatureAlgNames = new List<string>();
                 foreach (var a in v) SignatureAlgNames.Add(a.ToString());
