@@ -17,6 +17,8 @@ using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Math;
+using Org.BouncyCastle.Security;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -27,6 +29,11 @@ namespace RegistrationAuthority.Controllers
         public CsrController(CsrService CsrService)
         {
             _CsrService = CsrService;
+        }
+        public JsonResult Genpassword()
+        {
+            string pass = GeneratePassword(32);
+            return Json(new { s = pass });
         }
         public JsonResult GetRsaKeys(int KeySize)
         {
@@ -111,7 +118,7 @@ namespace RegistrationAuthority.Controllers
             try
             {
 
-                String SubjectDN = $"CN={Csr.CommonName},DC={Csr.DomainComponent},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress}";
+                String SubjectDN = $"CN={Csr.CommonName},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress},MAIL={Csr.MAIL}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
                 Csr.SubjectDN = SubjectDN;
                 List<int> L = new List<int>();

@@ -50,7 +50,7 @@ namespace Certificationauthority.Models
         [Display(Name = "Street Address")]
         public string StreetAddress { get; set; }
 
-        //[BsonIgnore]
+        [BsonIgnore]
         [Display(Name = "Validity")]
         public string Validity { get; set; }
 
@@ -116,12 +116,18 @@ namespace Certificationauthority.Models
         [BsonIgnore]
         public string SubjectDN { get; set; }
         [BsonIgnore]
+        public string IssuerDN { get; set; }
+        [BsonIgnore]
         public string Thumbprint { get; set; }
         [BsonIgnore]
         public string Signature { get; set; }
         [BsonIgnore]
         public string Extensions { get; set; }
+        public bool   IsRootCA { get; set; }
+        public DateTime NotAfter { get; set; }
+        public DateTime NotBefore { get; set; }
         public string Privatekey { get; set; }
+        [BsonIgnore]
         public string Publickey { get; set; }
         public string Certificat { get; set; }
     }

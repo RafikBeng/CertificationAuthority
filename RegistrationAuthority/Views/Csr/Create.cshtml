@@ -21,9 +21,9 @@
                 <span asp-validation-for="CommonName" class="text-danger"></span>
             </div>
             <div class="form-group alert alert-primary row">
-                <div class="col-sm-3"><label asp-for="DomainComponent" class="control-label"></label></div>
-                <div class="col-sm-9"> <input asp-for="DomainComponent" class="form-control" /></div>
-                <span asp-validation-for="DomainComponent" class="text-danger"></span>
+                <div class="col-sm-3"><label asp-for="MAIL" class="control-label"></label></div>
+                <div class="col-sm-9"> <input asp-for="MAIL" class="form-control" /></div>
+                <span asp-validation-for="MAIL" class="text-danger"></span>
             </div>
             <div class="form-group alert alert-primary row">
                 <div class="col-sm-3"> <label asp-for="OrganizationName" class="control-label"></label></div>
@@ -45,7 +45,7 @@
             </div>
             <div class="form-group alert alert-primary row">
                 <div class="col-sm-3">  <label asp-for="StateName" class="control-label"></label></div>
-                <div class="col-sm-9"> 
+                <div class="col-sm-9">
                     <select asp-for="StateName" asp-items="Model.states" class="form-control">
                     </select>
                 </div>
@@ -55,7 +55,6 @@
                 <div class="col-sm-3"><label asp-for="City" class="control-label"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="City" asp-items="Model.cities" class="form-control">
-
                     </select>
                 </div>
                 <span asp-validation-for="City" class="text-danger"></span>
@@ -115,144 +114,150 @@
             <div class="form-group alert alert-primary row">
                 <input type="button" value="Gen Keys" class="btn btn-primary" id="keygen" />
             </div>
-           
-                <div class="form-group alert alert-primary row" id="privdiv">
-                    <TEXTAREA asp-for="Privatekey" id="Private" wrap="hard" rows=10 class="form-control text-monospace" style="font-size: 13pt"></TEXTAREA>
-                </div>
-                <div class="form-group alert alert-primary row" id="pubdiv">
-                    <TEXTAREA asp-for="Publickey" id="Public" rows=9 class="form-control text-monospace" style="font-size: 13pt" ></TEXTAREA>
-                </div>
-         
+
+            <div class="form-group alert alert-primary row" id="privdiv">
+                <TEXTAREA asp-for="Privatekey" id="Private" wrap="hard" rows=10 class="form-control text-monospace" style="font-size: 13pt"></TEXTAREA>
+            </div>
+            <div class="form-group alert alert-primary row" id="pubdiv">
+                <TEXTAREA asp-for="Publickey" id="Public" rows=9 class="form-control text-monospace" style="font-size: 13pt"></TEXTAREA>
+            </div>
+
             <div class="form-check alert alert-primary row">
-               
-                    
-                        <label>KeyUsage</label>
-               
-                   
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <input asp-for="DigitalSignature" type="checkbox" class="form-check-input" id="DigitalSignature">
-                                <label class="form-check-label" for="DigitalSignature">DigitalSignature</label>
-                            </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="NonRepudiation" type="checkbox" class="form-check-input" id="NonRepudiation">
-                                <label class="form-check-label" for="NonRepudiation">NonRepudiation</label>
-                            </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="KeyEncipherment" type="checkbox" class="form-check-input" id="KeyEncipherment">
-                                <label class="form-check-label" for="KeyEncipherment">KeyEncipherment</label>
-                            </div>
-                        </div>
-                 
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <input asp-for="DataEncipherment" type="checkbox" class="form-check-input" id="DataEncipherment">
-                                <label class="form-check-label" for="DataEncipherment">DataEncipherment</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <input asp-for="KeyAgreement" type="checkbox" class="form-check-input" id="KeyAgreement">
-                                <label class="form-check-label" for="KeyAgreement">KeyAgreement</label>
-                            </div>
+                <label>KeyUsage</label>
 
-                            <div class="col-sm-4">
-                                <input asp-for="KeyCertSign" asp- type="checkbox" class="form-check-input" id="KeyCertSign">
-                                <label class="form-check-label" for="KeyCertSign">KeyCertSign</label>
-                            </div>
-                        </div>
-                   
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <input asp-for="CrlSign" type="checkbox" class="form-check-input" id="CrlSign">
-                                <label class="form-check-label" for="CrlSign">CrlSign</label>
-                            </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="EncipherOnly" type="checkbox" class="form-check-input" id="EncipherOnly">
-                                <label class="form-check-label" for="EncipherOnly">EncipherOnly</label>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input asp-for="DigitalSignature" type="checkbox" class="form-check-input" id="DigitalSignature">
+                        <label class="form-check-label" for="DigitalSignature">DigitalSignature</label>
+                    </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="DecipherOnly" type="checkbox" class="form-check-input" id="DecipherOnly">
-                                <label class="form-check-label" for="DecipherOnly">DecipherOnly</label>
-                            </div>
-                        </div>
-                 
+                    <div class="col-sm-4">
+                        <input asp-for="NonRepudiation" type="checkbox" class="form-check-input" id="NonRepudiation">
+                        <label class="form-check-label" for="NonRepudiation">NonRepudiation</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="KeyEncipherment" type="checkbox" class="form-check-input" id="KeyEncipherment">
+                        <label class="form-check-label" for="KeyEncipherment">KeyEncipherment</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input asp-for="DataEncipherment" type="checkbox" class="form-check-input" id="DataEncipherment">
+                        <label class="form-check-label" for="DataEncipherment">DataEncipherment</label>
+                    </div>
+                    <div class="col-sm-4">
+                        <input asp-for="KeyAgreement" type="checkbox" class="form-check-input" id="KeyAgreement">
+                        <label class="form-check-label" for="KeyAgreement">KeyAgreement</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="KeyCertSign" asp- type="checkbox" class="form-check-input" id="KeyCertSign">
+                        <label class="form-check-label" for="KeyCertSign">KeyCertSign</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input asp-for="CrlSign" type="checkbox" class="form-check-input" id="CrlSign">
+                        <label class="form-check-label" for="CrlSign">CrlSign</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="EncipherOnly" type="checkbox" class="form-check-input" id="EncipherOnly">
+                        <label class="form-check-label" for="EncipherOnly">EncipherOnly</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="DecipherOnly" type="checkbox" class="form-check-input" id="DecipherOnly">
+                        <label class="form-check-label" for="DecipherOnly">DecipherOnly</label>
+                    </div>
+                </div>
+
             </div>
             <div class="form-check alert alert-primary row">
-              
-                        <label>ExtendedKeyUsage</label>
-                   
-                        <div  class="row">
-                            <div class="col-sm-4">
-                                <input asp-for="AnyExtendedKeyUsage" type="checkbox" class="form-check-input" id="AnyExtendedKeyUsage">
-                                <label class="form-check-label" for="AnyExtendedKeyUsage">AnyExtendedKeyUsage</label>
-                            </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPServerAuth" type="checkbox" class="form-check-input" id="IdKPServerAuth">
-                                <label class="form-check-label" for="IdKPServerAuth">IdKPServerAuth</label>
-                            </div>
+                <label>ExtendedKeyUsage</label>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPClientAuth" type="checkbox" class="form-check-input" id="IdKPClientAuth">
-                                <label class="form-check-label" for="IdKPClientAuth">IdKPClientAuth</label>
-                            </div>
-                        </div>
-                   
-                        <div  class="row">
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPCodeSigning" type="checkbox" class="form-check-input" id="IdKPCodeSigning">
-                                <label class="form-check-label" for="IdKPCodeSigning">IdKPCodeSigning</label>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input asp-for="AnyExtendedKeyUsage" type="checkbox" class="form-check-input" id="AnyExtendedKeyUsage">
+                        <label class="form-check-label" for="AnyExtendedKeyUsage">AnyExtendedKeyUsage</label>
+                    </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPEmailProtection" type="checkbox" class="form-check-input" id="IdKPEmailProtection">
-                                <label class="form-check-label" for="IdKPEmailProtection">IdKPEmailProtection</label>
-                            </div>
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPServerAuth" type="checkbox" class="form-check-input" id="IdKPServerAuth">
+                        <label class="form-check-label" for="IdKPServerAuth">IdKPServerAuth</label>
+                    </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPIpsecEndSystem"  type="checkbox" class="form-check-input" id="IdKPIpsecEndSystem">
-                                <label class="form-check-label" for="IdKPIpsecEndSystem">IdKPIpsecEndSystem</label>
-                            </div>
-                        </div>
-                    
-                        <div  class="row">
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPIpsecTunnel" type="checkbox" class="form-check-input" id="IdKPIpsecTunnel">
-                                <label class="form-check-label" for="IdKPIpsecTunnel">IdKPIpsecTunnel</label>
-                            </div>
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPClientAuth" type="checkbox" class="form-check-input" id="IdKPClientAuth">
+                        <label class="form-check-label" for="IdKPClientAuth">IdKPClientAuth</label>
+                    </div>
+                </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPIpsecUser" type="checkbox" class="form-check-input" id="IdKPIpsecUser">
-                                <label class="form-check-label" for="IdKPIpsecUser">IdKPIpsecUser</label>
-                            </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPCodeSigning" type="checkbox" class="form-check-input" id="IdKPCodeSigning">
+                        <label class="form-check-label" for="IdKPCodeSigning">IdKPCodeSigning</label>
+                    </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPTimeStamping" type="checkbox" class="form-check-input" id="IdKPTimeStamping">
-                                <label class="form-check-label" for="IdKPTimeStamping">IdKPTimeStamping</label>
-                            </div>
-                        </div>
-                   
-                        <div  class="row">
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPOcspSigning" type="checkbox" class="form-check-input" id="IdKPOcspSigning">
-                                <label class="form-check-label" for="IdKPOcspSigning">IdKPOcspSigning</label>
-                            </div>
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPEmailProtection" type="checkbox" class="form-check-input" id="IdKPEmailProtection">
+                        <label class="form-check-label" for="IdKPEmailProtection">IdKPEmailProtection</label>
+                    </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPSmartCardLogon" type="checkbox" class="form-check-input" id="IdKPSmartCardLogon">
-                                <label class="form-check-label" for="IdKPSmartCardLogon">IdKPSmartCardLogon</label>
-                            </div>
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPIpsecEndSystem" type="checkbox" class="form-check-input" id="IdKPIpsecEndSystem">
+                        <label class="form-check-label" for="IdKPIpsecEndSystem">IdKPIpsecEndSystem</label>
+                    </div>
+                </div>
 
-                            <div class="col-sm-4">
-                                <input asp-for="IdKPMacAddress" type="checkbox" class="form-check-input" id="IdKPMacAddress">
-                                <label class="form-check-label" for="IdKPMacAddress">IdKPMacAddress</label>
-                            </div>
-                        </div>
-               
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPIpsecTunnel" type="checkbox" class="form-check-input" id="IdKPIpsecTunnel">
+                        <label class="form-check-label" for="IdKPIpsecTunnel">IdKPIpsecTunnel</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPIpsecUser" type="checkbox" class="form-check-input" id="IdKPIpsecUser">
+                        <label class="form-check-label" for="IdKPIpsecUser">IdKPIpsecUser</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPTimeStamping" type="checkbox" class="form-check-input" id="IdKPTimeStamping">
+                        <label class="form-check-label" for="IdKPTimeStamping">IdKPTimeStamping</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPOcspSigning" type="checkbox" class="form-check-input" id="IdKPOcspSigning">
+                        <label class="form-check-label" for="IdKPOcspSigning">IdKPOcspSigning</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPSmartCardLogon" type="checkbox" class="form-check-input" id="IdKPSmartCardLogon">
+                        <label class="form-check-label" for="IdKPSmartCardLogon">IdKPSmartCardLogon</label>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <input asp-for="IdKPMacAddress" type="checkbox" class="form-check-input" id="IdKPMacAddress">
+                        <label class="form-check-label" for="IdKPMacAddress">IdKPMacAddress</label>
+                    </div>
+                </div>
+
             </div>
+            <div class="form-group alert alert-primary row">
+                <div class="col-sm-3"> <input type="button" value="Gen Password" class="btn btn-primary" id="passbt" /></div>
+                <div class="col-sm-9">   <input asp-for="Password" class="form-control" id="pass" /></div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" id="sub" />
             </div>
@@ -268,6 +273,17 @@
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
+
+    $("#passbt").click(function () {
+
+        $.get('@Url.Action("Genpassword")', {}, function (data) {
+            document.getElementById("pass").value = data.s;
+            //alert(data.s);
+            //alert(data.h);
+        });
+
+
+    });
 
             $("#keygen").click(function () {
                 this.disabled = true;
@@ -312,6 +328,11 @@
         }
     });
     $(document).ready(function () {
+        $.get('@Url.Action("Genpassword")', {}, function (data) {
+            document.getElementById("pass").value = data.s;
+            //alert(data.s);
+            //alert(data.h);
+        });
         $('#privdiv').hide();
         $('#pubdiv').hide();
         $('#CurveDiv').hide();

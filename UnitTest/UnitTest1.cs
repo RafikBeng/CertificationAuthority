@@ -30,7 +30,7 @@ namespace UnitTest
         {
             TimeIt("SigneTbs", () =>
             {
-                AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
+                AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(1024);
                 String name = "rafik";
                 String organization = "ANP";
                 String organizationalUnit = "ESDAT";
@@ -51,6 +51,9 @@ namespace UnitTest
                                                                     KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
 
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage, false);
+                RsaKeyParameters pubkey =(RsaKeyParameters)PublicKeyFactory.CreateKey(pkcs10.GetCertificationRequestInfo().SubjectPublicKeyInfo);
+                Console.WriteLine("RSA Key size="+pubkey.Modulus.BitLength);
+                Console.WriteLine("Signatur algo=" + SignerUtilities.GetEncodingName(pkcs10.SignatureAlgorithm.Algorithm));
                 //*********************************************************************************************************************
                 String name1 = "RoortCA";
                 String organization1 = "ANP";
@@ -65,20 +68,21 @@ namespace UnitTest
                 SecureRandom random = new SecureRandom();
                 BigInteger SerialNumber = GenerateSerialNumber(random);
                 X509Certificate Root = RootCA(SerialNumber, asymmetricCipherKeyPair1, SubjectDN1, subjectAlternativeNames, keyUsage, ExtendUsage, algorithm1, 20);
+                
                 //*********************************************************************************************************************
                 BigInteger SerialNumber1 = GenerateSerialNumber(random);
-                AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
+               // AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
                 
-                TbsCertificateStructure tbs = TbsCertificate(pkcs10, 5, SerialNumber1, Root, algorithm2);
+               TbsCertificateStructure tbs = TbsCertificate(pkcs10, 5, SerialNumber1, Root);
                 //*********************************************************************************************************************
-                X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private, algorithm1);
-                X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
-               // Console.WriteLine(Certificate2.ToString(true));
-                Console.WriteLine("*********************************************************************************************************************");
-                ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)asymmetricCipherKeyPair1.Public;
-                Console.WriteLine(publicKeyParam.Parameters.Curve.FieldSize);
+               X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private);
+               X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
+               Console.WriteLine(Certificate2.ToString(true));
+               Console.WriteLine("*********************************************************************************************************************");
+                //  ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)asymmetricCipherKeyPair1.Public;
+                // Console.WriteLine(publicKeyParam.Parameters.Curve.FieldSize);
 
-
+                Console.WriteLine("pass is:" + GeneratePassword(32));
                 Console.WriteLine();
             });
 
@@ -164,7 +168,8 @@ namespace UnitTest
             {
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateEcKeyPair("sect571r1");
                 TbsCertificateStructure tbsCertificateStructure = TbsCertificate(subjectDN, issuerDN, subjectAlternativeNames, asymmetricCipherKeyPair, SerialNumber, keyUsage, ExtendUsage, algorithm, 5, false);
-               
+                ECKeyParameters keyParameters = (ECKeyParameters)PublicKeyFactory.CreateKey(tbsCertificateStructure.SubjectPublicKeyInfo);
+                Console.WriteLine("EC Key Size=" + keyParameters.Parameters.Curve.FieldSize);
             });
 
             Debugger.Break();

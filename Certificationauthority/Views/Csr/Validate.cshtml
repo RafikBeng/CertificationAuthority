@@ -1,16 +1,23 @@
 ﻿@model Certificationauthority.Models.CertModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Validate";
 }
 
-<h1>Details</h1>
+<h1>Validate</h1>
+
 <div class="container">
 
     <table class="table table-striped table-dark">
 
         <tbody>
-            
+            <tr>
+                <th scope="row">Serial Number</th>
+                <td>
+                    @Html.DisplayFor(model => model.Serial)
+                </td>
+
+            </tr>
             <tr>
                 <th scope="row">Distinguished Name</th>
                 <td>
@@ -19,9 +26,23 @@
 
             </tr>
             <tr>
-                <th scope="row">Validity</th>
+                <th scope="row">Issuer Distinguished Name</th>
                 <td>
-                    @Html.DisplayFor(model => model.Validity)
+                    @Html.DisplayFor(model => model.IssuerDN)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row">NotBefore</th>
+                <td>
+                    @Html.DisplayFor(model => model.NotBefore)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row">NotAfter</th>
+                <td>
+                    @Html.DisplayFor(model => model.NotAfter)
                 </td>
 
             </tr>
@@ -91,6 +112,6 @@
     </table>
 </div>
 <div>
-    @Html.ActionLink("Validate", "Validate", new {  id = Model.Id}) |
-    <a asp-action="Index">Back to List</a>
+
+    <a asp-action="Index">Back to Index</a>
 </div>

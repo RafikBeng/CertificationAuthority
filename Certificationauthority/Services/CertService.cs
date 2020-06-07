@@ -48,8 +48,18 @@ namespace Certificationauthority.Services
         public CsrModel GetCsr(string id)
         {
             CsrModel result= _Csr.Find<CsrModel>(CsrModel => CsrModel.Id == id).FirstOrDefault();
+            return result;   
+        }
+        public CertModel GetCert(bool IsRootCA)
+        {
+            CertModel result = _CertModel.Find<CertModel>(CsrModel => CsrModel.IsRootCA == IsRootCA).FirstOrDefault();
             return result;
-            
+
+        }
+
+        public void DelCsr(string id)
+        {
+            _Csr.DeleteOne<CsrModel>(CsrModel => CsrModel.Id == id);
         }
         public IEnumerable<SelectListItem> Getstates(string name)
         {

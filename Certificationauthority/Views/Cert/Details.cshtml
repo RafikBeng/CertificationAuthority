@@ -26,6 +26,27 @@
 
             </tr>
             <tr>
+                <th scope="row">Issuer Distinguished Name</th>
+                <td>
+                    @Html.DisplayFor(model => model.IssuerDN)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row">NotBefore</th>
+                <td>
+                    @Html.DisplayFor(model => model.NotBefore)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row">NotAfter</th>
+                <td>
+                    @Html.DisplayFor(model => model.NotAfter)
+                </td>
+
+            </tr>
+            <tr>
                 <th scope="row">Signature Algorithm</th>
                 <td>
                     @Html.DisplayFor(model => model.Signature)
@@ -92,5 +113,5 @@
 </div>
 <div>
    
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Index</a>
 </div>

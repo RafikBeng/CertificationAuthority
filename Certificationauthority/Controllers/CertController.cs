@@ -64,6 +64,7 @@ namespace Certificationauthority.Controllers
                 byte[] bits = JsonConvert.DeserializeObject<byte[]>(Root);
                 X509Certificate certificate = new X509CertificateParser().ReadCertificate(bits);
                 Model.SubjectDN = certificate.SubjectDN.ToString();
+                Model.IssuerDN = Model.SubjectDN;
                 Model.Certificat = CertWriter(certificate);
                 Model.Thumbprint = Convert.ToBase64String(certificate.GetSignature());
                 Model.Extensions = ShowExtensions(certificate);
@@ -163,6 +164,9 @@ namespace Certificationauthority.Controllers
                 Cert.Serial = Int64.Parse(Serial.ToString());
                 X509Certificate certificate = RootCA(Serial, Key, SubjectDN, subjectAlternativeNames, keyUsage, ExtendUsage.ToArray(), Signature, int.Parse(Cert.Validity));
                 Cert.Certificat = CertWriter(certificate);
+                Cert.IsRootCA = true;
+                Cert.NotAfter = certificate.NotAfter;
+                Cert.NotBefore = certificate.NotBefore;
                 _CertService.Create(Cert);
 
 
@@ -226,13 +230,13 @@ namespace Certificationauthority.Controllers
 
         public JsonResult Getstates(string name)
         {
-            // string name = "Algeria";
+            
             return Json(_CertService.Getstates(name));
         }
 
         public JsonResult GetCities(string country, string state)
         {
-            // string name = "Algeria";
+            
             return Json(_CertService.GetCities(country, state));
         }
     }

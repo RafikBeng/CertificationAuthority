@@ -4,6 +4,7 @@ using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Operators;
+using Org.BouncyCastle.Crypto.Utilities;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Pkcs;
@@ -190,6 +191,12 @@ namespace Certlib
             PemReader pemReader = new PemReader(textReader);
              return pemReader.ReadPemObject().Content;
         }
+        public static byte[] CertReader(string Cert)
+        {
+            TextReader textReader = new StringReader(Cert);
+            PemReader pemReader = new PemReader(textReader);
+            return pemReader.ReadPemObject().Content;
+        }
         public static string CsrWriter(Pkcs10CertificationRequest Csr)
         {
 
@@ -237,11 +244,12 @@ namespace Certlib
             
             return pkcs10;
         }
-        public static X509Certificate SigneTbs(TbsCertificateStructure tbs, X509Certificate RootCA,AsymmetricKeyParameter CAKey,string algorithm)
+        public static X509Certificate SigneTbs(TbsCertificateStructure tbs, X509Certificate RootCA,AsymmetricKeyParameter CAKey)
         {
             SecureRandom Random = new SecureRandom();
             ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
-         
+            String algorithm = RootCA.SigAlgName;
+            algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             AlgorithmIdentifier algorithm1 = new DefaultSignatureAlgorithmIdentifierFinder().Find(algorithm);
             byte[] encoded = tbs.GetDerEncoded();
             IStreamCalculator streamCalculator = signatureCalculatorFactory.CreateCalculator();
@@ -289,8 +297,8 @@ namespace Certlib
         public static TbsCertificateStructure TbsCertificate(Pkcs10CertificationRequest Csr,
                                                              int Validity,
                                                              BigInteger SubjectSerialNumber,
-                                                             X509Certificate RootCA,
-                                                             AlgorithmIdentifier algorithm)
+                                                             X509Certificate RootCA
+                                                             )
         {
 
 
@@ -299,6 +307,9 @@ namespace Certlib
             tbsGenerator.SetIssuer(RootCA.SubjectDN);
             tbsGenerator.SetSerialNumber(new DerInteger(SubjectSerialNumber));
             tbsGenerator.SetSubjectPublicKeyInfo(Csr.GetCertificationRequestInfo().SubjectPublicKeyInfo);
+            string s = RootCA.SigAlgName;
+            s = s.Remove(s.IndexOf("-"), 1);
+            AlgorithmIdentifier algorithm = new DefaultSignatureAlgorithmIdentifierFinder().Find(s);
             tbsGenerator.SetSignature(algorithm);
             DateTime dateTime = DateTime.UtcNow;
             tbsGenerator.SetStartDate(new DerUtcTime(dateTime));
@@ -336,7 +347,21 @@ namespace Certlib
             return tbsGenerator.GenerateTbsCertificate();
         }
 
-
+        public static string GeneratePassword(int size)
+        {
+            string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder pass = new StringBuilder();
+            for(int i=0;i<size;i++)
+            {
+                
+                var num = BigIntegers.CreateRandomInRange(
+                    BigInteger.Zero, BigInteger.ValueOf(valid.Length-1), new SecureRandom());
+                
+                pass.Append(valid[int.Parse(num.ToString())]);
+            }
+            
+            return pass.ToString();
+        }
         public static BigInteger GenerateSerialNumber(SecureRandom random)
         {
             var serialNumber =

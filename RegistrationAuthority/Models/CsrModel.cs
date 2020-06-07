@@ -18,10 +18,10 @@ namespace RegistrationAuthority.Models
         [BsonIgnore]
         [Display(Name = "Common Name")]
         public string CommonName { get; set; }
-
+        public string Password { get; set; }
         [BsonIgnore]
-        [Display(Name = "Domain Component")]
-        public string DomainComponent { get; set; }
+        [Display(Name = "EMAIL")]
+        public string MAIL { get; set; }
     
         [BsonIgnore]
         [Display(Name = "Organization")]
