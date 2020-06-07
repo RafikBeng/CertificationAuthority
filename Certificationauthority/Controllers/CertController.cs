@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
+using Org.BouncyCastle.Utilities.Encoders;
 
 namespace Certificationauthority.Controllers
 {
@@ -66,7 +67,7 @@ namespace Certificationauthority.Controllers
                 Model.SubjectDN = certificate.SubjectDN.ToString();
                 Model.IssuerDN = Model.SubjectDN;
                 Model.Certificat = CertWriter(certificate);
-                Model.Thumbprint = Convert.ToBase64String(certificate.GetSignature());
+                Model.Thumbprint = Hex.ToHexString(certificate.GetSignature());
                 Model.Extensions = ShowExtensions(certificate);
                 return View(Model);
             }

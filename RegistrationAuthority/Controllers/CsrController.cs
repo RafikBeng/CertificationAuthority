@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Utilities.Encoders;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -71,7 +72,7 @@ namespace RegistrationAuthority.Controllers
                 Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(bits);
                 Model.SubjectDN = pkcs10.GetCertificationRequestInfo().Subject.ToString();
                 //Model.Certificat = CsrWriter(pkcs10);
-                Model.Thumbprint = Convert.ToBase64String(pkcs10.Signature.GetOctets());
+                Model.Thumbprint = Hex.ToHexString(pkcs10.Signature.GetOctets());
                 Model.Extensions = ShowExtensions(pkcs10);
                 return View(Model);
             }
@@ -118,7 +119,7 @@ namespace RegistrationAuthority.Controllers
             try
             {
 
-                String SubjectDN = $"CN={Csr.CommonName},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress},MAIL={Csr.MAIL}";
+                String SubjectDN = $"CN={Csr.CommonName},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress},E={Csr.MAIL}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
                 Csr.SubjectDN = SubjectDN;
                 List<int> L = new List<int>();
@@ -162,9 +163,10 @@ namespace RegistrationAuthority.Controllers
                     string resultString = Regex.Match(Csr.Curve, @"\d\d\d+").Value;
                     Csr.KeySize = Int32.Parse(resultString);
                 }
+                
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
                 Csr.Certificat = CsrWriter(pkcs10);
-
+                Csr.Password = GetHash(Csr.Password);
                 _CsrService.Create(Csr);
 
 
@@ -174,9 +176,10 @@ namespace RegistrationAuthority.Controllers
                 TempData.Add("Mypkcs", pkcs);
                 return RedirectToAction(nameof(Details));
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                Console.WriteLine(e.Message);
+                return RedirectToAction(nameof(Index));
             }
         }
 

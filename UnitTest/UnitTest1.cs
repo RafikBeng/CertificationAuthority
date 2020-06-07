@@ -19,6 +19,8 @@ using Org.BouncyCastle.X509;
 using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto.Parameters;
+using System.Text;
+using Org.BouncyCastle.Utilities.Encoders;
 
 namespace UnitTest
 {
@@ -81,8 +83,11 @@ namespace UnitTest
                Console.WriteLine("*********************************************************************************************************************");
                 //  ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)asymmetricCipherKeyPair1.Public;
                 // Console.WriteLine(publicKeyParam.Parameters.Curve.FieldSize);
-
-                Console.WriteLine("pass is:" + GeneratePassword(32));
+                string pass = GeneratePassword(32);
+                Console.WriteLine("pass is:" + pass );
+                byte[] message = Encoding.ASCII.GetBytes(pass);
+               
+                Console.WriteLine(Hex.ToHexString(DigestUtilities.CalculateDigest("SHA3-512", message)));
                 Console.WriteLine();
             });
 

@@ -244,7 +244,9 @@ namespace Certlib
             
             return pkcs10;
         }
-        public static X509Certificate SigneTbs(TbsCertificateStructure tbs, X509Certificate RootCA,AsymmetricKeyParameter CAKey)
+        public static X509Certificate SigneTbs(TbsCertificateStructure tbs,
+                                               X509Certificate RootCA,
+                                               AsymmetricKeyParameter CAKey)
         {
             SecureRandom Random = new SecureRandom();
             ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
@@ -413,7 +415,7 @@ namespace Certlib
         }
 
         public static void AddSubjectAlternativeNames(X509V3CertificateGenerator certificateGenerator,
-                                                       IEnumerable<string> subjectAlternativeNames)
+                                                      IEnumerable<string> subjectAlternativeNames)
         {
             List<Asn1Encodable> sanEntries = new List<Asn1Encodable>();
             foreach (string subjectAlternativeName in subjectAlternativeNames)

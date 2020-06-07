@@ -169,6 +169,7 @@ namespace RegistrationAuthority.Models
         public string Extensions { get; set; }
         public string SubjectDN { get; set; }
         public string Privatekey { get; set; }
+        [BsonIgnore]
         public string Publickey { get; set; }
         public string Certificat { get; set; }
     }

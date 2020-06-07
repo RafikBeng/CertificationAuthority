@@ -6,14 +6,21 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
+using Org.BouncyCastle.Utilities.Encoders;
 using System;
 using System.IO;
+using System.Text;
 
 namespace Certlib
 {
     public static class KeyGen
     {
-       
+        public static string GetHash(String pass)
+        {
+            byte[] message = Encoding.ASCII.GetBytes(pass);
+            return Hex.ToHexString(DigestUtilities.CalculateDigest("SHA3-512", message));
+        }
+
         public static string KeyWriter(AsymmetricKeyParameter Key)
         {
              
