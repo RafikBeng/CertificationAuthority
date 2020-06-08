@@ -69,7 +69,7 @@ namespace RegistrationAuthority.Models
         {
             new SelectListItem { Value = "RSA", Text = "RSA" },
             //new SelectListItem { Value = "DSA", Text = "DSA" },
-            new SelectListItem { Value = "ECDSA", Text = "Elliptic curve"},
+            new SelectListItem { Value = "ECC", Text = "Elliptic curve"},
 
         };
 

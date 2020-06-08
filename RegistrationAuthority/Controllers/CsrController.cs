@@ -20,6 +20,7 @@ using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities.Encoders;
+using System.IO;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -40,6 +41,7 @@ namespace RegistrationAuthority.Controllers
         {
             
             AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(KeySize);
+            
             string Private = KeyWriter(Key.Private);
             string Public = KeyWriter(Key.Public);
             return Json(new { s= Private, h= Public });
@@ -74,6 +76,7 @@ namespace RegistrationAuthority.Controllers
                 //Model.Certificat = CsrWriter(pkcs10);
                 Model.Thumbprint = Hex.ToHexString(pkcs10.Signature.GetOctets());
                 Model.Extensions = ShowExtensions(pkcs10);
+               
                 return View(Model);
             }
 
@@ -154,18 +157,25 @@ namespace RegistrationAuthority.Controllers
                 var v = Asn1SignatureFactory.SignatureAlgNames;
                 List<string> SignatureAlgNames = new List<string>();
                 foreach (var a in v) SignatureAlgNames.Add(a.ToString());
-                List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains(Csr.Algorithme));
-                tmp.RemoveAll(x => x.Contains("MGF1"));
-                string Signature = tmp.Find(x => x.Contains(Csr.Hash));
-
-                Csr.Signature = Signature;
-                if (Csr.Algorithme == "ECDSA")
+                if(Csr.Algorithme == "RSA")
                 {
+                    List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains(Csr.Algorithme));
+                    tmp.RemoveAll(x => x.Contains("MGF1"));
+                    string Signature = tmp.Find(x => x.Contains(Csr.Hash));
+                    Csr.Signature = Signature;
+                }
+                else
+                {
+                    List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains("ECDSA"));
+                    tmp.RemoveAll(x => x.Contains("MGF1"));
+                    string Signature = tmp.Find(x => x.Contains(Csr.Hash));
+                    Csr.Signature = Signature;
                     string resultString = Regex.Match(Csr.Curve, @"\d\d\d+").Value;
                     Csr.KeySize = Int32.Parse(resultString);
                 }
+               
                 
-                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Signature, keyUsage, ExtendUsage.ToArray(), false);
+                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Csr.Signature, keyUsage, ExtendUsage.ToArray(), false);
                 Csr.Certificat = CsrWriter(pkcs10);
                 Csr.Password = GetHash(Csr.Password);
                 _CsrService.Create(Csr);

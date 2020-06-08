@@ -6,84 +6,131 @@
 
 <h1>Details</h1>
 <div class="container">
-   
-        <table class="table table-striped table-dark">
 
-            <tbody>
-                <tr>
-                    <th scope="row">Distinguished Name</th>
-                    <td>
-                        @Html.DisplayFor(model => model.SubjectDN)
-                    </td>
+    <table class="table table-striped table-dark">
 
-                </tr>
-                <tr>
-                    <th scope="row">Signature Algorithm</th>
-                    <td>
-                        @Html.DisplayFor(model => model.Signature)
-                    </td>
+        <tbody>
+            <tr>
+                <th scope="row">Distinguished Name</th>
+                <td>
+                    @Html.DisplayFor(model => model.SubjectDN)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row">Signature Algorithm</th>
+                <td>
+                    @Html.DisplayFor(model => model.Signature)
+                </td>
 
 
-                </tr>
-                <tr>
-                    <th scope="row">Public key Algorithm</th>
-                    <td>
-                        @Html.DisplayFor(model => model.Algorithme)
-                    </td>
+            </tr>
+            <tr>
+                <th scope="row">Public key Algorithm</th>
+                <td>
+                    @Html.DisplayFor(model => model.Algorithme)
+                </td>
 
-                </tr>
-                <tr>
-                    <th scope="row">key Size</th>
-                    <td>
-                        @Html.DisplayFor(model => model.KeySize)
-                    </td>
+            </tr>
+            <tr>
+                <th scope="row">key Size</th>
+                <td>
+                    @Html.DisplayFor(model => model.KeySize)
+                </td>
 
-                </tr>
-                <tr>
-                    <th scope="row">Thumbprint</th>
-                    <td>
+            </tr>
+            <tr>
+                <th scope="row">Thumbprint</th>
+                <td>
 
-                        <TEXTAREA wrap="hard" rows="5" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
-                    </td>
+                    <TEXTAREA wrap="hard" rows="5" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
+                </td>
 
-                </tr>
-                <tr>
-                    <th scope="row">Public Key</th>
-                    <td>
-                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
+            </tr>
+            <tr>
+                <th scope="row">Public Key</th>
+                <td>
+                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace" id="public">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
+                    <input type="button" id="pubpem" value="Save" class="btn btn-primary"/>
+                </td>
 
-                    </td>
+            </tr>
+            <tr>
+                <th scope="row">Private Key</th>
+                <td>
+                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace" id="private">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
+                    <input type="button" id="privpem" value="Save" class="btn btn-primary" />
+                </td>
 
-                </tr>
-                <tr>
-                    <th scope="row">Private Key</th>
-                    <td>
-                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
+            </tr>
+            <tr>
+                <th scope="row">Extensions</th>
+                <td>
+                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
 
-                    </td>
+                </td>
 
-                </tr>
-                <tr>
-                    <th scope="row">Extensions</th>
-                    <td>
-                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
+            </tr>
+            <tr>
+                <th scope="row">Certificate Signing Request</th>
+                <td>
+                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace" id="csr">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
+                    <input type="button" id="certpem" value="Save" class="btn btn-primary" />
+                </td>
 
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row">Certificate Signing Request</th>
-                    <td>
-                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
-
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
-    </div>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <div>
-   
+
     <a asp-action="Index">Certificate Signing Request</a>
 </div>
+@section Scripts {
+    <script type="text/javascript">
+
+        function download(file, text) {
+
+            //creating an invisible element 
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8, '
+                + encodeURIComponent(text));
+            element.setAttribute('download', file);
+
+            //the above code is equivalent to 
+            // <a href="path of file" download="file name"> 
+
+            document.body.appendChild(element);
+
+            //onClick property 
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        // Start file download. 
+        document.getElementById("pubpem").addEventListener("click", function () {
+            
+            var text = document.getElementById("public").value;
+            var filename = "public.pem";
+
+            download(filename, text);
+        }, false); 
+        document.getElementById("privpem").addEventListener("click", function () {
+
+            var text = document.getElementById("private").value;
+            var filename = "private.pem";
+
+            download(filename, text);
+        }, false); 
+        document.getElementById("certpem").addEventListener("click", function () {
+
+            var text = document.getElementById("csr").value;
+            var filename = "csr.pem";
+
+            download(filename, text);
+        }, false); 
+
+    </script>
+}
