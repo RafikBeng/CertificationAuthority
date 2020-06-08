@@ -76,10 +76,11 @@ namespace RegistrationAuthority.Controllers
                 Model.Extensions = ShowExtensions(pkcs10);
                 return View(Model);
             }
-#pragma warning disable CS0168 // Variable is declared but never used
-            catch(NullReferenceException e)
-#pragma warning restore CS0168 // Variable is declared but never used
+
+            catch(Exception e)
+
             {
+                Console.WriteLine(e.Message);
                 return RedirectToAction(nameof(Index));
             }
 
