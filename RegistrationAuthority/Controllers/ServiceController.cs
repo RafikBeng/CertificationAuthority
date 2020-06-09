@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RegistrationAuthority.Models;
 using RegistrationAuthority.Services;
-
+using static Certlib.KeyGen;
 namespace RegistrationAuthority.Controllers
 {
     public class ServiceController : Controller
@@ -38,11 +38,12 @@ namespace RegistrationAuthority.Controllers
         // POST: Service/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(ServiceModel collection)
         {
             try
             {
-                // TODO: Add insert logic here
+                 collection.Password = GetHash(collection.Password);
+                _CsrService.Create(collection);
 
                 return RedirectToAction(nameof(Index));
             }

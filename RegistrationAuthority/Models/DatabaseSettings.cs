@@ -9,6 +9,7 @@ namespace RegistrationAuthority.Models
     {
         public string CollectionName { get; set; }
         public string CollectionTwo { get; set; }
+        public string CollectionThree { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
@@ -17,6 +18,7 @@ namespace RegistrationAuthority.Models
     {
         string CollectionName { get; set; }
         string CollectionTwo { get; set; }
+        string CollectionThree { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }

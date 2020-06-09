@@ -14,17 +14,23 @@ namespace RegistrationAuthority.Services
     {
         private readonly IMongoCollection<CsrModel> _CsrModel;
         private readonly IMongoCollection<BsonDocument> _Contries;
+        private readonly IMongoCollection<ServiceModel> _ServiceModel;
         public CsrService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
             _CsrModel = database.GetCollection<CsrModel>(settings.CollectionName);
             _Contries = database.GetCollection<BsonDocument>(settings.CollectionTwo);
+            _ServiceModel = database.GetCollection<ServiceModel>(settings.CollectionThree);
         }
 
         public void Create(CsrModel collection)
         {
             _CsrModel.InsertOne(collection);
+        }
+        public void Create(ServiceModel collection)
+        {
+            _ServiceModel.InsertOne(collection);
         }
 
         public List<BsonDocument> GetContries()
