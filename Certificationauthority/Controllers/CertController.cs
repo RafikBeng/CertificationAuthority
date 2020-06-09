@@ -107,7 +107,7 @@ namespace Certificationauthority.Controllers
         {
             try
             {
-                String SubjectDN = $"CN={Cert.CommonName},DC={Cert.DomainComponent},O={Cert.OrganizationName},OU={Cert.OrganizationalUnitName},C={Cert.CountryName},ST={Cert.StateName},L={Cert.City},STREET={Cert.StreetAddress}";
+                String SubjectDN = $"CN={Cert.CommonName},O={Cert.OrganizationName},OU={Cert.OrganizationalUnitName},C={Cert.CountryName},ST={Cert.StateName},L={Cert.City},STREET={Cert.StreetAddress},E={Cert.MAIL}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
 
                 List<int> L = new List<int>
@@ -147,23 +147,29 @@ namespace Certificationauthority.Controllers
                 var v = Asn1SignatureFactory.SignatureAlgNames;
                 List<string> SignatureAlgNames = new List<string>();
                 foreach (var a in v) SignatureAlgNames.Add(a.ToString());
-                List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains(Cert.Algorithme));
-                tmp.RemoveAll(x => x.Contains("MGF1"));
-                string Signature = tmp.Find(x => x.Contains(Cert.Hash));
-
-                Cert.Signature = Signature;
-                if (Cert.Algorithme == "ECDSA")
+                if (Cert.Algorithme == "RSA")
                 {
+                    List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains(Cert.Algorithme));
+                    tmp.RemoveAll(x => x.Contains("MGF1"));
+                    string Signature = tmp.Find(x => x.Contains(Cert.Hash));
+                    Cert.Signature = Signature;
+                }
+                else
+                {
+                    List<string> tmp = SignatureAlgNames.FindAll(x => x.Contains("ECDSA"));
+                    tmp.RemoveAll(x => x.Contains("MGF1"));
+                    string Signature = tmp.Find(x => x.Contains(Cert.Hash));
+                    Cert.Signature = Signature;
                     string resultString = Regex.Match(Cert.Curve, @"\d\d\d+").Value;
                     Cert.KeySize = Int32.Parse(resultString);
                 }
-               
-                
+
+
                 SecureRandom random = new SecureRandom();
                 BigInteger Serial = GenerateSerialNumber(random);
                
                 Cert.Serial = Int64.Parse(Serial.ToString());
-                X509Certificate certificate = RootCA(Serial, Key, SubjectDN, subjectAlternativeNames, keyUsage, ExtendUsage.ToArray(), Signature, int.Parse(Cert.Validity));
+                X509Certificate certificate = RootCA(Serial, Key, SubjectDN, subjectAlternativeNames, keyUsage, ExtendUsage.ToArray(), Cert.Signature, int.Parse(Cert.Validity));
                 Cert.Certificat = CertWriter(certificate);
                 Cert.IsRootCA = true;
                 Cert.NotAfter = certificate.NotAfter;

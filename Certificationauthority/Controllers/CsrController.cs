@@ -66,11 +66,11 @@ namespace Certificationauthority.Controllers
             }
             else
             {
-                Model.Algorithme = "ECDSA";
+                Model.Algorithme = "ECC";
 
                 ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)key;
                 Model.KeySize = publicKeyParam.Parameters.Curve.FieldSize;
-               // publicKeyParam.Parameters.
+               
             }
                 return View(Model);
         }
