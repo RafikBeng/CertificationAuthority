@@ -20,20 +20,43 @@
             <tr>
                 <th scope="row">@Html.DisplayNameFor(model => model.Password)</th>
                 <td>
-                    @Html.DisplayFor(model => model.Password)   
+                    @Html.DisplayFor(model => model.Password)
                 </td>
 
             </tr>
-            <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.Objet)</th>
+            <tr id="ob">
+                <th scope="row">@Html.DisplayNameFor(model => model.Object)</th>
+                <td id="objec">
+                    @Html.DisplayFor(model => model.Object)
+                </td>
+            </tr>
+            <tr id="reas">
+                <th scope="row">@Html.DisplayNameFor(model => model.Reason)</th>
                 <td>
-                    @Html.DisplayFor(model => model.Objet)
+                    @Html.DisplayFor(model => model.Reason)
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
 <div>
-        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-        <a asp-action="Index">Back to List</a>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
 </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#reas').hide();
+        var val = document.getElementById("objec").innerText;
+          //  var val = $("#objec").text();
+           
+        if (val == "Revoke") {
+            $('#reas').show();
+            
+        }
+        
+    });
+   
+    </script>
+}

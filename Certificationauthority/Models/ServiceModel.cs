@@ -19,12 +19,7 @@ namespace Certificationauthority.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
         [Display(Name = "Object")]
-        public string Objet { get; set; }
-        public List<SelectListItem> Objets { get; } = new List<SelectListItem>
-        {
-            new SelectListItem { Value = "Renew", Text = "Renew Certificate" },
-            new SelectListItem { Value = "Recover", Text = "Recover Private Key"},
-            new SelectListItem { Value = "Revoke", Text = "Revoke Certificate" },
-        };
+        public string Object { get; set;}
+        public string Reason { get; set;}
     }
 }

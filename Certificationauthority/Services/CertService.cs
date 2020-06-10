@@ -59,9 +59,9 @@ namespace Certificationauthority.Services
             CsrModel result= _Csr.Find<CsrModel>(CsrModel => CsrModel.Id == id).FirstOrDefault();
             return result;   
         }
-        public ServiceModel GetService(Int64 Serial)
+        public ServiceModel GetService(string id)
         {
-            ServiceModel result = _ServiceModel.Find<ServiceModel>(ServiceModel => ServiceModel.Serial == Serial).FirstOrDefault();
+            ServiceModel result = _ServiceModel.Find<ServiceModel>(ServiceModel => ServiceModel.Id == id).FirstOrDefault();
             return result;
         }
         public CertModel GetCert(bool IsRootCA)

@@ -19,13 +19,17 @@ namespace Certificationauthority.Controllers
         // GET: Service
         public ActionResult Index()
         {
-            return View();
+            return View(_CertService.GetServices());
         }
 
         // GET: Service/Details/5
-        public ActionResult Details(Int64 Serial)
+        public ActionResult Details(string id)
         {
-            ServiceModel model = _CertService.GetService(Serial);
+            ServiceModel model = _CertService.GetService(id);
+            Console.WriteLine("********************************");
+            Console.WriteLine(model.Password);
+            Console.WriteLine(model.Reason);
+            Console.WriteLine("********************************");
             return View(model);
         }
 

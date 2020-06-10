@@ -17,36 +17,34 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Serial)
                 </th>
+               
                 <th>
-                    @Html.DisplayNameFor(model => model.Password)
+                    @Html.DisplayNameFor(model => model.Object)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Objet)
-                </th>
-                <th></th>
+               
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+            <tr>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Serial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Password)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Objet)
-                    </td>
-                    <td>
-                       
-                        @Html.ActionLink("Details", "Details", new {  id=item.Serial })
-                  
-                    </td>
-                </tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Serial)
+                </td>
+              
+                <td>
+                    @Html.DisplayFor(modelItem => item.Object)
+                </td>
+                
+                <td>
+
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+
+                </td>
+            </tr>
             }
         </tbody>
     </table>
 </div>
+
