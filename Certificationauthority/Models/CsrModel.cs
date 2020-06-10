@@ -23,6 +23,8 @@ namespace Certificationauthority.Models
         public string Publickey { get; set; }
         [Display(Name = "Certificat")]
         public string Certificat { get; set; }
-       
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
     }
 }

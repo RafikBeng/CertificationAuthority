@@ -13,7 +13,7 @@
     <div class="col-sm-8">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <div class="col-sm-3"><label asp-for="Serial" class="control-label"></label></div>
                 <div class="col-sm-9"><input asp-for="Serial" class="form-control" /></div>
@@ -25,12 +25,20 @@
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <div class="col-sm-3"> <label asp-for="Raison" class="control-label"></label></div>
+                <div class="col-sm-3"> <label asp-for="Object" class="control-label"></label></div>
                 <div class="col-sm-9">
-                    <select asp-for="Raison" asp-items="Model.Raisons"  class="form-control">
+                    <select asp-for="Object" asp-items="Model.Objects" class="form-control" id="obj">
                     </select>
                 </div>
-                <span asp-validation-for="Raison" class="text-danger"></span>
+                <span asp-validation-for="Object" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="reas">
+                <div class="col-sm-3"> <label asp-for="Reason" class="control-label"></label></div>
+                <div class="col-sm-9">
+                    <select asp-for="Reason" asp-items="Model.Reasons" class="form-control">
+                    </select>
+                </div>
+                <span asp-validation-for="Reason" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <div class="col-sm-3"><input type="submit" value="Create" class="btn btn-primary" /></div>
@@ -38,6 +46,25 @@
         </form>
     </div>
 </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#reas').hide();
+    });
+    $("#obj").change(function () {
+        var val = $("#obj").val();
+
+        if (val == "Revoke") {
+            $('#reas').show();
+        }
+        else {
+            $('#reas').hide();
+        }
+
+    });
+</script>
+}
 
 
 

@@ -14,13 +14,15 @@ namespace Certificationauthority.Services
         private readonly IMongoCollection<CertModel> _CertModel;
         private readonly IMongoCollection<BsonDocument> _Contries;
         private readonly IMongoCollection<CsrModel> _Csr;
+        private readonly IMongoCollection<ServiceModel> _ServiceModel;
         public CertService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _CertModel = database.GetCollection<CertModel>(settings.Collection);
+            _CertModel = database.GetCollection<CertModel>(settings.Cert);
             _Contries = database.GetCollection<BsonDocument>(settings.Countries);
             _Csr = database.GetCollection<CsrModel>(settings.Csr);
+            _ServiceModel = database.GetCollection<ServiceModel>(settings.Services);
         }
         public void Create(CertModel collection)
         {
@@ -38,10 +40,17 @@ namespace Certificationauthority.Services
             var result = _Contries.Find<BsonDocument>(filter).Project(projection).ToList();
             return result;
         }
+        public IEnumerable<ServiceModel> GetServices()
+        {
+            FilterDefinition<ServiceModel> filter = Builders<ServiceModel>.Filter.Empty;
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _ServiceModel.Find<ServiceModel>(filter).ToEnumerable();
+            return result;
+        }
         public IEnumerable<CsrModel> GetCsrs()
         {
             FilterDefinition<CsrModel> filter = Builders<CsrModel>.Filter.Empty;
-            var projectionBuilder = Builders<CsrModel>.Projection;
+            //var projectionBuilder = Builders<CsrModel>.Projection;
             var result = _Csr.Find<CsrModel>(filter).ToEnumerable();
             return result;
         }
@@ -50,13 +59,21 @@ namespace Certificationauthority.Services
             CsrModel result= _Csr.Find<CsrModel>(CsrModel => CsrModel.Id == id).FirstOrDefault();
             return result;   
         }
+        public ServiceModel GetService(Int64 Serial)
+        {
+            ServiceModel result = _ServiceModel.Find<ServiceModel>(ServiceModel => ServiceModel.Serial == Serial).FirstOrDefault();
+            return result;
+        }
         public CertModel GetCert(bool IsRootCA)
         {
             CertModel result = _CertModel.Find<CertModel>(CsrModel => CsrModel.IsRootCA == IsRootCA).FirstOrDefault();
             return result;
 
         }
-
+        public void DelServices(string id)
+        {
+            _ServiceModel.DeleteOne<ServiceModel>(ServiceModel => ServiceModel.Id == id);
+        }
         public void DelCsr(string id)
         {
             _Csr.DeleteOne<CsrModel>(CsrModel => CsrModel.Id == id);

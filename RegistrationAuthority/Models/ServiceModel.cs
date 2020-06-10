@@ -19,12 +19,26 @@ namespace RegistrationAuthority.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
         [Display(Name = "Object")]
-        public string Raison { get; set; }
-        public List<SelectListItem> Raisons { get; } = new List<SelectListItem>
+        public string Object { get; set; }
+        public List<SelectListItem> Objects { get; } = new List<SelectListItem>
         {
             new SelectListItem { Value = "Renew", Text = "Renew Certificate" },
             new SelectListItem { Value = "Recover", Text = "Recover Private Key"},
             new SelectListItem { Value = "Revoke", Text = "Revoke Certificate" },
         };
+        [Display(Name = "Reason")]
+        public string Reason { get; set; }
+        public List<SelectListItem> Reasons { get; } = new List<SelectListItem>
+        {
+            new SelectListItem { Value = "unspecified", Text = "unspecified" },
+            new SelectListItem { Value = "keyCompromise", Text = "key Compromise"},
+            new SelectListItem { Value = "affiliationChanged", Text = "Affiliation Changed" },
+            new SelectListItem { Value = "superseded", Text = "superseded" },
+            new SelectListItem { Value = "cessationOfOperation", Text = "Cessation Of Operation"},
+            new SelectListItem { Value = "certificateHold", Text = "Certificate Hold" },
+            new SelectListItem { Value = "privilegeWithdrawn", Text = "Privilege With drawn"}
+           
+        };
+
     }
 }
