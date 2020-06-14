@@ -127,7 +127,7 @@ namespace Certificationauthority.Controllers
                 Extensions = ShowExtensions(certificate),
                 Signature = certificate.SigAlgName,
                 Publickey = KeyWriter(certificate.GetPublicKey()),
-                Password = cert.Password
+                Password = result.Password
             };
          
             string sigalgo = SignerUtilities.GetEncodingName(pkcs10.SignatureAlgorithm.Algorithm);

@@ -335,6 +335,7 @@ namespace Certlib
         }
         public static X509Crl UpdateClr(X509Certificate RootCA, X509Certificate Certificate, int Reason,X509Crl crl ,AsymmetricKeyParameter CAkey)
         {
+            Console.WriteLine("entring UpdateClr");
             X509V2CrlGenerator crlGenerator = new X509V2CrlGenerator();
             DateTime dateTime = DateTime.UtcNow;
             crlGenerator.SetIssuerDN(RootCA.IssuerDN);
@@ -346,6 +347,7 @@ namespace Certlib
             Asn1OctetString octetString = crl.GetExtensionValue(X509Extensions.CrlNumber);
             long number = CrlNumber.GetInstance(X509ExtensionUtilities.FromExtensionValue(octetString)).LongValueExact;
             BigInteger serial = BigInteger.ValueOf(number+1);
+            Console.WriteLine("seriale is" + serial);
             crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(serial));
             string algorithme = RootCA.SigAlgName;
             algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);

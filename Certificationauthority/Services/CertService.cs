@@ -96,6 +96,11 @@ namespace Certificationauthority.Services
             ServiceModel result = _Service.Find<ServiceModel>(ServiceModel => ServiceModel.Id == id).FirstOrDefault();
             return result;
         }
+        public ServiceModel GetService(long serial)
+        {
+            ServiceModel result = _Service.Find<ServiceModel>(ServiceModel => ServiceModel.Serial == serial).FirstOrDefault();
+            return result;
+        }
         public CertModel GetCert(bool IsRootCA)
         {
             CertModel result = _Cert.Find<CertModel>(CertModel => CertModel.IsRootCA == IsRootCA).FirstOrDefault();

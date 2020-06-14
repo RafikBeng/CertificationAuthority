@@ -27,7 +27,11 @@ namespace Certificationauthority.Controllers
         public JsonResult CheckPassword(Int64 Serial)
         {
             CertModel Cert = _CertService.GetCert(Serial);
-            if (Cert != null) return Json(new { s = Cert.Password });
+            if (Cert != null)
+            {
+               
+                return Json(new { s = Cert.Password });
+            }
             else return Json(new { s = "not found" });
         }
         public ActionResult Index()
@@ -36,9 +40,9 @@ namespace Certificationauthority.Controllers
         }
 
         // GET: Service/Details/5
-        public ActionResult Details(string id)
+        public ActionResult Details(long Serial)
         {
-            ServiceModel model = _CertService.GetService(id);
+            ServiceModel model = _CertService.GetService(Serial);
             int reason = int.Parse(model.Reason);
             switch (reason)
             {
@@ -93,10 +97,11 @@ namespace Certificationauthority.Controllers
         }
 
         // GET: Service/Edit/5
-        public ActionResult Validate(string id)
-        {
-            ServiceModel service = _CertService.GetService(id);
-            _CertService.DelServices(id);
+        public ActionResult Validate(long Serial)
+        {   
+
+            ServiceModel service = _CertService.GetService(Serial);
+            
             CertModel Cert = _CertService.GetCert(service.Serial);
             byte[] bits = CertReader(Cert.Certificat);
             X509Certificate certificate = new X509CertificateParser().ReadCertificate(bits);
@@ -109,17 +114,19 @@ namespace Certificationauthority.Controllers
                 Cert.NotBefore = NewCertificate.NotBefore;
                 _CertService.DelCert(Cert.Id);
                 _CertService.Create(Cert);
-                return View("Validate_Cert",Cert);
+                _CertService.DelServices(service.Id);
+                return View("Validate_Cert", Cert);
             }
             else if (service.Object == "Revoke")
             {
                 CrlModel model = new CrlModel();
                 var Crls = _CertService.GetClrs();
+                Console.WriteLine("count is ="+Crls.Count());
                 CertModel Root = _CertService.GetCert(true);
                 byte[] bits1 = CertReader(Root.Certificat);
                 X509Certificate RootCA = new X509CertificateParser().ReadCertificate(bits1);
                 AsymmetricKeyParameter key = PrivateKeyReader(Root.Privatekey);
-                if (Crls == null)
+                if (Crls.Count()==0)
                 {
                     X509Crl crl = CreateClr(RootCA, certificate, int.Parse(service.Reason), key);
                     Asn1OctetString octetString = crl.GetExtensionValue(X509Extensions.CrlNumber);
@@ -134,22 +141,29 @@ namespace Certificationauthority.Controllers
                 else
                 {
                     long seriale = _CertService.MaxSeriale();
+                    Console.WriteLine("Max serial is" + seriale);
                     CrlModel LastCrl = _CertService.GetCrl(seriale);
                     X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(LastCrl.Content));
                     X509Crl NewCrl = UpdateClr(RootCA, certificate, int.Parse(service.Reason), crl, key);
                     model.Content = CrlWriter(NewCrl);
                     model.ThisUpdate = NewCrl.ThisUpdate;
                     model.NextUpdate = NewCrl.NextUpdate.Value;
-                    model.Serial = seriale;
+                    model.Serial = seriale+1;
                     model.Reason = service.Reason;
                     model.DN = crl.IssuerDN.ToString();
 
                 }
                 _CertService.DelCert(Cert.Id);
                 _CertService.Create(model);
-                return View("Validate_Crl",model);
+                _CertService.DelServices(service.Id);
+
+                return View("Validate_Crl", model);
             }
-            else return View("Validate_Cert", Cert);
+            else
+            {
+                _CertService.DelServices(service.Id);
+                return View("Validate_Cert", Cert);
+            }
 
 
         }
@@ -175,7 +189,7 @@ namespace Certificationauthority.Controllers
         public ActionResult Delete(string id)
         {
             _CertService.DelServices(id);
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: Service/Delete/5

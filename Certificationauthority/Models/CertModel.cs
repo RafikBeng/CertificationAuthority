@@ -112,7 +112,7 @@ namespace Certificationauthority.Models
             //new SelectListItem { Value = "RIPEMD256", Text = "RIPEMD256" },
         };
        
-        [BsonIgnore]
+       // [BsonIgnore]
         public string SubjectDN { get; set; }
         [BsonIgnore]
         public string IssuerDN { get; set; }

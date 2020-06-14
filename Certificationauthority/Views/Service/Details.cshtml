@@ -17,14 +17,14 @@
                 </td>
 
             </tr>
-            <tr>
+            <tr >
                 <th scope="row">@Html.DisplayNameFor(model => model.Password)</th>
-                <td>
-                    @Html.DisplayFor(model => model.Password)
+                
+                <td id="pass">
+                    <TEXTAREA wrap="hard" rows="2" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Password)</TEXTAREA>
                 </td>
-
             </tr>
-            <tr id="ob">
+            <tr >
                 <th scope="row">@Html.DisplayNameFor(model => model.Object)</th>
                 <td id="objec">
                     @Html.DisplayFor(model => model.Object)
@@ -39,10 +39,12 @@
         </tbody>
     </table>
 </div>
-<div>
-    @Html.ActionLink("Validate", "Validate", new { id = Model.Id })
-    @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
-    <a asp-action="Index">Back to List</a>
+<div class="container">
+    @*<div id="valide" disabled="true">  @Html.ActionLink("Validate", "Validate", new { Serial = Model.Serial })</div>*@
+    <div> <input type="button" class="btn btn-primary" id="create" value="Validate" onclick="location.href='@Url.Action("Validate", "Service", new { Serial = Model.Serial })'" /></div>
+    @*<div id="delete"> @Html.ActionLink("Delete", "Delete", new { id = Model.Id })</div>*@
+<div> <input type="button" class="btn btn-primary" id="Delete" value="Delete" onclick="location.href='@Url.Action("Delete", "Service", new { id = Model.Id })'" /></div>
+    <div>  <a asp-action="Index">Back to List</a></div>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -50,19 +52,29 @@
         $(document).ready(function () {
             var value = document.getElementById("ser").innerText;
             $.get('@Url.Action("CheckPassword")', { Serial: value }, function (data) {
-                alert(data.s);
+                var password = document.getElementById("pass").innerText;
+                if (password != data.s) {
+                   
+                    document.getElementById("create").disabled = true;
+                }
+                else {
+                   
+                    document.getElementById("Delete").disabled = true;
+                }
+
             })
 
-            $('#reas').hide();
+          
         var val = document.getElementById("objec").innerText;
           //  var val = $("#objec").text();
 
-        if (val == "Revoke") {
-            $('#reas').show();
+            if (val != "Revoke") {
+                $('#reas').hide();
+            }
+            else $('#reas').show();
 
-        }
+        });
 
-    });
-
+    
 </script>
 }
