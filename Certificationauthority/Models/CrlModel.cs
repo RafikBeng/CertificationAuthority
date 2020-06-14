@@ -14,6 +14,7 @@ namespace Certificationauthority.Models
         public string Id { get; set; }
         // [Required]
         public Int64 Serial { get; set; }
+        public string DN { get; set; }
         public DateTime ThisUpdate { get; set; }
         public DateTime NextUpdate { get; set; }
         public string Content { get; set; }

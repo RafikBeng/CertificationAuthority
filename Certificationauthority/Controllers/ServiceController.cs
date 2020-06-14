@@ -82,10 +82,11 @@ namespace Certificationauthority.Controllers
                 Cert.NotBefore = NewCertificate.NotBefore;
                 _CertService.DelCert(Cert.Id);
                 _CertService.Create(Cert);
-                return View(Cert);
+                return View("Validate_Cert",Cert);
             }
             else if (service.Object == "Revoke")
             {
+                CrlModel model = new CrlModel();
                 var Crls = _CertService.GetClrs();
                 CertModel Root = _CertService.GetCert(true);
                 byte[] bits1 = CertReader(Root.Certificat);
@@ -94,19 +95,14 @@ namespace Certificationauthority.Controllers
                 if (Crls == null)
                 {
                     X509Crl crl = CreateClr(RootCA, certificate, int.Parse(service.Reason), key);
-                    _CertService.DelCert(Cert.Id);
                     Asn1OctetString octetString = crl.GetExtensionValue(X509Extensions.CrlNumber);
                     long number = CrlNumber.GetInstance(X509ExtensionUtilities.FromExtensionValue(octetString)).LongValueExact;
-                    CrlModel model = new CrlModel
-                    {
-                        Content = CrlWriter(crl),
-                        ThisUpdate = crl.ThisUpdate,
-                        NextUpdate = crl.NextUpdate.Value,
-                        Serial = number,
-                        Reason = service.Reason
-                    };
-                    _CertService.Create(model);
-                    return View(model);
+                    model.Content = CrlWriter(crl);
+                    model.ThisUpdate = crl.ThisUpdate;
+                    model.NextUpdate = crl.NextUpdate.Value;
+                    model.Serial = number;
+                    model.Reason = service.Reason;
+                    model.DN = crl.IssuerDN.ToString();
                 }
                 else
                 {
@@ -114,22 +110,21 @@ namespace Certificationauthority.Controllers
                     CrlModel LastCrl = _CertService.GetCrl(seriale);
                     X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(LastCrl.Content));
                     X509Crl NewCrl = UpdateClr(RootCA, certificate, int.Parse(service.Reason), crl, key);
-                    CrlModel model = new CrlModel
-                    {
-                        Content = CrlWriter(NewCrl),
-                        ThisUpdate = NewCrl.ThisUpdate,
-                        NextUpdate = NewCrl.NextUpdate.Value,
-                        Serial = seriale,
-                        Reason = service.Reason
-                    };
-                    _CertService.DelCert(Cert.Id);
-                    _CertService.Create(model);
-                    return View(model);
+                    model.Content = CrlWriter(NewCrl);
+                    model.ThisUpdate = NewCrl.ThisUpdate;
+                    model.NextUpdate = NewCrl.NextUpdate.Value;
+                    model.Serial = seriale;
+                    model.Reason = service.Reason;
+                    model.DN = crl.IssuerDN.ToString();
+
                 }
+                _CertService.DelCert(Cert.Id);
+                _CertService.Create(model);
+                return View("Validate_Crl",model);
             }
-            else return View(Cert); 
-           
-           
+            else return View("Validate_Cert", Cert);
+
+
         }
 
         // POST: Service/Edit/5
