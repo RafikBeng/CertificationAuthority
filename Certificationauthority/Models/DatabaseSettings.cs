@@ -11,6 +11,7 @@ namespace Certificationauthority.Models
         public string Countries { get; set; }
         public string Csr { get; set; }
         public string Services { get; set; }
+        public string Clr { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
@@ -21,6 +22,7 @@ namespace Certificationauthority.Models
         string Countries { get; set; }
         string Csr { get; set; }
         string Services { get; set; }
+        string Clr { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }

@@ -15,6 +15,7 @@ using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
+using Org.BouncyCastle.Utilities.Encoders;
 using Org.BouncyCastle.X509;
 using static Certlib.CertGen;
 using static Certlib.KeyGen;
@@ -47,19 +48,21 @@ namespace Certificationauthority.Controllers
             CertModel Model = new CertModel
             {
                 SubjectDN = pkcs10.GetCertificationRequestInfo().Subject.ToString(),
-                Thumbprint = Convert.ToBase64String(pkcs10.Signature.GetOctets()),
+                Thumbprint = Hex.ToHexString(pkcs10.Signature.GetOctets()),
                 Extensions = ShowExtensions(pkcs10),
                 Publickey = KeyWriter(pkcs10.GetPublicKey()),
                 Privatekey = result.Privatekey,
                 Signature = Sig,
                 Id = id,
-                Validity=result.Validity,
-                Certificat= result.Certificat,
+                Validity = result.Validity,
+                Certificat = result.Certificat,
+                Password = result.Password
             };
             AsymmetricKeyParameter key = pkcs10.GetPublicKey();
             if (Sig.Contains("RSA"))
             {
                 Model.Algorithme = "RSA";
+                
                 RsaKeyParameters rsaKey = (RsaKeyParameters)key;
                // RSAParameters rsaParams = DotNetUtilities.ToRSAParameters((RsaKeyParameters)key);
                 Model.KeySize = rsaKey.Modulus.BitLength;
@@ -123,7 +126,8 @@ namespace Certificationauthority.Controllers
                 Thumbprint = Convert.ToBase64String(certificate.GetSignature()),
                 Extensions = ShowExtensions(certificate),
                 Signature = certificate.SigAlgName,
-                Publickey = KeyWriter(certificate.GetPublicKey())
+                Publickey = KeyWriter(certificate.GetPublicKey()),
+                Password = cert.Password
             };
          
             string sigalgo = SignerUtilities.GetEncodingName(pkcs10.SignatureAlgorithm.Algorithm);

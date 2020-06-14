@@ -129,5 +129,7 @@ namespace Certificationauthority.Models
         [BsonIgnore]
         public string Publickey { get; set; }
         public string Certificat { get; set; }
+        [Display(Name = "Password")]
+        public string Password { get; set; }
     }
 }

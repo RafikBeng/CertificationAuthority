@@ -78,6 +78,17 @@ namespace Certlib
             return keyGenerator.GenerateKeyPair();
         }
 
+        public static AsymmetricCipherKeyPair GenerateRsaKeyPair(RsaKeyParameters parameters)
+        {
+            BigInteger publicExponent = BigInteger.ValueOf(0x10001);
+            SecureRandom secureRandom = new SecureRandom();
+            RsaKeyGenerationParameters rsaKeyGenerationParameters = new RsaKeyGenerationParameters(parameters.Exponent, secureRandom, parameters.Modulus.BitLength, 80);
+            var keyGenerator = new RsaKeyPairGenerator();
+            
+            keyGenerator.Init(rsaKeyGenerationParameters);
+            return keyGenerator.GenerateKeyPair();
+        }
+
         public static AsymmetricCipherKeyPair GenerateEcKeyPair(string curveName, string algorithme = "ECDSA")
         {
             SecureRandom secureRandom = new SecureRandom();
@@ -86,6 +97,19 @@ namespace Certlib
            // var ecDomain = new ECDomainParameters(ecParam.Curve, ecParam.G, ecParam.N, ecParam.H, ecParam.GetSeed());
             // var keygenParam = new ECKeyGenerationParameters(ecDomain, secureRandom);
             var keygenParam = new ECKeyGenerationParameters(ECNamedCurveTable.GetOid(curveName), secureRandom);
+            var keyGenerator = new ECKeyPairGenerator(algorithme);
+            keyGenerator.Init(keygenParam);
+            return keyGenerator.GenerateKeyPair();
+        }
+        public static AsymmetricCipherKeyPair GenerateEcKeyPair(ECKeyParameters KeyParam, string algorithme = "ECDSA")
+        {
+            SecureRandom secureRandom = new SecureRandom();
+            //  var ecParam = ECNamedCurveTable.GetByName(curveName);
+            //     var ecDomain = new ECDomainParameters(ecParam.Curve, ecParam.G, ecParam.N,ecParam.H);
+            // var ecDomain = new ECDomainParameters(ecParam.Curve, ecParam.G, ecParam.N, ecParam.H, ecParam.GetSeed());
+            // var keygenParam = new ECKeyGenerationParameters(ecDomain, secureRandom);
+           
+            var keygenParam = new ECKeyGenerationParameters(KeyParam.PublicKeyParamSet, secureRandom);
             var keyGenerator = new ECKeyPairGenerator(algorithme);
             keyGenerator.Init(keygenParam);
             return keyGenerator.GenerateKeyPair();

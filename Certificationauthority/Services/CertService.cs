@@ -11,22 +11,28 @@ namespace Certificationauthority.Services
 {
     public class CertService
     {
-        private readonly IMongoCollection<CertModel> _CertModel;
+        private readonly IMongoCollection<CertModel> _Cert;
         private readonly IMongoCollection<BsonDocument> _Contries;
         private readonly IMongoCollection<CsrModel> _Csr;
-        private readonly IMongoCollection<ServiceModel> _ServiceModel;
+        private readonly IMongoCollection<ServiceModel> _Service;
+        private readonly IMongoCollection<ClrModel> _Clr;
         public CertService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _CertModel = database.GetCollection<CertModel>(settings.Cert);
+            _Cert = database.GetCollection<CertModel>(settings.Cert);
             _Contries = database.GetCollection<BsonDocument>(settings.Countries);
             _Csr = database.GetCollection<CsrModel>(settings.Csr);
-            _ServiceModel = database.GetCollection<ServiceModel>(settings.Services);
+            _Service = database.GetCollection<ServiceModel>(settings.Services);
+            _Clr = database.GetCollection<ClrModel>(settings.Clr);
         }
         public void Create(CertModel collection)
         {
-            _CertModel.InsertOne(collection);
+            _Cert.InsertOne(collection);
+        }
+        public void Create(ClrModel collection)
+        {
+            _Clr.InsertOne(collection);
         }
 
         public List<BsonDocument> GetContries()
@@ -44,7 +50,7 @@ namespace Certificationauthority.Services
         {
             FilterDefinition<ServiceModel> filter = Builders<ServiceModel>.Filter.Empty;
             //var projectionBuilder = Builders<CsrModel>.Projection;
-            var result = _ServiceModel.Find<ServiceModel>(filter).ToEnumerable();
+            var result = _Service.Find<ServiceModel>(filter).ToEnumerable();
             return result;
         }
         public IEnumerable<CsrModel> GetCsrs()
@@ -54,6 +60,20 @@ namespace Certificationauthority.Services
             var result = _Csr.Find<CsrModel>(filter).ToEnumerable();
             return result;
         }
+        public IEnumerable<ClrModel> GetClrs()
+        {
+            FilterDefinition<ClrModel> filter = Builders<ClrModel>.Filter.Empty;
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Clr.Find<ClrModel>(filter).ToEnumerable();
+            return result;
+        }
+        public IEnumerable<CertModel> GetCerts()
+        {
+            FilterDefinition<CertModel> filter = Builders<CertModel>.Filter.Empty;
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Cert.Find<CertModel>(filter).ToEnumerable();
+            return result;
+        }
         public CsrModel GetCsr(string id)
         {
             CsrModel result= _Csr.Find<CsrModel>(CsrModel => CsrModel.Id == id).FirstOrDefault();
@@ -61,18 +81,24 @@ namespace Certificationauthority.Services
         }
         public ServiceModel GetService(string id)
         {
-            ServiceModel result = _ServiceModel.Find<ServiceModel>(ServiceModel => ServiceModel.Id == id).FirstOrDefault();
+            ServiceModel result = _Service.Find<ServiceModel>(ServiceModel => ServiceModel.Id == id).FirstOrDefault();
             return result;
         }
         public CertModel GetCert(bool IsRootCA)
         {
-            CertModel result = _CertModel.Find<CertModel>(CsrModel => CsrModel.IsRootCA == IsRootCA).FirstOrDefault();
+            CertModel result = _Cert.Find<CertModel>(CertModel => CertModel.IsRootCA == IsRootCA).FirstOrDefault();
+            return result;
+
+        }
+        public CertModel GetCert(Int64 Serial)
+        {
+            CertModel result = _Cert.Find<CertModel>(CertModel => CertModel.Serial == Serial).FirstOrDefault();
             return result;
 
         }
         public void DelServices(string id)
         {
-            _ServiceModel.DeleteOne<ServiceModel>(ServiceModel => ServiceModel.Id == id);
+            _Service.DeleteOne<ServiceModel>(ServiceModel => ServiceModel.Id == id);
         }
         public void DelCsr(string id)
         {

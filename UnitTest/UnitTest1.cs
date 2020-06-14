@@ -21,6 +21,13 @@ using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto.Parameters;
 using System.Text;
 using Org.BouncyCastle.Utilities.Encoders;
+using Org.BouncyCastle.Asn1.Nist;
+using System.Security.Cryptography;
+using Org.BouncyCastle.X509.Extension;
+using Org.BouncyCastle.Pkix;
+using System.IO;
+using Org.BouncyCastle.Utilities;
+using Org.BouncyCastle.Bcpg;
 
 namespace UnitTest
 {
@@ -54,8 +61,7 @@ namespace UnitTest
 
                 Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage, false);
                 RsaKeyParameters pubkey =(RsaKeyParameters)PublicKeyFactory.CreateKey(pkcs10.GetCertificationRequestInfo().SubjectPublicKeyInfo);
-                Console.WriteLine("RSA Key size="+pubkey.Modulus.BitLength);
-                Console.WriteLine("Signatur algo=" + SignerUtilities.GetEncodingName(pkcs10.SignatureAlgorithm.Algorithm));
+              
                 //*********************************************************************************************************************
                 String name1 = "RoortCA";
                 String organization1 = "ANP";
@@ -73,14 +79,17 @@ namespace UnitTest
                 
                 //*********************************************************************************************************************
                 BigInteger SerialNumber1 = GenerateSerialNumber(random);
-               // AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
-                
-               TbsCertificateStructure tbs = TbsCertificate(pkcs10, 5, SerialNumber1, Root);
+                BigInteger SerialNumber2 = GenerateSerialNumber(random);
+                // AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
+
+                TbsCertificateStructure tbs = TbsCertificate(pkcs10, 5, SerialNumber1, Root);
+                TbsCertificateStructure tbs1 = TbsCertificate(pkcs10, 5, SerialNumber2, Root);
                 //*********************************************************************************************************************
-               X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private);
-               X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
-               Console.WriteLine(Certificate2.ToString(true));
-               Console.WriteLine("*********************************************************************************************************************");
+                X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private);
+                X509Certificate certificate1 = SigneTbs(tbs1, Root, asymmetricCipherKeyPair1.Private);
+                // X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
+                // Console.WriteLine(Certificate2.ToString(true));
+                Console.WriteLine("*********************************************************************************************************************");
                 //  ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)asymmetricCipherKeyPair1.Public;
                 // Console.WriteLine(publicKeyParam.Parameters.Curve.FieldSize);
                 string pass = GeneratePassword(32);
@@ -89,6 +98,62 @@ namespace UnitTest
                
                 Console.WriteLine(Hex.ToHexString(DigestUtilities.CalculateDigest("SHA3-512", message)));
                 Console.WriteLine();
+                Console.WriteLine("*********************************************************************************************************************");
+                DateTime dateTime = DateTime.UtcNow;
+                
+                DateTime dateTime1 = dateTime.AddYears(5);
+                Console.WriteLine(dateTime1);
+                Console.WriteLine(dateTime);
+                TimeSpan timeSpan = dateTime1 - dateTime;
+                Console.WriteLine(dateTime1 - dateTime);
+               
+                Console.WriteLine(dateTime.Add(timeSpan));
+
+
+
+
+
+
+
+                // X509Certificate cert = RenewCertificate(certificate,asymmetricCipherKeyPair1.Private);
+                // Console.WriteLine(cert.SubjectDN.ToString());
+                //foreach(var v in certificate.GetExtendedKeyUsage())
+                // {
+                //     Console.WriteLine(v);
+                // }
+                // AsymmetricCipherKeyPair keyPair = GetKey(Root);
+                X509V2CrlGenerator crlGenerator = new X509V2CrlGenerator();
+                crlGenerator.SetIssuerDN(Root.IssuerDN);
+                crlGenerator.SetThisUpdate(dateTime);
+                crlGenerator.SetNextUpdate(dateTime1);
+                crlGenerator.AddCrlEntry(certificate.SerialNumber, dateTime, CrlReason.KeyCompromise);
+                crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(Root));
+                crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.One));
+                ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithm1, asymmetricCipherKeyPair1.Private, random);
+                X509Crl crl = crlGenerator.Generate(signatureFactory);
+                Stream stream = File.Create("d:/test.crl");
+                BinaryWriter binaryWriter = new BinaryWriter(stream);
+                binaryWriter.Write(crl.GetEncoded());
+                binaryWriter.Flush();
+                binaryWriter.Close();
+
+                //*******************************************************************************
+                X509V2CrlGenerator crlGenerator1 = new X509V2CrlGenerator();
+                crlGenerator1.SetIssuerDN(Root.IssuerDN);
+                crlGenerator1.SetThisUpdate(dateTime);
+                crlGenerator1.SetNextUpdate(dateTime1);
+                crlGenerator1.AddCrl(crl);
+                crlGenerator1.AddCrlEntry(certificate1.SerialNumber, dateTime, CrlReason.CessationOfOperation);
+                crlGenerator1.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(Root));
+                crlGenerator1.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.Two));
+                X509Crl crl1 = crlGenerator1.Generate(signatureFactory);
+                Stream stream1 = File.Create("d:/test1.crl");
+                BinaryWriter binaryWriter1 = new BinaryWriter(stream1);
+                binaryWriter1.Write(crl1.GetEncoded());
+                binaryWriter1.Flush();
+                binaryWriter1.Close();
+               
+               
             });
 
             //TimeIt("GenerateDsaKeyPair", () =>
@@ -175,6 +240,8 @@ namespace UnitTest
                 TbsCertificateStructure tbsCertificateStructure = TbsCertificate(subjectDN, issuerDN, subjectAlternativeNames, asymmetricCipherKeyPair, SerialNumber, keyUsage, ExtendUsage, algorithm, 5, false);
                 ECKeyParameters keyParameters = (ECKeyParameters)PublicKeyFactory.CreateKey(tbsCertificateStructure.SubjectPublicKeyInfo);
                 Console.WriteLine("EC Key Size=" + keyParameters.Parameters.Curve.FieldSize);
+               
+                
             });
 
             Debugger.Break();

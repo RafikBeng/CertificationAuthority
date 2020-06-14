@@ -12,7 +12,7 @@
 
             <tr>
                 <th scope="row">@Html.DisplayNameFor(model => model.Serial)</th>
-                <td>
+                <td id="ser">
                     @Html.DisplayFor(model => model.Serial)
                 </td>
 
@@ -40,23 +40,28 @@
     </table>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Validate", "Validate", new { id = Model.Id }) 
     <a asp-action="Index">Back to List</a>
 </div>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function () {
+            var value = document.getElementById("ser").innerText;
+            $.get('@Url.Action("CheckPassword")', { Serial: value }, function (data) {
+                alert(data.s);
+            })
+
             $('#reas').hide();
         var val = document.getElementById("objec").innerText;
           //  var val = $("#objec").text();
-           
+
         if (val == "Revoke") {
             $('#reas').show();
-            
+
         }
-        
+
     });
-   
-    </script>
+
+</script>
 }

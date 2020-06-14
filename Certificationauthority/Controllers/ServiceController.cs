@@ -6,6 +6,7 @@ using Certificationauthority.Models;
 using Certificationauthority.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto;
 
 namespace Certificationauthority.Controllers
 {
@@ -17,6 +18,12 @@ namespace Certificationauthority.Controllers
             _CertService = CertService;
         }
         // GET: Service
+        public JsonResult CheckPassword(Int64 Serial)
+        {
+            CertModel Cert = _CertService.GetCert(Serial);
+            if (Cert != null) return Json(new { s = Cert.Password });
+            else return Json(new { s = "not found" });
+        }
         public ActionResult Index()
         {
             return View(_CertService.GetServices());
@@ -26,10 +33,6 @@ namespace Certificationauthority.Controllers
         public ActionResult Details(string id)
         {
             ServiceModel model = _CertService.GetService(id);
-            Console.WriteLine("********************************");
-            Console.WriteLine(model.Password);
-            Console.WriteLine(model.Reason);
-            Console.WriteLine("********************************");
             return View(model);
         }
 
@@ -57,8 +60,12 @@ namespace Certificationauthority.Controllers
         }
 
         // GET: Service/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Validate(string id)
         {
+            ServiceModel service = _CertService.GetService(id);
+            CertModel Cert = _CertService.GetCert(service.Serial);
+            
+           
             return View();
         }
 

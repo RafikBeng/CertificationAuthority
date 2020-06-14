@@ -4,20 +4,24 @@ using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Operators;
+using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Crypto.Utilities;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.OpenSsl;
 using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
+using Org.BouncyCastle.Utilities.Collections;
 using Org.BouncyCastle.X509;
+using Org.BouncyCastle.X509.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
-
+using static Certlib.KeyGen;
 namespace Certlib
 {
     public static class CertGen
@@ -184,7 +188,12 @@ namespace Certlib
 
                 return certificateRequestExtensions;
         }
-
+        public static byte[] CLrReader(string CLR)
+        {
+            TextReader textReader = new StringReader(CLR);
+            PemReader pemReader = new PemReader(textReader);
+            return pemReader.ReadPemObject().Content;
+        }
         public static byte[] CsrReader(string Csr)
         {
             TextReader textReader = new StringReader(Csr);
@@ -221,6 +230,17 @@ namespace Certlib
             return (str);
         }
 
+        public static string CLrWriter(X509Crl CLR)
+        {
+
+            TextWriter textWriter = new StringWriter();
+            PemWriter pemWriter = new PemWriter(textWriter);
+            pemWriter.WriteObject(CLR);
+            pemWriter.Writer.Flush();
+            string str = textWriter.ToString();
+            str = str.Remove(str.LastIndexOf(Environment.NewLine));
+            return (str);
+        }
 
         public static Pkcs10CertificationRequest CertRequest(X509Name SubjectDN,
                                                              String[] subjectAlternativeNames,
@@ -251,8 +271,13 @@ namespace Certlib
             SecureRandom Random = new SecureRandom();
             ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
             String algorithm = RootCA.SigAlgName;
+           
             algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
+            
+
             AlgorithmIdentifier algorithm1 = new DefaultSignatureAlgorithmIdentifierFinder().Find(algorithm);
+            string Sig = SignerUtilities.GetEncodingName(algorithm1.Algorithm);
+            Console.WriteLine(Sig);
             byte[] encoded = tbs.GetDerEncoded();
             IStreamCalculator streamCalculator = signatureCalculatorFactory.CreateCalculator();
             streamCalculator.Stream.Write(encoded, 0, encoded.Length);
@@ -261,7 +286,36 @@ namespace Certlib
             X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
             return new X509Certificate(structure);
         }
+       
+        public static X509Certificate RenewCertificate(X509Certificate Certificate,AsymmetricKeyParameter CAkey)
+        {
+            X509V3CertificateGenerator Generator = new X509V3CertificateGenerator();
+            Generator.SetSerialNumber(Certificate.SerialNumber);
+           
+            Generator.SetIssuerDN(Certificate.IssuerDN);
+            Generator.SetSubjectDN(Certificate.SubjectDN);
+            Generator.SetNotBefore(Certificate.NotAfter);
+            Generator.SetPublicKey(Certificate.GetPublicKey());
+            Generator.SetNotAfter(Certificate.NotAfter.Add(Certificate.NotAfter - Certificate.NotBefore));
+           
+            X509Extensions extensions = Certificate.CertificateStructure.TbsCertificate.Extensions;
+            KeyUsage keyUsage = KeyUsage.FromExtensions(extensions);
+            if (keyUsage != null) AddKeyUsage(Generator, keyUsage);
 
+            ExtendedKeyUsage extendedKeyUsage = ExtendedKeyUsage.FromExtensions(extensions);
+            if (extendedKeyUsage != null && extendedKeyUsage.Count > 0)
+            {
+                AddExtendedKeyUsage(Generator, extendedKeyUsage);
+            }
+            string Sig = Certificate.SigAlgName;
+            Sig = Sig.Remove(Sig.IndexOf("-"), 1);
+            SecureRandom random = new SecureRandom();
+            
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(Sig,CAkey,random);
+            X509Certificate Cert = Generator.Generate(signatureFactory);
+            return (Cert);
+
+        }
         public static X509Certificate RootCA(BigInteger SerialNumber,
                                              AsymmetricCipherKeyPair KeyPair,
                                              string SubjectName,
@@ -303,7 +357,7 @@ namespace Certlib
                                                              )
         {
 
-
+            
             V3TbsCertificateGenerator tbsGenerator = new V3TbsCertificateGenerator();            
             tbsGenerator.SetSubject(Csr.GetCertificationRequestInfo().Subject);
             tbsGenerator.SetIssuer(RootCA.SubjectDN);
@@ -406,6 +460,13 @@ namespace Certlib
 
             certificateGenerator.AddExtension(
                 X509Extensions.ExtendedKeyUsage.Id, false, new ExtendedKeyUsage(usages));
+
+        }
+        public static void AddExtendedKeyUsage(X509V3CertificateGenerator certificateGenerator, ExtendedKeyUsage extendedKeyUsage)
+        {
+
+            certificateGenerator.AddExtension(
+                X509Extensions.ExtendedKeyUsage.Id, false, extendedKeyUsage);
 
         }
         public static void AddKeyUsage(X509V3CertificateGenerator certificateGenerator, KeyUsage usages)
