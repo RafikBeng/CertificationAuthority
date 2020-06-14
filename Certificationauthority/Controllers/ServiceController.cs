@@ -39,6 +39,33 @@ namespace Certificationauthority.Controllers
         public ActionResult Details(string id)
         {
             ServiceModel model = _CertService.GetService(id);
+            int reason = int.Parse(model.Reason);
+            switch (reason)
+            {
+                case 0: 
+                    model.Reason = "unspecified";
+                    break;
+                case 1: 
+                    model.Reason = "key Compromise";
+                    break;
+                case 3:
+                    model.Reason = "Affiliation Changed";
+                    break;
+                case 4: 
+                    model.Reason = "superseded";
+                    break;
+                case 5: 
+                    model.Reason = "Cessation Of Operation";
+                    break;
+                case 6: 
+                    model.Reason = "Certificate Hold";
+                    break;
+                case 9: 
+                    model.Reason = "Privilege With drawn";
+                    break;
+                default:
+                    break;
+            }
             return View(model);
         }
 
