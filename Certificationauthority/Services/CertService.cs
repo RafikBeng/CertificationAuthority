@@ -15,7 +15,7 @@ namespace Certificationauthority.Services
         private readonly IMongoCollection<BsonDocument> _Contries;
         private readonly IMongoCollection<CsrModel> _Csr;
         private readonly IMongoCollection<ServiceModel> _Service;
-        private readonly IMongoCollection<ClrModel> _Clr;
+        private readonly IMongoCollection<CrlModel> _Clr;
         public CertService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
@@ -24,13 +24,13 @@ namespace Certificationauthority.Services
             _Contries = database.GetCollection<BsonDocument>(settings.Countries);
             _Csr = database.GetCollection<CsrModel>(settings.Csr);
             _Service = database.GetCollection<ServiceModel>(settings.Services);
-            _Clr = database.GetCollection<ClrModel>(settings.Clr);
+            _Clr = database.GetCollection<CrlModel>(settings.Clr);
         }
         public void Create(CertModel collection)
         {
             _Cert.InsertOne(collection);
         }
-        public void Create(ClrModel collection)
+        public void Create(CrlModel collection)
         {
             _Clr.InsertOne(collection);
         }
@@ -58,13 +58,25 @@ namespace Certificationauthority.Services
             FilterDefinition<CsrModel> filter = Builders<CsrModel>.Filter.Empty;
             //var projectionBuilder = Builders<CsrModel>.Projection;
             var result = _Csr.Find<CsrModel>(filter).ToEnumerable();
+            
             return result;
         }
-        public IEnumerable<ClrModel> GetClrs()
+        public long MaxSeriale()
         {
-            FilterDefinition<ClrModel> filter = Builders<ClrModel>.Filter.Empty;
+           return  _Clr.AsQueryable<CrlModel>().Select(c => c.Serial).Max();
+        }
+
+        public CrlModel GetCrl(long Seriale)
+        {
+            CrlModel result = _Clr.Find<CrlModel>(CrlModel => CrlModel.Serial== Seriale).FirstOrDefault();
+            return result;
+        }
+        public IEnumerable<CrlModel> GetClrs()
+        {
+            FilterDefinition<CrlModel> filter = Builders<CrlModel>.Filter.Empty;
             //var projectionBuilder = Builders<CsrModel>.Projection;
-            var result = _Clr.Find<ClrModel>(filter).ToEnumerable();
+            var result = _Clr.Find<CrlModel>(filter).ToEnumerable();
+            
             return result;
         }
         public IEnumerable<CertModel> GetCerts()
@@ -103,6 +115,10 @@ namespace Certificationauthority.Services
         public void DelCsr(string id)
         {
             _Csr.DeleteOne<CsrModel>(CsrModel => CsrModel.Id == id);
+        }
+        public void DelCert(string id)
+        {
+            _Cert.DeleteOne<CertModel>(CertModel => CertModel.Id == id);
         }
         public IEnumerable<SelectListItem> Getstates(string name)
         {

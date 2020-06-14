@@ -40,7 +40,8 @@
     </table>
 </div>
 <div>
-    @Html.ActionLink("Validate", "Validate", new { id = Model.Id }) 
+    @Html.ActionLink("Validate", "Validate", new { id = Model.Id })
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Id })
     <a asp-action="Index">Back to List</a>
 </div>
 @section Scripts {

@@ -6,8 +6,14 @@ using Certificationauthority.Models;
 using Certificationauthority.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto;
-
+using Org.BouncyCastle.Math;
+using Org.BouncyCastle.X509;
+using Org.BouncyCastle.X509.Extension;
+using static Certlib.CertGen;
+using static Certlib.KeyGen;
 namespace Certificationauthority.Controllers
 {
     public class ServiceController : Controller
@@ -63,10 +69,67 @@ namespace Certificationauthority.Controllers
         public ActionResult Validate(string id)
         {
             ServiceModel service = _CertService.GetService(id);
+            _CertService.DelServices(id);
             CertModel Cert = _CertService.GetCert(service.Serial);
-            
+            byte[] bits = CertReader(Cert.Certificat);
+            X509Certificate certificate = new X509CertificateParser().ReadCertificate(bits);
+            if (service.Object == "Renew")
+            {
+                CertModel RootCa = _CertService.GetCert(true);
+                AsymmetricKeyParameter key = PrivateKeyReader(RootCa.Privatekey);
+                X509Certificate NewCertificate = RenewCertificate(certificate, key);
+                Cert.NotAfter = NewCertificate.NotAfter;
+                Cert.NotBefore = NewCertificate.NotBefore;
+                _CertService.DelCert(Cert.Id);
+                _CertService.Create(Cert);
+                return View(Cert);
+            }
+            else if (service.Object == "Revoke")
+            {
+                var Crls = _CertService.GetClrs();
+                CertModel Root = _CertService.GetCert(true);
+                byte[] bits1 = CertReader(Root.Certificat);
+                X509Certificate RootCA = new X509CertificateParser().ReadCertificate(bits1);
+                AsymmetricKeyParameter key = PrivateKeyReader(Root.Privatekey);
+                if (Crls == null)
+                {
+                    X509Crl crl = CreateClr(RootCA, certificate, int.Parse(service.Reason), key);
+                    _CertService.DelCert(Cert.Id);
+                    Asn1OctetString octetString = crl.GetExtensionValue(X509Extensions.CrlNumber);
+                    long number = CrlNumber.GetInstance(X509ExtensionUtilities.FromExtensionValue(octetString)).LongValueExact;
+                    CrlModel model = new CrlModel
+                    {
+                        Content = CrlWriter(crl),
+                        ThisUpdate = crl.ThisUpdate,
+                        NextUpdate = crl.NextUpdate.Value,
+                        Serial = number,
+                        Reason = service.Reason
+                    };
+                    _CertService.Create(model);
+                    return View(model);
+                }
+                else
+                {
+                    long seriale = _CertService.MaxSeriale();
+                    CrlModel LastCrl = _CertService.GetCrl(seriale);
+                    X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(LastCrl.Content));
+                    X509Crl NewCrl = UpdateClr(RootCA, certificate, int.Parse(service.Reason), crl, key);
+                    CrlModel model = new CrlModel
+                    {
+                        Content = CrlWriter(NewCrl),
+                        ThisUpdate = NewCrl.ThisUpdate,
+                        NextUpdate = NewCrl.NextUpdate.Value,
+                        Serial = seriale,
+                        Reason = service.Reason
+                    };
+                    _CertService.DelCert(Cert.Id);
+                    _CertService.Create(model);
+                    return View(model);
+                }
+            }
+            else return View(Cert); 
            
-            return View();
+           
         }
 
         // POST: Service/Edit/5
@@ -87,9 +150,10 @@ namespace Certificationauthority.Controllers
         }
 
         // GET: Service/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
+            _CertService.DelServices(id);
+            return View(nameof(Index));
         }
 
         // POST: Service/Delete/5

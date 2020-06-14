@@ -188,7 +188,7 @@ namespace Certlib
 
                 return certificateRequestExtensions;
         }
-        public static byte[] CLrReader(string CLR)
+        public static byte[] CrlReader(string CLR)
         {
             TextReader textReader = new StringReader(CLR);
             PemReader pemReader = new PemReader(textReader);
@@ -230,7 +230,7 @@ namespace Certlib
             return (str);
         }
 
-        public static string CLrWriter(X509Crl CLR)
+        public static string CrlWriter(X509Crl CLR)
         {
 
             TextWriter textWriter = new StringWriter();
@@ -315,6 +315,43 @@ namespace Certlib
             X509Certificate Cert = Generator.Generate(signatureFactory);
             return (Cert);
 
+        }
+
+        public static X509Crl CreateClr(X509Certificate RootCA, X509Certificate Certificate,int Reason, AsymmetricKeyParameter CAkey)
+        {
+            X509V2CrlGenerator crlGenerator = new X509V2CrlGenerator();
+            DateTime dateTime = DateTime.UtcNow;
+            crlGenerator.SetIssuerDN(RootCA.IssuerDN);
+            crlGenerator.SetThisUpdate(dateTime);
+            crlGenerator.SetNextUpdate(dateTime.AddMonths(1));
+            crlGenerator.AddCrlEntry(Certificate.SerialNumber, dateTime, Reason);
+            crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(RootCA));
+            crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.One));
+            string algorithme = RootCA.SigAlgName;
+            algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);
+            SecureRandom random = new SecureRandom();
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithme,CAkey, random);
+            return crlGenerator.Generate(signatureFactory);
+        }
+        public static X509Crl UpdateClr(X509Certificate RootCA, X509Certificate Certificate, int Reason,X509Crl crl ,AsymmetricKeyParameter CAkey)
+        {
+            X509V2CrlGenerator crlGenerator = new X509V2CrlGenerator();
+            DateTime dateTime = DateTime.UtcNow;
+            crlGenerator.SetIssuerDN(RootCA.IssuerDN);
+            crlGenerator.SetThisUpdate(dateTime);
+            crlGenerator.SetNextUpdate(dateTime.AddMonths(1));
+            crlGenerator.AddCrl(crl);
+            crlGenerator.AddCrlEntry(Certificate.SerialNumber, dateTime, Reason);
+            crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(RootCA));
+            Asn1OctetString octetString = crl.GetExtensionValue(X509Extensions.CrlNumber);
+            long number = CrlNumber.GetInstance(X509ExtensionUtilities.FromExtensionValue(octetString)).LongValueExact;
+            BigInteger serial = BigInteger.ValueOf(number+1);
+            crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(serial));
+            string algorithme = RootCA.SigAlgName;
+            algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);
+            SecureRandom random = new SecureRandom();
+            ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithme, CAkey, random);
+            return crlGenerator.Generate(signatureFactory);
         }
         public static X509Certificate RootCA(BigInteger SerialNumber,
                                              AsymmetricCipherKeyPair KeyPair,

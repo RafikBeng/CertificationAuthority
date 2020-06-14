@@ -133,6 +133,7 @@ namespace UnitTest
                 X509Crl crl = crlGenerator.Generate(signatureFactory);
                 Stream stream = File.Create("d:/test.crl");
                 BinaryWriter binaryWriter = new BinaryWriter(stream);
+                
                 binaryWriter.Write(crl.GetEncoded());
                 binaryWriter.Flush();
                 binaryWriter.Close();
@@ -145,15 +146,22 @@ namespace UnitTest
                 crlGenerator1.AddCrl(crl);
                 crlGenerator1.AddCrlEntry(certificate1.SerialNumber, dateTime, CrlReason.CessationOfOperation);
                 crlGenerator1.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(Root));
-                crlGenerator1.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.Two));
+                crlGenerator1.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.Ten));
                 X509Crl crl1 = crlGenerator1.Generate(signatureFactory);
                 Stream stream1 = File.Create("d:/test1.crl");
                 BinaryWriter binaryWriter1 = new BinaryWriter(stream1);
                 binaryWriter1.Write(crl1.GetEncoded());
                 binaryWriter1.Flush();
                 binaryWriter1.Close();
-               
-               
+                Asn1OctetString octetString = crl.GetExtensionValue(X509Extensions.CrlNumber);
+                Asn1OctetString octetString1 = crl1.GetExtensionValue(X509Extensions.CrlNumber);
+                long number = CrlNumber.GetInstance(X509ExtensionUtilities.FromExtensionValue(octetString1)).LongValueExact;
+                
+
+
+                //Int64 ser = Int64.Parse(BitConverter.ToString(octetString.GetOctets()));
+                Console.WriteLine(CrlWriter(crl1));
+                Console.WriteLine(number);
             });
 
             //TimeIt("GenerateDsaKeyPair", () =>

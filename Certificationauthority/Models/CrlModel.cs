@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Certificationauthority.Models
 {
-    public class ClrModel
+    public class CrlModel
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
@@ -17,5 +17,6 @@ namespace Certificationauthority.Models
         public DateTime ThisUpdate { get; set; }
         public DateTime NextUpdate { get; set; }
         public string Content { get; set; }
+        public string Reason { get; set; }
     }
 }

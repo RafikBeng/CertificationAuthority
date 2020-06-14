@@ -30,13 +30,13 @@ namespace RegistrationAuthority.Models
         public string Reason { get; set; }
         public List<SelectListItem> Reasons { get; } = new List<SelectListItem>
         {
-            new SelectListItem { Value = "unspecified", Text = "unspecified" },
-            new SelectListItem { Value = "keyCompromise", Text = "key Compromise"},
-            new SelectListItem { Value = "affiliationChanged", Text = "Affiliation Changed" },
-            new SelectListItem { Value = "superseded", Text = "superseded" },
-            new SelectListItem { Value = "cessationOfOperation", Text = "Cessation Of Operation"},
-            new SelectListItem { Value = "certificateHold", Text = "Certificate Hold" },
-            new SelectListItem { Value = "privilegeWithdrawn", Text = "Privilege With drawn"}
+            new SelectListItem { Value = "0", Text = "unspecified" },
+            new SelectListItem { Value = "1", Text = "key Compromise"},
+            new SelectListItem { Value = "3", Text = "Affiliation Changed" },
+            new SelectListItem { Value = "4", Text = "superseded" },
+            new SelectListItem { Value = "5", Text = "Cessation Of Operation"},
+            new SelectListItem { Value = "6", Text = "Certificate Hold" },
+            new SelectListItem { Value = "9", Text = "Privilege With drawn"}
            
         };
 
