@@ -34,13 +34,16 @@ namespace Certlib
         }
         public static AsymmetricKeyParameter PrivateKeyReader(string Key)
         {
+           // Console.WriteLine(Key);
             TextReader textReader = new StringReader(Key);
             PemReader pemReader = new PemReader(textReader);
+         
             var KeyParameter = (AsymmetricCipherKeyPair) pemReader.ReadObject();
             return KeyParameter.Private;
         }
         public static AsymmetricKeyParameter PublicKeyReader(string Key)
         {
+           // Console.WriteLine(Key);
             TextReader textReader = new StringReader(Key);
             PemReader pemReader = new PemReader(textReader);
             var KeyParameter = (AsymmetricKeyParameter) pemReader.ReadObject();

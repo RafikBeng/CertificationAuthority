@@ -115,13 +115,9 @@ namespace RegistrationAuthority.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CsrModel Csr)
         {
-            //foreach(var v in collection)
+            
+            //try
             //{
-            //    Console.WriteLine(v.Key + ":" + v.Value);
-            //}
-            //return RedirectToAction(nameof(Index));
-            try
-            {
 
                 String SubjectDN = $"CN={Csr.CommonName},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress},E={Csr.MAIL}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
@@ -186,12 +182,14 @@ namespace RegistrationAuthority.Controllers
                 TempData.Add("MyTempData", data);
                 TempData.Add("Mypkcs", pkcs);
                 return RedirectToAction(nameof(Details));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return RedirectToAction(nameof(Index));
-            }
+          //  }
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("***************************************");
+            //    Console.WriteLine(e.Data);
+            //    Console.WriteLine("***************************************");
+            //    return RedirectToAction(nameof(Index));
+            //}
         }
 
         // GET: Tbs/Edit/5
