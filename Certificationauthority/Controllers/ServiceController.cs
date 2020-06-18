@@ -44,32 +44,7 @@ namespace Certificationauthority.Controllers
         {
             ServiceModel model = _CertService.GetService(Serial);
             int reason = int.Parse(model.Reason);
-            switch (reason)
-            {
-                case 0: 
-                    model.Reason = "unspecified";
-                    break;
-                case 1: 
-                    model.Reason = "key Compromise";
-                    break;
-                case 3:
-                    model.Reason = "Affiliation Changed";
-                    break;
-                case 4: 
-                    model.Reason = "superseded";
-                    break;
-                case 5: 
-                    model.Reason = "Cessation Of Operation";
-                    break;
-                case 6: 
-                    model.Reason = "Certificate Hold";
-                    break;
-                case 9: 
-                    model.Reason = "Privilege With drawn";
-                    break;
-                default:
-                    break;
-            }
+            model.Reason = GetReasonCode(reason);
             return View(model);
         }
 
@@ -121,7 +96,7 @@ namespace Certificationauthority.Controllers
             {
                 CrlModel model = new CrlModel();
                 var Crls = _CertService.GetClrs();
-                Console.WriteLine("count is ="+Crls.Count());
+               // Console.WriteLine("count is ="+Crls.Count());
                 CertModel Root = _CertService.GetCert(true);
                 byte[] bits1 = CertReader(Root.Certificat);
                 X509Certificate RootCA = new X509CertificateParser().ReadCertificate(bits1);
@@ -135,22 +110,55 @@ namespace Certificationauthority.Controllers
                     model.ThisUpdate = crl.ThisUpdate;
                     model.NextUpdate = crl.NextUpdate.Value;
                     model.Serial = number;
-                    model.Reason = service.Reason;
+                   
                     model.DN = crl.IssuerDN.ToString();
+                    model.RevokedCertificates = new List<CrlEntryModel>();
+                   
+                    var RevokedCertificates = crl.GetRevokedCertificates();
+                    foreach (X509CrlEntry crlEntry in RevokedCertificates)
+                    {
+                        Asn1OctetString octetString1 = crlEntry.GetExtensionValue(X509Extensions.ReasonCode);
+                        DerEnumerated derEnumerated = (DerEnumerated)X509ExtensionUtilities.FromExtensionValue(octetString1);
+                        int ReasonCode = derEnumerated.IntValueExact;
+                        CrlEntryModel model1 = new CrlEntryModel
+                        {
+                            RevocationDate = crlEntry.RevocationDate,
+                            Serial = crlEntry.SerialNumber.LongValue
+                        };
+                        model1.Reason = GetReasonCode(ReasonCode);
+                        model.RevokedCertificates.Add(model1);
+                    }
+
                 }
                 else
                 {
-                    long seriale = _CertService.MaxSeriale();
-                    Console.WriteLine("Max serial is" + seriale);
-                    CrlModel LastCrl = _CertService.GetCrl(seriale);
+                    long serial = _CertService.MaxSerial();
+                    CrlModel LastCrl = _CertService.GetCrl(serial);
                     X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(LastCrl.Content));
                     X509Crl NewCrl = UpdateClr(RootCA, certificate, int.Parse(service.Reason), crl, key);
                     model.Content = CrlWriter(NewCrl);
+                    
                     model.ThisUpdate = NewCrl.ThisUpdate;
                     model.NextUpdate = NewCrl.NextUpdate.Value;
-                    model.Serial = seriale+1;
-                    model.Reason = service.Reason;
+                    model.Serial = serial+1;
+                    
                     model.DN = crl.IssuerDN.ToString();
+                    model.RevokedCertificates = new List<CrlEntryModel>();
+
+                    var RevokedCertificates = NewCrl.GetRevokedCertificates();
+                    foreach (X509CrlEntry crlEntry in RevokedCertificates)
+                    {
+                        Asn1OctetString octetString1 = crlEntry.GetExtensionValue(X509Extensions.ReasonCode);
+                        DerEnumerated derEnumerated = (DerEnumerated)X509ExtensionUtilities.FromExtensionValue(octetString1);
+                        int ReasonCode = derEnumerated.IntValueExact;
+                        CrlEntryModel model1 = new CrlEntryModel
+                        {
+                            RevocationDate = crlEntry.RevocationDate,
+                            Serial = crlEntry.SerialNumber.LongValue
+                        };
+                        model1.Reason = GetReasonCode(ReasonCode);
+                        model.RevokedCertificates.Add(model1);
+                    }
 
                 }
                 _CertService.DelCert(Cert.Id);

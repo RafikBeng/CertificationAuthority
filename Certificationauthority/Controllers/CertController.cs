@@ -19,6 +19,7 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 using Org.BouncyCastle.Utilities.Encoders;
+using Org.BouncyCastle.Crypto.Parameters;
 
 namespace Certificationauthority.Controllers
 {
@@ -48,13 +49,56 @@ namespace Certificationauthority.Controllers
            
             return Json(new { s = Private, h = Public });
         }
+
+        public ActionResult List()
+        {
+            return View(_CertService.GetCerts());
+        }
         // GET: Cert
         public ActionResult Index()
         {
-            return View();
-        }
+            CertModel cert = _CertService.GetCert(true);
+            if(cert==null) return RedirectToAction(nameof(Create));
+            else return RedirectToAction("Detail", new { Serial = cert.Serial });
 
-        [HttpGet]
+        }
+        public ActionResult Detail(long Serial)
+        {
+            CertModel result = _CertService.GetCert(Serial);
+            X509Certificate Certificate= new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            CertModel Model = new CertModel
+            {
+                SubjectDN = Certificate.SubjectDN.ToString(),
+                IssuerDN= Certificate.IssuerDN.ToString(),
+                Thumbprint = Hex.ToHexString(Certificate.GetSignature()),
+                Extensions = ShowExtensions(Certificate),
+                Publickey = KeyWriter(Certificate.GetPublicKey()),
+                Privatekey = result.Privatekey,
+                Signature = Certificate.SigAlgName,
+                Serial = Serial,
+                Validity = result.Validity,
+                Certificat = result.Certificat,
+                Password = result.Password,
+                NotAfter=Certificate.NotAfter,
+                NotBefore=Certificate.NotBefore
+            };
+            AsymmetricKeyParameter key = Certificate.GetPublicKey();
+            if (Certificate.SigAlgName.Contains("RSA"))
+            {
+                Model.Algorithme = "RSA";
+                RsaKeyParameters rsaKey = (RsaKeyParameters)key;
+                Model.KeySize = rsaKey.Modulus.BitLength;
+            }
+            else
+            {
+                Model.Algorithme = "ECC";
+                ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)key;
+                Model.KeySize = publicKeyParam.Parameters.Curve.FieldSize;
+            }
+            return View("Details",Model);
+
+        }
+            [HttpGet]
         public ActionResult Details()
         {
             try
@@ -166,17 +210,16 @@ namespace Certificationauthority.Controllers
 
 
                 SecureRandom random = new SecureRandom();
-                BigInteger Serial = GenerateSerialNumber(random);
-               
+                // BigInteger Serial = GenerateSerialNumber(random);
+                BigInteger Serial = BigInteger.One;
                 Cert.Serial = Int64.Parse(Serial.ToString());
                 X509Certificate certificate = RootCA(Serial, Key, SubjectDN, subjectAlternativeNames, keyUsage, ExtendUsage.ToArray(), Cert.Signature, int.Parse(Cert.Validity));
                 Cert.Certificat = CertWriter(certificate);
                 Cert.IsRootCA = true;
                 Cert.NotAfter = certificate.NotAfter;
                 Cert.NotBefore = certificate.NotBefore;
+                Cert.SubjectDN = certificate.SubjectDN.ToString();
                 _CertService.Create(Cert);
-
-
                 string data = JsonConvert.SerializeObject(Cert);
                 string Root = JsonConvert.SerializeObject(certificate.GetEncoded());
                 TempData.Add("MyTempData", data);

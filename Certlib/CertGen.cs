@@ -27,6 +27,20 @@ namespace Certlib
     public static class CertGen
 
     {
+        public static string GetReasonCode(int Reason)
+        {
+            return Reason switch
+            {
+                0 => ("unspecified"),
+                1 => ("key Compromise"),
+                3 => ("Affiliation Changed"),
+                4 => ("superseded"),
+                5 => ("Cessation Of Operation"),
+                6 => ("Certificate Hold"),
+                9 => ("Privilege With drawn"),
+                _ => ("Unknown"),
+            };
+        }
         public static string ShowExtensions(X509Certificate Certificate)
         {
             string Info = "Extensions:" + Environment.NewLine;

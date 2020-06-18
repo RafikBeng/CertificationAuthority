@@ -1,10 +1,9 @@
 ﻿@model Certificationauthority.Models.CrlModel
-
 @{
-    ViewData["Title"] = "Validate_Crl";
+    ViewData["Title"] = "Details";
 }
 
-<h1>Validate_Crl</h1>
+<h1>Details</h1>
 
 <div class="container">
 
@@ -12,29 +11,21 @@
 
         <tbody>
             <tr>
-                <th scope="row">Serial Number</th>
+                <th scope="row">@Html.DisplayNameFor(model => model.Serial)</th>
                 <td>
                     @Html.DisplayFor(model => model.Serial)
                 </td>
 
             </tr>
-
             <tr>
-                <th scope="row">Issuer Distinguished Name</th>
-                <td>
-                    @Html.DisplayFor(model => model.DN)
-                </td>
-
-            </tr>
-            <tr>
-                <th scope="row">This Update</th>
+                <th scope="row">@Html.DisplayNameFor(model => model.ThisUpdate)</th>
                 <td>
                     @Html.DisplayFor(model => model.ThisUpdate)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row">Next Update</th>
+                <th scope="row">@Html.DisplayNameFor(model => model.NextUpdate)</th>
                 <td>
                     @Html.DisplayFor(model => model.NextUpdate)
                 </td>
@@ -85,5 +76,6 @@
     </table>
 </div>
 <div>
+    
     <a asp-action="Index">Back to List</a>
 </div>

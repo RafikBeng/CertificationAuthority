@@ -110,7 +110,9 @@ namespace Certificationauthority.Controllers
             CertModel cert = _CertService.GetCert(true);
             byte[] bits = CertReader(cert.Certificat);
             X509Certificate RootCA = new X509CertificateParser().ReadCertificate(bits);
-            BigInteger SerialNumber = GenerateSerialNumber(new SecureRandom());
+            //BigInteger SerialNumber = GenerateSerialNumber(new SecureRandom());
+            long serial = _CertService.MaxSerial();
+            BigInteger SerialNumber = BigInteger.ValueOf(serial + 1);
             TbsCertificateStructure tbs = TbsCertificate(pkcs10, int.Parse(result.Validity), SerialNumber, RootCA);
             X509Certificate certificate = SigneTbs(tbs, RootCA, PrivateKeyReader(cert.Privatekey));
             CertModel model = new CertModel
@@ -123,7 +125,7 @@ namespace Certificationauthority.Controllers
                 NotBefore = certificate.NotBefore,
                 SubjectDN = certificate.SubjectDN.ToString(),
                 IssuerDN = certificate.IssuerDN.ToString(),
-                Thumbprint = Convert.ToBase64String(certificate.GetSignature()),
+                Thumbprint = Hex.ToHexString(certificate.GetSignature()),
                 Extensions = ShowExtensions(certificate),
                 Signature = certificate.SigAlgName,
                 Publickey = KeyWriter(certificate.GetPublicKey()),
@@ -140,7 +142,7 @@ namespace Certificationauthority.Controllers
             }
             else
             {
-                model.Algorithme = "ECDSA";
+                model.Algorithme = "EC";
                 ECKeyParameters keyParameters = (ECKeyParameters)key;
                 model.KeySize = keyParameters.Parameters.Curve.FieldSize;
             }

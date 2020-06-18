@@ -28,6 +28,11 @@ using Org.BouncyCastle.Pkix;
 using System.IO;
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.Bcpg;
+using Microsoft.VisualBasic.CompilerServices;
+using Org.BouncyCastle.OpenSsl;
+using Org.BouncyCastle.Utilities.IO.Pem;
+using Org.BouncyCastle.Asn1.BC;
+using Org.BouncyCastle.Asn1.TeleTrust;
 
 namespace UnitTest
 {
@@ -162,6 +167,37 @@ namespace UnitTest
                 //Int64 ser = Int64.Parse(BitConverter.ToString(octetString.GetOctets()));
                 Console.WriteLine(CrlWriter(crl1));
                 Console.WriteLine(number);
+                var revoked = crl1.GetRevokedCertificates();
+                foreach(X509CrlEntry v in revoked)
+                {
+                   
+                    Asn1OctetString octetString2 = v.GetExtensionValue(X509Extensions.ReasonCode);
+                    DerEnumerated derEnumerated = (DerEnumerated)X509ExtensionUtilities.FromExtensionValue(octetString2);
+                     
+
+
+                    Console.WriteLine(derEnumerated.IntValueExact);
+                }
+                Pkcs8Generator pkcs8Generator = new Pkcs8Generator(asymmetricCipherKeyPair.Private, Pkcs8Generator.PbeSha1_RC2_128);
+                pkcs8Generator.Password = new char[] {'r', 'a', 'f', 'i', 'k' };
+                pkcs8Generator.SecureRandom = new SecureRandom();
+               
+                
+                PemObject pem = pkcs8Generator.Generate();
+                TextWriter textWriter = new StringWriter();
+                Org.BouncyCastle.OpenSsl.PemWriter writer = new Org.BouncyCastle.OpenSsl.PemWriter(textWriter);
+                writer.WriteObject(pem.Generate());
+                
+                writer.Writer.Flush();
+                string str = textWriter.ToString();
+                Console.WriteLine(str);
+                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Private));
+                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Public));
+                foreach (var algo in PbeUtilities.Algorithms)
+                {
+                    Console.WriteLine(algo);
+                }
+                //Console.WriteLine(PbeUtilities.GetEncodingName(BCObjectIdentifiers.bc_pbe_sha256_pkcs12_aes256_cbc));
             });
 
             //TimeIt("GenerateDsaKeyPair", () =>

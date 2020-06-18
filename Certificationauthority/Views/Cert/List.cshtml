@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Certificationauthority.Models.CertModel>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>List</h1>
+
+<div class="container">
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Serial)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SubjectDN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NotBefore)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NotAfter)
+                </th>
+                
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Serial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubjectDN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotBefore)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NotAfter)
+                </td>
+
+                <td>
+
+                    @Html.ActionLink("Detail", "Detail", new { Serial = item.Serial })
+
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

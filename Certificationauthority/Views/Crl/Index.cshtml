@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Certificationauthority.Models.CrlModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+
+<div class="container">
+    <table class="table table-striped table-dark">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Serial)
+                </th>
+               
+                <th>
+                    @Html.DisplayNameFor(model => model.ThisUpdate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NextUpdate)
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Serial)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ThisUpdate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NextUpdate)
+                    </td>
+                    
+
+                    <td>
+
+                        @Html.ActionLink("Details", "Details", new { Serial = item.Serial })
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

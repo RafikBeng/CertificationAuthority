@@ -1,4 +1,4 @@
-﻿@model Certificationauthority.Models.CertModel
+﻿@model RegistrationAuthority.Models.CertModel
 
 @{
     ViewData["Title"] = "Details";
@@ -84,14 +84,7 @@
                 </td>
 
             </tr>
-            <tr>
-                <th scope="row">Private Key</th>
-                <td>
-                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly id="private" class="form-control text-monospace">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
-                    <input type="button" id="privpem" value="Save" class="btn btn-primary" />
-                </td>
-
-            </tr>
+            
             <tr>
                 <th scope="row">Extensions</th>
                 <td>
@@ -145,13 +138,7 @@
 
             download(filename, text);
         }, false);
-        document.getElementById("privpem").addEventListener("click", function () {
-
-            var text = document.getElementById("private").value;
-            var filename = "private.pem";
-
-            download(filename, text);
-        }, false);
+        
         document.getElementById("certpem").addEventListener("click", function () {
 
             var text = document.getElementById("cert").value;

@@ -15,15 +15,44 @@ namespace RegistrationAuthority.Services
         private readonly IMongoCollection<CsrModel> _CsrModel;
         private readonly IMongoCollection<BsonDocument> _Contries;
         private readonly IMongoCollection<ServiceModel> _ServiceModel;
+        private readonly IMongoCollection<CertModel> _Cert;
+        private readonly IMongoCollection<CrlModel> _Clr;
         public CsrService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
-            _CsrModel = database.GetCollection<CsrModel>(settings.CollectionName);
-            _Contries = database.GetCollection<BsonDocument>(settings.CollectionTwo);
-            _ServiceModel = database.GetCollection<ServiceModel>(settings.CollectionThree);
+            _CsrModel = database.GetCollection<CsrModel>(settings.Csr);
+            _Contries = database.GetCollection<BsonDocument>(settings.Countries);
+            _ServiceModel = database.GetCollection<ServiceModel>(settings.Services);
+            _Cert = database.GetCollection<CertModel>(settings.Cert);
+            _Clr = database.GetCollection<CrlModel>(settings.Clr);
         }
+        public CrlModel GetCrl(long Serial)
+        {
+            CrlModel result = _Clr.Find<CrlModel>(CrlModel => CrlModel.Serial == Serial).FirstOrDefault();
+            return result;
+        }
+        public IEnumerable<CrlModel> GetClrs()
+        {
+            FilterDefinition<CrlModel> filter = Builders<CrlModel>.Filter.Empty;
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Clr.Find<CrlModel>(filter).ToEnumerable();
 
+            return result;
+        }
+        public IEnumerable<CertModel> GetCerts()
+        {
+            FilterDefinition<CertModel> filter = Builders<CertModel>.Filter.Empty;
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Cert.Find<CertModel>(filter).ToEnumerable();
+            return result;
+        }
+        public CertModel GetCert(Int64 Serial)
+        {
+            CertModel result = _Cert.Find<CertModel>(CertModel => CertModel.Serial == Serial).FirstOrDefault();
+            return result;
+
+        }
         public void Create(CsrModel collection)
         {
             _CsrModel.InsertOne(collection);

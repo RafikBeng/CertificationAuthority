@@ -61,14 +61,18 @@ namespace Certificationauthority.Services
             
             return result;
         }
-        public long MaxSeriale()
+        public long MaxSerial()
         {
            return  _Clr.AsQueryable<CrlModel>().Select(c => c.Serial).Max();
         }
-
-        public CrlModel GetCrl(long Seriale)
+        public long GetMaxSerial()
         {
-            CrlModel result = _Clr.Find<CrlModel>(CrlModel => CrlModel.Serial== Seriale).FirstOrDefault();
+            return _Cert.AsQueryable<CertModel>().Select(c => c.Serial).Max();
+        }
+
+        public CrlModel GetCrl(long Serial)
+        {
+            CrlModel result = _Clr.Find<CrlModel>(CrlModel => CrlModel.Serial== Serial).FirstOrDefault();
             return result;
         }
         public IEnumerable<CrlModel> GetClrs()
