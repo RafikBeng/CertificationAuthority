@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Certificationauthority.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Crypto.Operators;
 using System.Text.RegularExpressions;
-using Org.BouncyCastle.Pkcs;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
@@ -115,11 +113,12 @@ namespace Certificationauthority.Controllers
                 Model.Extensions = ShowExtensions(certificate);
                 return View(Model);
             }
-#pragma warning disable CS0168 // Variable is declared but never used
-            catch (NullReferenceException e)
-#pragma warning restore CS0168 // Variable is declared but never used
+
+            catch (Exception e)
+
             {
-                return RedirectToAction(nameof(Index));
+                return View("Error",e);
+               
             }
         }
 

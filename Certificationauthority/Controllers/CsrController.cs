@@ -164,7 +164,7 @@ namespace Certificationauthority.Controllers
             }
             _CertService.Create(model);
             _CertService.DelCsr(id);
-            return View(model);
+            return View("../Cert/Details", model);
         }
 
         // POST: ListCsr/Edit/5
