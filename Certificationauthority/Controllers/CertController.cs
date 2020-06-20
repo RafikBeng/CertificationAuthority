@@ -78,7 +78,7 @@ namespace Certificationauthority.Controllers
                 Serial = Serial,
                 Validity = result.Validity,
                 Certificat = result.Certificat,
-                Password = result.Password,
+              
                 NotAfter=Certificate.NotAfter,
                 NotBefore=Certificate.NotBefore
             };
@@ -108,8 +108,8 @@ namespace Certificationauthority.Controllers
                 CertModel Model = JsonConvert.DeserializeObject<CertModel>(data);
                 byte[] bits = JsonConvert.DeserializeObject<byte[]>(Root);
                 X509Certificate certificate = new X509CertificateParser().ReadCertificate(bits);
-                Model.SubjectDN = certificate.SubjectDN.ToString();
-                Model.IssuerDN = Model.SubjectDN;
+               // Model.SubjectDN = certificate.SubjectDN.ToString();
+               // Model.IssuerDN = Model.SubjectDN;
                 Model.Certificat = CertWriter(certificate);
                 Model.Thumbprint = Hex.ToHexString(certificate.GetSignature());
                 Model.Extensions = ShowExtensions(certificate);
@@ -219,6 +219,7 @@ namespace Certificationauthority.Controllers
                 Cert.NotAfter = certificate.NotAfter;
                 Cert.NotBefore = certificate.NotBefore;
                 Cert.SubjectDN = certificate.SubjectDN.ToString();
+                Cert.IssuerDN = certificate.IssuerDN.ToString();
                 _CertService.Create(Cert);
                 string data = JsonConvert.SerializeObject(Cert);
                 string Root = JsonConvert.SerializeObject(certificate.GetEncoded());

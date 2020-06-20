@@ -12,6 +12,7 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.Utilities.Collections;
+using Org.BouncyCastle.Utilities.Encoders;
 using Org.BouncyCastle.X509;
 using Org.BouncyCastle.X509.Extension;
 using System;
@@ -278,6 +279,46 @@ namespace Certlib
             
             return pkcs10;
         }
+        public static X509Certificate SigneTbs1(TbsCertificateStructure tbs,
+                                              X509Certificate RootCA,
+                                              AsymmetricKeyParameter CAKey)
+        {
+            SecureRandom Random = new SecureRandom();
+            ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
+            String algorithm = RootCA.SigAlgName;
+
+            algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
+
+
+            AlgorithmIdentifier algorithm1 = new DefaultSignatureAlgorithmIdentifierFinder().Find(algorithm);
+            string Sig = SignerUtilities.GetEncodingName(algorithm1.Algorithm);
+            Console.WriteLine(Sig);
+            byte[] encoded = tbs.GetEncoded();
+            IStreamCalculator streamCalculator = signatureCalculatorFactory.CreateCalculator();
+            streamCalculator.Stream.Write(encoded, 0, encoded.Length);
+            streamCalculator.Stream.Dispose();
+           
+            
+            DerBitString bitSig = new DerBitString(((IBlockResult)streamCalculator.GetResult()).Collect());
+          //  X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
+            
+            //Console.WriteLine("*******************************Check Signature************************************");
+            //// var signer = SignerUtilities.GetSigner(RootCA.SigAlgName);
+            var signer = SignerUtilities.GetSigner(algorithm1.Algorithm);
+            //// ICipherParameters parametre= new Ci
+            signer.Init(true, CAKey);
+            signer.BlockUpdate(encoded, 0, encoded.Length);
+            
+            byte[] signature1 = signer.GenerateSignature();
+            DerBitString bitSig1 = new DerBitString(signature1);
+            X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig1);
+            //byte[] signature = bitSig.GetBytes();
+            //Console.WriteLine(Hex.ToHexString(signature));
+            //Console.WriteLine(Hex.ToHexString(signature1));
+            //Console.WriteLine("*******************************Check Signature************************************");
+
+            return new X509Certificate(structure);
+        }
         public static X509Certificate SigneTbs(TbsCertificateStructure tbs,
                                                X509Certificate RootCA,
                                                AsymmetricKeyParameter CAKey)
@@ -288,7 +329,7 @@ namespace Certlib
            
             algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             
-
+            
             AlgorithmIdentifier algorithm1 = new DefaultSignatureAlgorithmIdentifierFinder().Find(algorithm);
             string Sig = SignerUtilities.GetEncodingName(algorithm1.Algorithm);
             Console.WriteLine(Sig);
@@ -298,6 +339,9 @@ namespace Certlib
             streamCalculator.Stream.Dispose();
             DerBitString bitSig = new DerBitString(((IBlockResult)streamCalculator.GetResult()).Collect());
             X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
+            
+          
+
             return new X509Certificate(structure);
         }
        
@@ -399,6 +443,7 @@ namespace Certlib
             if (SubjectAlternativeNames != null && SubjectAlternativeNames.Any())
                 AddSubjectAlternativeNames(certificateGenerator, SubjectAlternativeNames);
             SecureRandom random = new SecureRandom();
+          
             ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithm, KeyPair.Private, random);
             X509Certificate certificate = certificateGenerator.Generate(signatureFactory);
             return (certificate);
@@ -424,6 +469,7 @@ namespace Certlib
             tbsGenerator.SetStartDate(new DerUtcTime(dateTime));
             tbsGenerator.SetEndDate(new DerUtcTime(dateTime.AddYears(Validity)));
             tbsGenerator.SetExtensions(GetX509ExtensionsFromCsr(Csr));
+          
             return tbsGenerator.GenerateTbsCertificate();
         }
         public static TbsCertificateStructure TbsCertificate(String SubjectDN,

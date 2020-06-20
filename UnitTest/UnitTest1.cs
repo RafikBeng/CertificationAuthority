@@ -75,9 +75,9 @@ namespace UnitTest
                 String countryCode1 = "DZ";
                 String SubjectDN1 = $"CN={name1},O={organization1},OU={organizationalUnit1},L={city1},C={countryCode1}";
                 AsymmetricCipherKeyPair asymmetricCipherKeyPair1 = GenerateEcKeyPair("sect571r1");
-                
+
                 string algorithm1 = "SHA512WITHECDSA";
-               
+               // string algorithm1 = "SHA3-512WITHECDSA";
                 SecureRandom random = new SecureRandom();
                 BigInteger SerialNumber = GenerateSerialNumber(random);
                 X509Certificate Root = RootCA(SerialNumber, asymmetricCipherKeyPair1, SubjectDN1, subjectAlternativeNames, keyUsage, ExtendUsage, algorithm1, 20);
@@ -92,6 +92,40 @@ namespace UnitTest
                 //*********************************************************************************************************************
                 X509Certificate certificate = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private);
                 X509Certificate certificate1 = SigneTbs(tbs1, Root, asymmetricCipherKeyPair1.Private);
+                
+                Console.WriteLine("***********************************encoder end der encoded***************************************************************");
+                X509Certificate test = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private);
+                X509Certificate test1 = SigneTbs1(tbs, Root, asymmetricCipherKeyPair1.Private);
+                Console.WriteLine(Hex.ToHexString(test.GetEncoded()));
+                Console.WriteLine(Hex.ToHexString(test1.GetEncoded()));
+                Stream stream11 = File.Create("d:/test.pem");
+                BinaryWriter binaryWriter11 = new BinaryWriter(stream11);
+
+                binaryWriter11.Write(CertWriter(test));
+                binaryWriter11.Flush();
+                binaryWriter11.Close();
+                
+                Stream stream22 = File.Create("d:/test1.pem");
+                BinaryWriter binaryWriter22 = new BinaryWriter(stream22);
+
+                binaryWriter22.Write(CertWriter(test1));
+                binaryWriter22.Flush();
+                binaryWriter22.Close();
+
+                ISigner sig = SignerUtilities.GetSigner(algorithm1);
+                sig.Init(false, asymmetricCipherKeyPair1.Public);
+                byte[] b = test1.GetEncoded();
+                sig.BlockUpdate(b, 0, b.Length);
+                if (!sig.VerifySignature(test1.GetSignature()))
+                {
+                    Console.WriteLine("signature not mapped correctly.");
+                }
+                else
+                {
+                    Console.WriteLine("signature  mapped correctly.");
+                }
+
+                Console.WriteLine("***********************************encoder end der encoded***************************************************************");
                 // X509Certificate2 Certificate2 = new X509Certificate2(certificate.GetEncoded());
                 // Console.WriteLine(Certificate2.ToString(true));
                 Console.WriteLine("*********************************************************************************************************************");
@@ -193,10 +227,12 @@ namespace UnitTest
                 Console.WriteLine(str);
                 Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Private));
                 Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Public));
-                foreach (var algo in PbeUtilities.Algorithms)
-                {
-                    Console.WriteLine(algo);
-                }
+                var dtf =new DefaultSignatureAlgorithmIdentifierFinder();
+              
+                AlgorithmIdentifier algorithm4 = new AlgorithmIdentifier(NistObjectIdentifiers.IdRsassaPkcs1V15WithSha3_512);
+                Console.WriteLine(algorithm4.Algorithm);
+                Console.WriteLine("******"+dtf.Find("SHA3-512WITHRSAENCRYPTION").Algorithm);
+                
                 //Console.WriteLine(PbeUtilities.GetEncodingName(BCObjectIdentifiers.bc_pbe_sha256_pkcs12_aes256_cbc));
             });
 

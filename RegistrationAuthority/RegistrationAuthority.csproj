@@ -26,7 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Crl\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

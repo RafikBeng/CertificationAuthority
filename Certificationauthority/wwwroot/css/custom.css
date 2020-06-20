@@ -1,0 +1,23 @@
+﻿.slider .tooltip.in {
+    opacity: 0.5;
+}
+
+.slider .tooltip.top .tooltip-arrow {
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px 5px 0;
+    border-top-color: #000;
+}
+
+.slider .tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+}
+
+.slider .tooltip.top {
+    padding: 5px 0;
+}

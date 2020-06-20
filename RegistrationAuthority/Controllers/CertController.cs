@@ -33,34 +33,25 @@ namespace RegistrationAuthority.Controllers
         {
             CertModel result = _CsrService.GetCert(Serial);
             X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
-            CertModel Model = new CertModel
-            {
-                SubjectDN = Certificate.SubjectDN.ToString(),
-                IssuerDN = Certificate.IssuerDN.ToString(),
-                Thumbprint = Hex.ToHexString(Certificate.GetSignature()),
-                Extensions = ShowExtensions(Certificate),
-                Publickey = KeyWriter(Certificate.GetPublicKey()),
-               // Privatekey = result.Privatekey,
-                Signature = Certificate.SigAlgName,
-                Serial = Serial,
-                Validity = result.Validity,
-                Certificat = result.Certificat,
-                Password = result.Password
-            };
+            result.Thumbprint = Hex.ToHexString(Certificate.GetSignature());
+            result.Extensions = ShowExtensions(Certificate);
+            result.Publickey = KeyWriter(Certificate.GetPublicKey());
+            result.Signature = Certificate.SigAlgName;
+            
             AsymmetricKeyParameter key = Certificate.GetPublicKey();
             if (Certificate.SigAlgName.Contains("RSA"))
             {
-                Model.Algorithme = "RSA";
+                result.Algorithme = "RSA";
                 RsaKeyParameters rsaKey = (RsaKeyParameters)key;
-                Model.KeySize = rsaKey.Modulus.BitLength;
+                result.KeySize = rsaKey.Modulus.BitLength;
             }
             else
             {
-                Model.Algorithme = "ECC";
+                result.Algorithme = "ECC";
                 ECPublicKeyParameters publicKeyParam = (ECPublicKeyParameters)key;
-                Model.KeySize = publicKeyParam.Parameters.Curve.FieldSize;
+                result.KeySize = publicKeyParam.Parameters.Curve.FieldSize;
             }
-            return View(Model);
+            return View(result);
 
         }
 

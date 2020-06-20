@@ -111,7 +111,7 @@ namespace Certificationauthority.Controllers
             byte[] bits = CertReader(cert.Certificat);
             X509Certificate RootCA = new X509CertificateParser().ReadCertificate(bits);
             //BigInteger SerialNumber = GenerateSerialNumber(new SecureRandom());
-            long serial = _CertService.MaxSerial();
+            long serial = _CertService.GetMaxSerial();
             BigInteger SerialNumber = BigInteger.ValueOf(serial + 1);
             TbsCertificateStructure tbs = TbsCertificate(pkcs10, int.Parse(result.Validity), SerialNumber, RootCA);
             X509Certificate certificate = SigneTbs(tbs, RootCA, PrivateKeyReader(cert.Privatekey));

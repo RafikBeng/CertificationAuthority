@@ -105,7 +105,7 @@ namespace Certificationauthority.Models
             new SelectListItem { Value = "SHA224", Text = "SHA224" },
             new SelectListItem { Value = "SHA256", Text = "SHA256" },
             new SelectListItem { Value = "SHA384", Text = "SHA384" },
-            new SelectListItem { Value = "SHA384", Text = "SHA384" },
+           // new SelectListItem { Value = "SHA384", Text = "SHA384" },
             new SelectListItem { Value = "SHA512", Text = "SHA512" },
             //new SelectListItem { Value = "RIPEMD160", Text = "RIPEMD160" },
             //new SelectListItem { Value = "RIPEMD128", Text = "RIPEMD128" },
@@ -114,7 +114,7 @@ namespace Certificationauthority.Models
        
        // [BsonIgnore]
         public string SubjectDN { get; set; }
-        [BsonIgnore]
+       // [BsonIgnore]
         public string IssuerDN { get; set; }
         [BsonIgnore]
         public string Thumbprint { get; set; }
@@ -129,7 +129,6 @@ namespace Certificationauthority.Models
         [BsonIgnore]
         public string Publickey { get; set; }
         public string Certificat { get; set; }
-        [Display(Name = "Password")]
         public string Password { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,9 @@ namespace RegistrationAuthority.Controllers
         // GET: Service
         public ActionResult Index()
         {
-            return View();
+            ServiceModel model = new ServiceModel();
+            return View("Index",model);
+            
         }
 
         // GET: Service/Details/5
@@ -31,8 +34,7 @@ namespace RegistrationAuthority.Controllers
         // GET: Service/Create
         public ActionResult Create()
         {
-            ServiceModel model = new ServiceModel();
-            return View(model);
+            return View();
         }
 
         // POST: Service/Create
@@ -40,17 +42,38 @@ namespace RegistrationAuthority.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ServiceModel collection)
         {
-            try
-            {
-                 collection.Password = GetHash(collection.Password);
-                _CsrService.Create(collection);
+            //try
+            //{
+                var cert = _CsrService.GetCert(collection.Serial);
+                
+                if(cert==null)
+                {
+                    ViewBag.Message = "The Certificate does not existe.";
+                    return View("Error");
+                }
+                else
+                {
+                    string Digest= GetHash(collection.Password);
+                    if(Digest!=cert.Password)
+                    {
+                        ViewBag.Message = "The Password is Incorrect.";
+                        return View("Error");
+                    }
+                    else
+                    {
+                        collection.Password = Digest;
+                        _CsrService.Create(collection);
+                        ViewBag.Message = "Your Request Has Been Sended.";
+                        return View("Succes");
+                    }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+                }   
+            //}
+            //catch (Exception e)
+            //{
+            //    ViewBag.Message = e.Message;
+            //    return View("Error");
+            //}
         }
 
         // GET: Service/Edit/5
