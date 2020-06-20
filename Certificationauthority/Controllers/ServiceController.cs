@@ -24,16 +24,7 @@ namespace Certificationauthority.Controllers
             _CertService = CertService;
         }
         // GET: Service
-        public JsonResult CheckPassword(Int64 Serial)
-        {
-            CertModel Cert = _CertService.GetCert(Serial);
-            if (Cert != null)
-            {
-               
-                return Json(new { s = Cert.Password });
-            }
-            else return Json(new { s = "not found" });
-        }
+       
         public ActionResult Index()
         {
             return View(_CertService.GetServices());
@@ -87,10 +78,10 @@ namespace Certificationauthority.Controllers
                 X509Certificate NewCertificate = RenewCertificate(certificate, key);
                 Cert.NotAfter = NewCertificate.NotAfter;
                 Cert.NotBefore = NewCertificate.NotBefore;
-                _CertService.DelCert(Cert.Id);
+               // _CertService.DelCert(Cert.Id);
                 _CertService.Create(Cert);
                 _CertService.DelServices(service.Id);
-                return View("Validate_Cert", Cert);
+                return View("../Cert/Details", Cert);
             }
             else if (service.Object == "Revoke")
             {
@@ -164,13 +155,13 @@ namespace Certificationauthority.Controllers
                 _CertService.DelCert(Cert.Id);
                 _CertService.Create(model);
                 _CertService.DelServices(service.Id);
-
-                return View("Validate_Crl", model);
+                
+                return View("../Crl/Details", model);
             }
             else
             {
                 _CertService.DelServices(service.Id);
-                return View("Validate_Cert", Cert);
+                return View("../Cert/Details", Cert);
             }
 
 
