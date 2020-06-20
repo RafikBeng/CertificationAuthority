@@ -199,18 +199,16 @@ namespace UnitTest
 
 
                 //Int64 ser = Int64.Parse(BitConverter.ToString(octetString.GetOctets()));
-                Console.WriteLine(CrlWriter(crl1));
-                Console.WriteLine(number);
+               // Console.WriteLine(CrlWriter(crl1));
+               // Console.WriteLine(number);
                 var revoked = crl1.GetRevokedCertificates();
-                foreach(X509CrlEntry v in revoked)
+               
+                foreach(var v in revoked)
                 {
-                   
-                    Asn1OctetString octetString2 = v.GetExtensionValue(X509Extensions.ReasonCode);
-                    DerEnumerated derEnumerated = (DerEnumerated)X509ExtensionUtilities.FromExtensionValue(octetString2);
-                     
-
-
-                    Console.WriteLine(derEnumerated.IntValueExact);
+                    Console.WriteLine("type of revoked is" + v.GetType());
+                    //Asn1OctetString octetString2 = v.GetExtensionValue(X509Extensions.ReasonCode);
+                    //DerEnumerated derEnumerated = (DerEnumerated)X509ExtensionUtilities.FromExtensionValue(octetString2);
+                    //Console.WriteLine(derEnumerated.IntValueExact);
                 }
                 Pkcs8Generator pkcs8Generator = new Pkcs8Generator(asymmetricCipherKeyPair.Private, Pkcs8Generator.PbeSha1_RC2_128);
                 pkcs8Generator.Password = new char[] {'r', 'a', 'f', 'i', 'k' };

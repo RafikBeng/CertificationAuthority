@@ -112,6 +112,22 @@ namespace Certificationauthority.Controllers
             X509Certificate RootCA = new X509CertificateParser().ReadCertificate(bits);
             //BigInteger SerialNumber = GenerateSerialNumber(new SecureRandom());
             long serial = _CertService.GetMaxSerial();
+            var Crls = _CertService.GetClrs();
+            if(Crls.Count()> 0)
+            {
+                long Max_Crl_serial = _CertService.MaxSerial();
+                CrlModel LastCrl = _CertService.GetCrl(Max_Crl_serial);
+                X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(LastCrl.Content));
+                var RevokedCertificates = crl.GetRevokedCertificates();
+                Array array= Array.CreateInstance(typeof(X509CrlEntry),RevokedCertificates.Count);
+                RevokedCertificates.CopyTo(array,0);
+                X509CrlEntry entry = (X509CrlEntry)array.GetValue(RevokedCertificates.Count-1);
+               
+               
+                if (entry.SerialNumber.LongValue > serial) serial = entry.SerialNumber.LongValue;
+            }
+            
+            
             BigInteger SerialNumber = BigInteger.ValueOf(serial + 1);
             TbsCertificateStructure tbs = TbsCertificate(pkcs10, int.Parse(result.Validity), SerialNumber, RootCA);
             X509Certificate certificate = SigneTbs(tbs, RootCA, PrivateKeyReader(cert.Privatekey));
