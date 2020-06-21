@@ -116,139 +116,139 @@
             </div>
 
             <div class="form-group alert alert-primary row" id="privdiv">
-                <TEXTAREA asp-for="Privatekey" id="Private" class="form-control text-monospace" rows="10" style="font-size:small"></TEXTAREA>
+                <TEXTAREA asp-for="Privatekey" id="Private" readonly class="form-control text-monospace" rows="10" style="font-size:small"></TEXTAREA>
                
             </div>
             <div class="form-group alert alert-primary row" id="pubdiv">
-                <TEXTAREA asp-for="Publickey" id="Public"  class="form-control text-monospace" rows="5" style="font-size:small" ></TEXTAREA>
+                <TEXTAREA asp-for="Publickey" id="Public" readonly  class="form-control text-monospace" rows="5" style="font-size:small" ></TEXTAREA>
             </div>
 
             <div class="form-check alert alert-primary row">
 
 
-                <label>KeyUsage</label>
+                <label>Key Usage</label>
 
 
                 <div class="row">
                     <div class="col-sm-4">
                         <input asp-for="DigitalSignature" type="checkbox" class="form-check-input" id="DigitalSignature">
-                        <label class="form-check-label" for="DigitalSignature">DigitalSignature</label>
+                        <label class="form-check-label" for="DigitalSignature" title="the subject public key is used for verifying digital signatures.">Digital Signature</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="NonRepudiation" type="checkbox" class="form-check-input" id="NonRepudiation">
-                        <label class="form-check-label" for="NonRepudiation">NonRepudiation</label>
+                        <label class="form-check-label" for="NonRepudiation" title="the subject public key provide a non-repudiation service that protects against the signing entity falsely denying some action.">Non Repudiation</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="KeyEncipherment" type="checkbox" class="form-check-input" id="KeyEncipherment">
-                        <label class="form-check-label" for="KeyEncipherment">KeyEncipherment</label>
+                        <label class="form-check-label" for="KeyEncipherment" title="the subject public key is used for enciphering private or secret keys.">Key Encipherment</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-4">
                         <input asp-for="DataEncipherment" type="checkbox" class="form-check-input" id="DataEncipherment">
-                        <label class="form-check-label" for="DataEncipherment">DataEncipherment</label>
+                        <label class="form-check-label" for="DataEncipherment" title="the subject public key is used for directly enciphering raw user data without the use of an intermediate symmetric cipher.">Data Encipherment</label>
                     </div>
                     <div class="col-sm-4">
                         <input asp-for="KeyAgreement" type="checkbox" class="form-check-input" id="KeyAgreement">
-                        <label class="form-check-label" for="KeyAgreement">KeyAgreement</label>
+                        <label class="form-check-label" for="KeyAgreement" title="the subject public key is used for key agreement.">Key Agreement</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="KeyCertSign" asp- type="checkbox" class="form-check-input" id="KeyCertSign">
-                        <label class="form-check-label" for="KeyCertSign">KeyCertSign</label>
+                        <label class="form-check-label" for="KeyCertSign" title="the subject public key is used for verifying signatures on public key certificates.">Key Cert Sign</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-4">
                         <input asp-for="CrlSign" type="checkbox" class="form-check-input" id="CrlSign">
-                        <label class="form-check-label" for="CrlSign">CrlSign</label>
+                        <label class="form-check-label" for="CrlSign" title="the subject public key is used for verifying signatures on certificate revocation lists.">Crl Sign</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="EncipherOnly" type="checkbox" class="form-check-input" id="EncipherOnly">
-                        <label class="form-check-label" for="EncipherOnly">EncipherOnly</label>
+                        <label class="form-check-label" for="EncipherOnly" title="When the encipherOnly bit is asserted and the keyAgreement bit is also set, the subject public key may be used only for enciphering data while performing key agreement.">Encipher Only</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="DecipherOnly" type="checkbox" class="form-check-input" id="DecipherOnly">
-                        <label class="form-check-label" for="DecipherOnly">DecipherOnly</label>
+                        <label class="form-check-label" for="DecipherOnly" title="When the decipherOnly bit is asserted and the keyAgreement bit is also set, the subject public key may be used only for deciphering data while performing key agreement.">Decipher Only</label>
                     </div>
                 </div>
 
             </div>
             <div class="form-check alert alert-primary row">
 
-                <label>ExtendedKeyUsage</label>
+                <label>Extended Key Usage</label>
 
                 <div class="row">
                     <div class="col-sm-4">
                         <input asp-for="AnyExtendedKeyUsage" type="checkbox" class="form-check-input" id="AnyExtendedKeyUsage">
-                        <label class="form-check-label" for="AnyExtendedKeyUsage">AnyExtendedKeyUsage</label>
+                        <label class="form-check-label" for="AnyExtendedKeyUsage." title="Any extended key usage">Any Extended Key Usage</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPServerAuth" type="checkbox" class="form-check-input" id="IdKPServerAuth">
-                        <label class="form-check-label" for="IdKPServerAuth">IdKPServerAuth</label>
+                        <label class="form-check-label" for="IdKPServerAuth" title="Transport Layer Security (TLS) World Wide Web (WWW) server authentication.">Server Auth</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPClientAuth" type="checkbox" class="form-check-input" id="IdKPClientAuth">
-                        <label class="form-check-label" for="IdKPClientAuth">IdKPClientAuth</label>
+                        <label class="form-check-label" for="IdKPClientAuth" title="Transport Layer Security (TLS) World Wide Web (WWW) client authentication.">Client Auth</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-4">
                         <input asp-for="IdKPCodeSigning" type="checkbox" class="form-check-input" id="IdKPCodeSigning">
-                        <label class="form-check-label" for="IdKPCodeSigning">IdKPCodeSigning</label>
+                        <label class="form-check-label" for="IdKPCodeSigning" title="Signing of downloadable executable code.">Code Signing</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPEmailProtection" type="checkbox" class="form-check-input" id="IdKPEmailProtection">
-                        <label class="form-check-label" for="IdKPEmailProtection">IdKPEmailProtection</label>
+                        <label class="form-check-label" for="IdKPEmailProtection" title="Email protection.">Email Protection</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPIpsecEndSystem" type="checkbox" class="form-check-input" id="IdKPIpsecEndSystem">
-                        <label class="form-check-label" for="IdKPIpsecEndSystem">IdKPIpsecEndSystem</label>
+                        <label class="form-check-label" for="IdKPIpsecEndSystem" title="Internet Protocol SECurity (IPSEC) end system certificate.">Ipsec End System</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-4">
                         <input asp-for="IdKPIpsecTunnel" type="checkbox" class="form-check-input" id="IdKPIpsecTunnel">
-                        <label class="form-check-label" for="IdKPIpsecTunnel">IdKPIpsecTunnel</label>
+                        <label class="form-check-label" for="IdKPIpsecTunnel" title="Internet Protocol SECurity (IPSEC) tunnel certificate.">Ipsec Tunnel</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPIpsecUser" type="checkbox" class="form-check-input" id="IdKPIpsecUser">
-                        <label class="form-check-label" for="IdKPIpsecUser">IdKPIpsecUser</label>
+                        <label class="form-check-label" for="IdKPIpsecUser" title="Internet Protocol SECurity (IPSEC) user certificate.">Ipsec User</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPTimeStamping" type="checkbox" class="form-check-input" id="IdKPTimeStamping">
-                        <label class="form-check-label" for="IdKPTimeStamping">IdKPTimeStamping</label>
+                        <label class="form-check-label" for="IdKPTimeStamping" title="Binding the hash of an object to a time.">Time Stamping</label>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-sm-4">
                         <input asp-for="IdKPOcspSigning" type="checkbox" class="form-check-input" id="IdKPOcspSigning">
-                        <label class="form-check-label" for="IdKPOcspSigning">IdKPOcspSigning</label>
+                        <label class="form-check-label" for="IdKPOcspSigning" title="Signing Online Certificate Status Protocol (OCSP) responses.">Ocsp Signing</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPSmartCardLogon" type="checkbox" class="form-check-input" id="IdKPSmartCardLogon">
-                        <label class="form-check-label" for="IdKPSmartCardLogon">IdKPSmartCardLogon</label>
+                        <label class="form-check-label" for="IdKPSmartCardLogon" title="Smartcard logon (extKeyUsage extension) to Microsoft Windows.">SmartCard Logon</label>
                     </div>
 
                     <div class="col-sm-4">
                         <input asp-for="IdKPMacAddress" type="checkbox" class="form-check-input" id="IdKPMacAddress">
-                        <label class="form-check-label" for="IdKPMacAddress">IdKPMacAddress</label>
+                        <label class="form-check-label" for="IdKPMacAddress" title="MAC address in maximal, colon separated hex notation.">MacAddress</label>
                     </div>
                 </div>
 
