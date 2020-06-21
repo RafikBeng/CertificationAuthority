@@ -201,36 +201,38 @@ namespace UnitTest
                 //Int64 ser = Int64.Parse(BitConverter.ToString(octetString.GetOctets()));
                // Console.WriteLine(CrlWriter(crl1));
                // Console.WriteLine(number);
-                var revoked = crl1.GetRevokedCertificates();
+                //var revoked = crl1.GetRevokedCertificates();
                
-                foreach(var v in revoked)
-                {
-                    Console.WriteLine("type of revoked is" + v.GetType());
-                    //Asn1OctetString octetString2 = v.GetExtensionValue(X509Extensions.ReasonCode);
-                    //DerEnumerated derEnumerated = (DerEnumerated)X509ExtensionUtilities.FromExtensionValue(octetString2);
-                    //Console.WriteLine(derEnumerated.IntValueExact);
-                }
+                //foreach(var v in revoked)
+                //{
+                //    Console.WriteLine("type of revoked is" + v.GetType());
+                //    //Asn1OctetString octetString2 = v.GetExtensionValue(X509Extensions.ReasonCode);
+                //    //DerEnumerated derEnumerated = (DerEnumerated)X509ExtensionUtilities.FromExtensionValue(octetString2);
+                //    //Console.WriteLine(derEnumerated.IntValueExact);
+                //}
                 Pkcs8Generator pkcs8Generator = new Pkcs8Generator(asymmetricCipherKeyPair.Private, Pkcs8Generator.PbeSha1_RC2_128);
                 pkcs8Generator.Password = new char[] {'r', 'a', 'f', 'i', 'k' };
                 pkcs8Generator.SecureRandom = new SecureRandom();
                
                 
-                PemObject pem = pkcs8Generator.Generate();
-                TextWriter textWriter = new StringWriter();
-                Org.BouncyCastle.OpenSsl.PemWriter writer = new Org.BouncyCastle.OpenSsl.PemWriter(textWriter);
-                writer.WriteObject(pem.Generate());
+                //PemObject pem = pkcs8Generator.Generate();
+                //TextWriter textWriter = new StringWriter();
+                //Org.BouncyCastle.OpenSsl.PemWriter writer = new Org.BouncyCastle.OpenSsl.PemWriter(textWriter);
+                //writer.WriteObject(pem.Generate());
                 
-                writer.Writer.Flush();
-                string str = textWriter.ToString();
-                Console.WriteLine(str);
-                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Private));
-                Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Public));
-                var dtf =new DefaultSignatureAlgorithmIdentifierFinder();
+                //writer.Writer.Flush();
+                //string str = textWriter.ToString();
+                //Console.WriteLine(str);
+                //Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Private));
+                //Console.WriteLine(KeyWriter(asymmetricCipherKeyPair.Public));
+                //var dtf =new DefaultSignatureAlgorithmIdentifierFinder();
               
-                AlgorithmIdentifier algorithm4 = new AlgorithmIdentifier(NistObjectIdentifiers.IdRsassaPkcs1V15WithSha3_512);
-                Console.WriteLine(algorithm4.Algorithm);
-                Console.WriteLine("******"+dtf.Find("SHA3-512WITHRSAENCRYPTION").Algorithm);
+             
+                X509Name name22 = certificate.SubjectDN;
+                var nameval = name22.GetValueList(X509Name.CN)[0];
                 
+               
+                Console.WriteLine(nameval);
                 //Console.WriteLine(PbeUtilities.GetEncodingName(BCObjectIdentifiers.bc_pbe_sha256_pkcs12_aes256_cbc));
             });
 

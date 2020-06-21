@@ -12,6 +12,11 @@ using static Certlib.CertGen;
 using Org.BouncyCastle.Utilities.Encoders;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
+using System.IO;
+using Org.BouncyCastle.Crypto.Tls;
+using Org.BouncyCastle.Asn1.X509;
+using System.Collections;
+using System.Text;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -116,6 +121,33 @@ namespace RegistrationAuthority.Controllers
             {
                 return View();
             }
+        }
+        public  FileContentResult Download(long Serial)
+        {
+            CertModel result = _CsrService.GetCert(Serial);
+            X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-"+ result.Serial.ToString() + ".cer";
+           
+            return File(Certificate.GetEncoded(), "Certificate/cer", path);
+        }
+        public FileContentResult Download_PEM(long Serial)
+        {
+            CertModel result = _CsrService.GetCert(Serial);
+            X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + result.Serial.ToString() + ".pem";
+            
+            return File(Encoding.UTF8.GetBytes(result.Certificat), "Certificate/pem", path);
+        }
+        public FileContentResult Download_PEM_Public(long Serial)
+        {
+            CertModel result = _CsrService.GetCert(Serial);
+            X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + result.Serial.ToString()+ "-Public-Key"+ ".pem";
+            string Public = KeyWriter(Certificate.GetPublicKey());
+            return File(Encoding.UTF8.GetBytes(Public), "key/pem", path);
         }
     }
 }
