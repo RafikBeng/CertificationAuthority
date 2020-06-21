@@ -1,17 +1,16 @@
 ﻿@model RegistrationAuthority.Models.CsrModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "CSR request";
 }
 
-<h1>Create</h1>
-
-<h4>TbsModel</h4>
-<hr />
+    
 
 <div class="container-fluid row">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
+        <div class="form-group alert alert-primary"> <h2 class="text-center">Generate a Certificate Signing Request</h2></div>
+        <div class="form-group alert alert-primary"> <h4 class="text-center">Complete this form to generate a new CSR and private key</h4></div>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -82,9 +81,16 @@
                 <span asp-validation-for="Algorithme" class="text-danger"></span>
             </div>
             <div class="form-group alert alert-primary row" id="KeySizeDiv">
-                <div class="col-sm-3">  <label asp-for="KeySize" class="control-label"></label></div>
+                <div class="col-sm-3">
+                <label asp-for="KeySize" class="control-label"></label>
+                <span id="ex6CurrentSliderValLabel">:<span id="ex6SliderVal">2048</span></span>
+                </div>
 
-                <div class="col-sm-9"> <input type="text" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="8192" data-slider-step="256" data-slider-value="2048" /></div>
+                <div class="col-sm-9 ">
+                    <input type="text" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="8192" data-slider-step="256" data-slider-value="2048"/>
+                    
+                </div>
+               
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
             <div class="form-group alert alert-primary row" id="ECTypeDiv">
@@ -112,15 +118,15 @@
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
             <div class="form-group alert alert-primary row">
-                <input type="button" value="Gen Keys" class="btn btn-primary" id="keygen" />
+                <input type="button" value="Generate Keys" class="btn btn-primary" id="keygen" />
             </div>
 
             <div class="form-group alert alert-primary row" id="privdiv">
                 <TEXTAREA asp-for="Privatekey" id="Private" readonly class="form-control text-monospace" rows="10" style="font-size:small"></TEXTAREA>
-               
+
             </div>
             <div class="form-group alert alert-primary row" id="pubdiv">
-                <TEXTAREA asp-for="Publickey" id="Public" readonly  class="form-control text-monospace" rows="5" style="font-size:small" ></TEXTAREA>
+                <TEXTAREA asp-for="Publickey" id="Public" readonly class="form-control text-monospace" rows="5" style="font-size:small"></TEXTAREA>
             </div>
 
             <div class="form-check alert alert-primary row">
@@ -254,23 +260,20 @@
 
             </div>
             <div class="form-group alert alert-primary row">
-                <div class="col-sm-3"> <input type="button" value="Gen Password" class="btn btn-primary" id="passbt" /></div>
-                <div class="col-sm-9">   <input asp-for="Password" class="form-control" id="pass" /></div>
+                <div > <input type="button" value="Generate Password" class="btn btn-primary" id="passbt" /></div>
+                <div class="col-sm-7">   <input asp-for="Password" class="form-control" id="pass" /></div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" id="sub" />
+                <input type="submit" value="Generate CSR" class="btn btn-primary" id="sub" />
             </div>
         </form>
     </div>
     </div>
 
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-
+    
     @section Scripts {
         @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript">
@@ -284,6 +287,10 @@
         });
 
 
+    });
+    $("#KeySize").slider();
+    $("#KeySize").on("slide", function (slideEvt) {
+        $("#ex6SliderVal").text(slideEvt.value);
     });
 
             $("#keygen").click(function () {
@@ -305,6 +312,7 @@
                     $('#privdiv').show();
                     $('#pubdiv').show();
                     document.getElementById("keygen").disabled = false;
+                    document.getElementById("sub").disabled = false;
                 }
                 //alert(data.s);
                 //alert(data.h);
@@ -323,6 +331,7 @@
                     $('#privdiv').show();
                     $('#pubdiv').show();
                     document.getElementById("keygen").disabled = false;
+                    document.getElementById("sub").disabled = false;
                 }
                 
                 //alert(data.s);
@@ -342,7 +351,7 @@
         }
     });
     $(document).ready(function () {
-      
+        document.getElementById("sub").disabled = true;
         document.getElementById("Private").value = "";
         document.getElementById("Public").value = "";
         $.get('@Url.Action("Genpassword")', {}, function (data) {
