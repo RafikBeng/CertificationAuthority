@@ -295,11 +295,17 @@
             var value = $('#KeySize').slider('getValue');
 
             $.get('@Url.Action("GetRsaKeys")', { KeySize: value }, function (data) {
-                document.getElementById("Private").value = data.s;
-                document.getElementById("Public").value = data.h;
-                $('#privdiv').show();
-                $('#pubdiv').show();
-                document.getElementById("keygen").disabled = false;
+                if (data.s == "") {
+                    alert(data.h);
+                    document.getElementById("keygen").disabled = false;
+                }
+                else {
+                    document.getElementById("Private").value = data.s;
+                    document.getElementById("Public").value = data.h;
+                    $('#privdiv').show();
+                    $('#pubdiv').show();
+                    document.getElementById("keygen").disabled = false;
+                }
                 //alert(data.s);
                 //alert(data.h);
             })
@@ -307,11 +313,18 @@
         else {
             var Curve = document.getElementById("Curve").value;
             $.get('@Url.Action("GetEcKeyPair")', { CurveName: Curve }, function (data) {
-                document.getElementById("Private").value = data.s;
-                document.getElementById("Public").value = data.h;
-                $('#privdiv').show();
-                $('#pubdiv').show();
-                document.getElementById("keygen").disabled = false;
+                if (data.s == "") {
+                    alert(data.h);
+                    document.getElementById("keygen").disabled = false;
+                }
+                else {
+                    document.getElementById("Private").value = data.s;
+                    document.getElementById("Public").value = data.h;
+                    $('#privdiv').show();
+                    $('#pubdiv').show();
+                    document.getElementById("keygen").disabled = false;
+                }
+                
                 //alert(data.s);
                 //alert(data.h);
             })

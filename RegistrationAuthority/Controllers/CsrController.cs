@@ -39,20 +39,37 @@ namespace RegistrationAuthority.Controllers
         }
         public JsonResult GetRsaKeys(int KeySize)
         {
-            
-            AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(KeySize);
-            
-            string Private = KeyWriter(Key.Private);
-            string Public = KeyWriter(Key.Public);
-            return Json(new { s= Private, h= Public });
+            try
+            {
+                AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(KeySize);
+
+                string Private = KeyWriter(Key.Private);
+                string Public = KeyWriter(Key.Public);
+                return Json(new { s = Private, h = Public });
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { s = "", h = e.Message });
+            }
+          
         }
         public JsonResult GetEcKeyPair(string CurveName)
         {
-            AsymmetricCipherKeyPair Key = GenerateEcKeyPair(CurveName);
-            string Private = KeyWriter(Key.Private);
-            string Public = KeyWriter(Key.Public);
+            try
+            {
+                AsymmetricCipherKeyPair Key = GenerateEcKeyPair(CurveName);
+                string Private = KeyWriter(Key.Private);
+                string Public = KeyWriter(Key.Public);
+
+                return Json(new { s = Private, h = Public });
+            }
+            catch (Exception e)
+            {
+
+                return Json(new { s = "", h = e.Message });
+            }
            
-            return Json(new { s = Private, h = Public });
         }
        
         // GET: Tbs
