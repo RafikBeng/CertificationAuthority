@@ -1,9 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Error";
 }
+
+   
     <div class="container">
-        <div>@ViewBag.Message</div>
+        <div class="alert alert-warning" role="alert">
+            @ViewBag.Message
+        </div> 
     </div>
-    <div>
-        <a asp-action="Index">Services</a>
-    </div>
+  

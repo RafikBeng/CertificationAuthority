@@ -11,6 +11,8 @@ using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.X509;
 using Org.BouncyCastle.X509.Extension;
 using static Certlib.CertGen;
+using System.Text;
+
 namespace RegistrationAuthority.Controllers
 {
     public class CrlController : Controller
@@ -23,7 +25,9 @@ namespace RegistrationAuthority.Controllers
         // GET: CrlController
         public ActionResult Index()
         {
-            return View(_CsrService.GetClrs());
+            //return View(_CsrService.GetClrs());
+            long serial = _CsrService.MaxSerial();
+            return RedirectToAction("Details", new { Serial = serial });
         }
 
         // GET: CrlController/Details/5
@@ -47,6 +51,24 @@ namespace RegistrationAuthority.Controllers
                 model.RevokedCertificates.Add(model1);
             }
             return View(model);
+        }
+
+        public FileContentResult Download(long Serial)
+        {
+            CrlModel model = _CsrService.GetCrl(Serial);
+            X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(model.Content));
+            string name = crl.IssuerDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + model.Serial.ToString() + ".crl";
+
+            return File(crl.GetEncoded(), "crl/crl", path);
+        }
+        public FileContentResult Download_PEM(long Serial)
+        {
+            CrlModel model = _CsrService.GetCrl(Serial);
+            X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(model.Content));
+            string name = crl.IssuerDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + model.Serial.ToString() + ".pem";
+            return File(Encoding.UTF8.GetBytes(model.Content), "crl/pem", path);
         }
 
         // GET: CrlController/Create

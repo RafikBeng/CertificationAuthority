@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div class="container">
-
+<div class="container-fluid">
+    <h1>CRL Details</h1>
     <table class="table table-bordered table-hover table-striped table-sm">
 
         <tbody>
@@ -69,14 +68,11 @@
                 <th scope="row">Crl</th>
                 <td>
                     <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Content)</TEXTAREA>
-
+                    <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Crl", new { Serial = Model.Serial })'" />
+                    <input type="button" class="btn btn-primary" value="Save .cer" onclick="location.href='@Url.Action("Download", "Crl", new { Serial = Model.Serial })'" />
                 </td>
 
             </tr>
         </tbody>
     </table>
-</div>
-<div>
-
-    <a asp-action="Index">Back to List</a>
 </div>

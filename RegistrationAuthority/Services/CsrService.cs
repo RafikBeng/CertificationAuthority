@@ -32,12 +32,21 @@ namespace RegistrationAuthority.Services
             CrlModel result = _Clr.Find<CrlModel>(CrlModel => CrlModel.Serial == Serial).FirstOrDefault();
             return result;
         }
+        public long MaxSerial()
+        {
+            return _Clr.AsQueryable<CrlModel>().Select(c => c.Serial).Max();
+        }
         public IEnumerable<CrlModel> GetClrs()
         {
             FilterDefinition<CrlModel> filter = Builders<CrlModel>.Filter.Empty;
             //var projectionBuilder = Builders<CsrModel>.Projection;
             var result = _Clr.Find<CrlModel>(filter).ToEnumerable();
 
+            return result;
+        }
+        public CsrModel GetCsr(string id)
+        {
+            CsrModel result = _CsrModel.Find<CsrModel>(CsrModel => CsrModel.Id == id).FirstOrDefault();
             return result;
         }
         public IEnumerable<CertModel> GetCerts()

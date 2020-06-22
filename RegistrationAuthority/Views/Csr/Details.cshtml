@@ -52,7 +52,7 @@
                 <th scope="row">Public Key</th>
                 <td>
                     <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace" id="public">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
-                    <input type="button" id="pubpem" value="Save" class="btn btn-primary" />
+                    <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM_Public", "Csr", new { id = Model.Id })'" />
                 </td>
 
             </tr>
@@ -60,7 +60,7 @@
                 <th scope="row">Private Key</th>
                 <td>
                     <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace" id="private">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
-                    <input type="button" id="privpem" value="Save" class="btn btn-primary" />
+                    <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM_Private", "Csr", new { id = Model.Id })'" />
                 </td>
 
             </tr>
@@ -76,7 +76,8 @@
                 <th scope="row">CSR</th>
                 <td>
                     <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace" id="csr">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
-                    <input type="button" id="certpem" value="Save" class="btn btn-primary" />
+                    <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Csr", new { id = Model.Id })'" />
+                    <input type="button" class="btn btn-primary" value="Save .csr" onclick="location.href='@Url.Action("Download", "Csr", new { id = Model.Id })'" />
                 </td>
 
             </tr>
@@ -88,50 +89,3 @@
 
     <a asp-action="Index">Certificate Signing Request</a>
 </div>
-@section Scripts {
-    <script type="text/javascript">
-
-        function download(file, text) {
-
-            //creating an invisible element 
-            var element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8, '
-                + encodeURIComponent(text));
-            element.setAttribute('download', file);
-
-            //the above code is equivalent to 
-            // <a href="path of file" download="file name"> 
-
-            document.body.appendChild(element);
-
-            //onClick property 
-            element.click();
-
-            document.body.removeChild(element);
-        }
-
-        // Start file download. 
-        document.getElementById("pubpem").addEventListener("click", function () {
-            
-            var text = document.getElementById("public").value;
-            var filename = "public.pem";
-
-            download(filename, text);
-        }, false); 
-        document.getElementById("privpem").addEventListener("click", function () {
-
-            var text = document.getElementById("private").value;
-            var filename = "private.pem";
-
-            download(filename, text);
-        }, false); 
-        document.getElementById("certpem").addEventListener("click", function () {
-
-            var text = document.getElementById("csr").value;
-            var filename = "csr.pem";
-
-            download(filename, text);
-        }, false); 
-
-    </script>
-}

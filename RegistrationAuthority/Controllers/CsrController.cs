@@ -21,6 +21,7 @@ using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities.Encoders;
 using System.IO;
+using System.Text;
 
 namespace RegistrationAuthority.Controllers
 {
@@ -71,7 +72,40 @@ namespace RegistrationAuthority.Controllers
             }
            
         }
-       
+        public FileContentResult Download(string id)
+        {
+            CsrModel result = _CsrService.GetCsr(id);
+            Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(CsrReader(result.Certificat));
+            string name = pkcs10.GetCertificationRequestInfo().Subject.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + id + ".csr";
+            return File(pkcs10.GetEncoded(), "csr/csr", path);
+        }
+        public FileContentResult Download_PEM(string id)
+        {
+            CsrModel result = _CsrService.GetCsr(id);
+            Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(CsrReader(result.Certificat));
+            string name = pkcs10.GetCertificationRequestInfo().Subject.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + id + ".pem";
+            return File(Encoding.UTF8.GetBytes(result.Certificat), "Certificate/pem", path);
+        }
+        public FileContentResult Download_PEM_Public(string id)
+        {
+            CsrModel result = _CsrService.GetCsr(id);
+            Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(CsrReader(result.Certificat));
+            string name = pkcs10.GetCertificationRequestInfo().Subject.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + id + "-Public-Key" + ".pem";
+            string Public = KeyWriter(pkcs10.GetPublicKey());
+            return File(Encoding.UTF8.GetBytes(Public), "key/pem", path);
+        }
+        public FileContentResult Download_PEM_Private(string id)
+        {
+            CsrModel result = _CsrService.GetCsr(id);
+            Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(CsrReader(result.Certificat));
+            string name = pkcs10.GetCertificationRequestInfo().Subject.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + id + "-Private-Key" + ".pem";
+            string Public = result.Privatekey; ;
+            return File(Encoding.UTF8.GetBytes(Public), "key/pem", path);
+        }
         // GET: Tbs
         public ActionResult Index()
         {
