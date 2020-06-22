@@ -99,7 +99,7 @@
                     <TEXTAREA wrap="hard" rows="12" cols="30" readonly id="cert" class="form-control text-monospace">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
                   
                     <input type="button" class="btn btn-primary"  value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Cert", new { Serial = Model.Serial })'" />
-                    <input type="button" class="btn btn-primary"  value="Save .clr" onclick="location.href='@Url.Action("Download", "Cert", new { Serial = Model.Serial })'" />
+                    <input type="button" class="btn btn-primary"  value="Save .cer" onclick="location.href='@Url.Action("Download", "Cert", new { Serial = Model.Serial })'" />
                 </td>
 
             </tr>

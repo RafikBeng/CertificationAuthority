@@ -18,6 +18,7 @@ using Org.BouncyCastle.Security;
 using Org.BouncyCastle.X509;
 using Org.BouncyCastle.Utilities.Encoders;
 using Org.BouncyCastle.Crypto.Parameters;
+using System.Text;
 
 namespace Certificationauthority.Controllers
 {
@@ -28,7 +29,42 @@ namespace Certificationauthority.Controllers
         {
             _CertService = CertService;
         }
+        public FileContentResult Download(long Serial)
+        {
+            CertModel result = _CertService.GetCert(Serial);
+            X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + result.Serial.ToString() + ".cer";
 
+            return File(Certificate.GetEncoded(), "Certificate/cer", path);
+        }
+        public FileContentResult Download_PEM(long Serial)
+        {
+            CertModel result = _CertService.GetCert(Serial);
+            X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + result.Serial.ToString() + ".pem";
+
+            return File(Encoding.UTF8.GetBytes(result.Certificat), "Certificate/pem", path);
+        }
+        public FileContentResult Download_PEM_Public(long Serial)
+        {
+            CertModel result = _CertService.GetCert(Serial);
+            X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + result.Serial.ToString() + "-Public-Key" + ".pem";
+            string Public = KeyWriter(Certificate.GetPublicKey());
+            return File(Encoding.UTF8.GetBytes(Public), "key/pem", path);
+        }
+        public FileContentResult Download_PEM_Private(long Serial)
+        {
+            CertModel result = _CertService.GetCert(Serial);
+            X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
+            string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + result.Serial.ToString() + "-Private-Key" + ".pem";
+            string Public = result.Privatekey;
+            return File(Encoding.UTF8.GetBytes(Public), "key/pem", path);
+        }
         public JsonResult GetRsaKeys(int KeySize)
         {
 

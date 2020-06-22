@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Certificationauthority.Models;
 using Certificationauthority.Services;
@@ -19,6 +20,23 @@ namespace Certificationauthority.Controllers
         public CrlController(CertService CertService)
         {
             _CertService = CertService;
+        }
+        public FileContentResult Download(long Serial)
+        {
+            CrlModel model = _CertService.GetCrl(Serial);
+            X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(model.Content));
+            string name = crl.IssuerDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + model.Serial.ToString() + ".crl";
+
+            return File(crl.GetEncoded(), "crl/crl", path);
+        }
+        public FileContentResult Download_PEM(long Serial)
+        {
+            CrlModel model = _CertService.GetCrl(Serial);
+            X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(model.Content));
+            string name = crl.IssuerDN.GetValueList(X509Name.CN)[0].ToString();
+            string path = name + "-" + model.Serial.ToString() + ".pem";
+            return File(Encoding.UTF8.GetBytes(model.Content), "crl/pem", path);
         }
         // GET: CrlController
         public ActionResult Index()

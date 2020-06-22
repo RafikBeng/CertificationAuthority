@@ -3,82 +3,83 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div class="container">
 
-    <table class="table table-bordered table-hover table-striped table-sm">
+    <div class="container">
+        <h1>CRL Details</h1>
+        <table class="table table-bordered table-hover table-striped table-sm">
 
-        <tbody>
-            <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.Serial)</th>
-                <td>
-                    @Html.DisplayFor(model => model.Serial)
-                </td>
+            <tbody>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.Serial)</th>
+                    <td>
+                        @Html.DisplayFor(model => model.Serial)
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.ThisUpdate)</th>
-                <td>
-                    @Html.DisplayFor(model => model.ThisUpdate)
-                </td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.ThisUpdate)</th>
+                    <td>
+                        @Html.DisplayFor(model => model.ThisUpdate)
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.NextUpdate)</th>
-                <td>
-                    @Html.DisplayFor(model => model.NextUpdate)
-                </td>
+                </tr>
+                <tr>
+                    <th scope="row">@Html.DisplayNameFor(model => model.NextUpdate)</th>
+                    <td>
+                        @Html.DisplayFor(model => model.NextUpdate)
+                    </td>
 
-            </tr>
-            <tr>
-             
-                <th scope="row">Revoked Certificates</th>
-                <td>
-                    <div>
-                        <table class="table table-bordered table-hover table-striped table-sm">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Serial Number</th>
-                                    <th>Revocation Date</th>
-                                    <th>Revocation Reason</th>
-                                </tr>
+                </tr>
+                <tr>
 
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.RevokedCertificates)
-                                {
+                    <th scope="row">Revoked Certificates</th>
+                    <td>
+                        <div>
+                            <table class="table table-bordered table-hover table-striped table-sm">
+                                <thead class="thead-light">
                                     <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Serial)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.RevocationDate)
-                                        </td>
-
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Reason)
-                                        </td>
+                                        <th>Serial Number</th>
+                                        <th>Revocation Date</th>
+                                        <th>Revocation Reason</th>
                                     </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </td>
 
-            </tr>
-            <tr>
-                <th scope="row">Crl</th>
-                <td>
-                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Content)</TEXTAREA>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.RevokedCertificates)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Serial)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RevocationDate)
+                                            </td>
 
-                </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Reason)
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
 
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Crl</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Content)</TEXTAREA>
+                        <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Crl", new { Serial = Model.Serial })'" />
+                        <input type="button" class="btn btn-primary" value="Save .clr" onclick="location.href='@Url.Action("Download", "Crl", new { Serial = Model.Serial })'" />
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
 <div>
     
     <a asp-action="Index">Back to List</a>

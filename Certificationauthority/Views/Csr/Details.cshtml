@@ -4,92 +4,92 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-<div class="container">
 
-    <table class="table table-bordered table-hover table-striped table-sm">
+    <div class="container">
+        <h1>CRS Details</h1>
+        <table class="table table-bordered table-hover table-striped table-sm">
 
-        <tbody>
-            
-            <tr>
-                <th scope="row">Distinguished Name</th>
-                <td>
-                    @Html.DisplayFor(model => model.SubjectDN)
-                </td>
+            <tbody>
 
-            </tr>
-            <tr>
-                <th scope="row">Validity</th>
-                <td>
-                    @Html.DisplayFor(model => model.Validity)
-                </td>
+                <tr>
+                    <th scope="row">Distinguished Name</th>
+                    <td>
+                        @Html.DisplayFor(model => model.SubjectDN)
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">Signature Algorithm</th>
-                <td>
-                    @Html.DisplayFor(model => model.Signature)
-                </td>
+                </tr>
+                <tr>
+                    <th scope="row">Validity</th>
+                    <td>
+                        @Html.DisplayFor(model => model.Validity)
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row">Signature Algorithm</th>
+                    <td>
+                        @Html.DisplayFor(model => model.Signature)
+                    </td>
 
 
-            </tr>
-            <tr>
-                <th scope="row">Public key Algorithm</th>
-                <td>
-                    @Html.DisplayFor(model => model.Algorithme)
-                </td>
+                </tr>
+                <tr>
+                    <th scope="row">Public key Algorithm</th>
+                    <td>
+                        @Html.DisplayFor(model => model.Algorithme)
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">key Size</th>
-                <td>
-                    @Html.DisplayFor(model => model.KeySize)
-                </td>
+                </tr>
+                <tr>
+                    <th scope="row">key Size</th>
+                    <td>
+                        @Html.DisplayFor(model => model.KeySize)
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">Thumbprint</th>
-                <td>
+                </tr>
+                <tr>
+                    <th scope="row">Thumbprint</th>
+                    <td>
 
-                    <TEXTAREA wrap="hard" rows="5" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
-                </td>
+                        <TEXTAREA wrap="hard" rows="5" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">Public Key</th>
-                <td>
-                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
+                </tr>
+                <tr>
+                    <th scope="row">Public Key</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
 
-                </td>
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">Private Key</th>
-                <td>
-                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
+                </tr>
+                <tr>
+                    <th scope="row">Private Key</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
 
-                </td>
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">Extensions</th>
-                <td>
-                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
+                </tr>
+                <tr>
+                    <th scope="row">Extensions</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
 
-                </td>
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row">Certificate</th>
-                <td>
-                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
+                </tr>
+                <tr>
+                    <th scope="row">Certificate</th>
+                    <td>
+                        <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
 
-                </td>
+                    </td>
 
-            </tr>
-        </tbody>
-    </table>
-</div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 <div>
     @Html.ActionLink("Validate", "Validate", new {  id = Model.Id}) |
    
