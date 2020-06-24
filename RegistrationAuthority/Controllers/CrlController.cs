@@ -53,8 +53,9 @@ namespace RegistrationAuthority.Controllers
             return View(model);
         }
 
-        public FileContentResult Download(long Serial)
+        public FileContentResult Download()
         {
+            long Serial = _CsrService.MaxSerial();
             CrlModel model = _CsrService.GetCrl(Serial);
             X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(model.Content));
             string name = crl.IssuerDN.GetValueList(X509Name.CN)[0].ToString();
@@ -62,8 +63,9 @@ namespace RegistrationAuthority.Controllers
 
             return File(crl.GetEncoded(), "crl/crl", path);
         }
-        public FileContentResult Download_PEM(long Serial)
+        public FileContentResult Download_PEM()
         {
+            long Serial = _CsrService.MaxSerial();
             CrlModel model = _CsrService.GetCrl(Serial);
             X509Crl crl = new X509CrlParser().ReadCrl(CrlReader(model.Content));
             string name = crl.IssuerDN.GetValueList(X509Name.CN)[0].ToString();

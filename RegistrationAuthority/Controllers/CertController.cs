@@ -28,10 +28,22 @@ namespace RegistrationAuthority.Controllers
             _CsrService = CsrService;
         }
         // GET: CertController
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(_CsrService.GetCerts());
+            if(String.IsNullOrEmpty(searchString))
+            {
+                return View( _CsrService.GetCerts());
+            }
+            else
+            {
+                return View(_CsrService.GetCerts(searchString));
+            }
+          
         }
+        //public ActionResult Index()
+        //{
+        //    return View(_CsrService.GetCerts());
+        //}
 
         // GET: CertController/Details/5
         public ActionResult Details(long Serial)

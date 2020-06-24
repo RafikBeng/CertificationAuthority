@@ -7,52 +7,57 @@
 
 
 
-<div class="container">
-    <h1>Certificates List</h1>
-    <table class="table table-bordered table-hover table-striped table-sm">
-        <thead class="thead-light">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Serial)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.SubjectDN)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NotBefore)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.NotAfter)
-                </th>
+    <div class="container">
+        <h1>Certificates List</h1>
+        <form class="form-inline my-2 my-lg-0" asp-controller="Cert" asp-action="Index">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="SearchString">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <table class="table table-bordered table-hover table-striped table-sm">
 
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
+            <thead class="thead-light">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Serial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubjectDN)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NotBefore)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NotAfter)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Serial)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SubjectDN)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NotBefore)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.NotAfter)
+                    </th>
 
-                    <td>
 
-                        @Html.ActionLink("Details", "Details", new { Serial = item.Serial })
-
-                    </td>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Serial)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubjectDN)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NotBefore)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NotAfter)
+                        </td>
+
+                        <td>
+
+                            @Html.ActionLink("Details", "Details", new { Serial = item.Serial })
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 

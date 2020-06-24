@@ -49,9 +49,32 @@ namespace RegistrationAuthority.Services
             CsrModel result = _CsrModel.Find<CsrModel>(CsrModel => CsrModel.Id == id).FirstOrDefault();
             return result;
         }
+        public IEnumerable<CertModel> GetCerts(string searchString)
+        {
+
+            FilterDefinition<CertModel> filter = Builders<CertModel>.Filter.Empty;
+
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Cert.Find<CertModel>(filter).ToEnumerable();
+            List<CertModel> filterList = new List<CertModel>();
+            foreach (CertModel item in result)
+            {
+                if (item.SubjectDN.Contains(searchString) || item.Serial.ToString().Contains(searchString)) filterList.Add(item);
+            }
+            if (filterList.Count==0)
+            {
+                return result;
+            }
+            else
+            {
+                return filterList;
+            }
+            
+        }
         public IEnumerable<CertModel> GetCerts()
         {
             FilterDefinition<CertModel> filter = Builders<CertModel>.Filter.Empty;
+            
             //var projectionBuilder = Builders<CsrModel>.Projection;
             var result = _Cert.Find<CertModel>(filter).ToEnumerable();
             return result;

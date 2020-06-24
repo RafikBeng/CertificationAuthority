@@ -323,6 +323,44 @@ namespace UnitTest
                
                 
             });
+            //TimeIt("RSA Key Generation dot net openssl", () =>
+            //{
+            //    RSAOpenSsl rSAOpenSsl = new RSAOpenSsl(8192);
+
+
+            //    Console.WriteLine(rSAOpenSsl.KeySize);
+
+            //});
+            //TimeIt("RSA Key Generation dot net RSA.Create", () =>
+            //{
+            //    RSA rSA = RSA.Create(8192*2);
+
+            //    Console.WriteLine(rSA.ExportRSAPublicKey());
+
+            //});
+            //TimeIt("RSA Key Generation dot net", () =>
+            //{
+            //   // AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(8192);
+            //    RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(8192*2);
+
+            //   Console.WriteLine(rsa.ExportRSAPublicKey());
+
+            //});
+            //TimeIt("RSA Key Generation dot net CNG", () =>
+            //{
+            //    RSACng rSACng = new RSACng(8192*2);
+
+            //    Console.WriteLine(rSACng.ExportRSAPublicKey());
+
+            //});
+            //TimeIt("RSA Key Generation BC", () =>
+            //{
+            //    AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(8192*2);
+            //    //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048 * 8);
+
+            //    //Console.WriteLine(rsa.KeySize);
+
+            //});
 
             Debugger.Break();
 

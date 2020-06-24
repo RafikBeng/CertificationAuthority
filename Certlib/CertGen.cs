@@ -339,9 +339,6 @@ namespace Certlib
             streamCalculator.Stream.Dispose();
             DerBitString bitSig = new DerBitString(((IBlockResult)streamCalculator.GetResult()).Collect());
             X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
-            
-          
-
             return new X509Certificate(structure);
         }
        
