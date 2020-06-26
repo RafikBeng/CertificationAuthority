@@ -1,10 +1,14 @@
 ﻿using Org.BouncyCastle.Asn1;
+using Org.BouncyCastle.Asn1.Nist;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.X509;
 using Org.BouncyCastle.Cms;
 using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto.Operators;
 using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Crypto.Signers;
+using Org.BouncyCastle.Crypto.Tls;
 using Org.BouncyCastle.Crypto.Utilities;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.OpenSsl;
@@ -22,10 +26,10 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-using static Certlib.KeyGen;
+
 namespace Certlib
 {
-    public static class CertGen
+    public  class CertGen
 
     {
         public static string GetReasonCode(int Reason)
@@ -265,7 +269,7 @@ namespace Certlib
                                                              KeyPurposeID[] ExtendedKeyUsage,
                                                              bool isCertificateAuthority)
         {
-
+            if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             X509ExtensionsGenerator generator = new X509ExtensionsGenerator();
             AddKeyUsage(generator, KeyUsage);
             AddExtendedKeyUsage(generator, ExtendedKeyUsage);
@@ -279,46 +283,8 @@ namespace Certlib
             
             return pkcs10;
         }
-        public static X509Certificate SigneTbs1(TbsCertificateStructure tbs,
-                                              X509Certificate RootCA,
-                                              AsymmetricKeyParameter CAKey)
-        {
-            SecureRandom Random = new SecureRandom();
-            ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
-            String algorithm = RootCA.SigAlgName;
-
-            algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
-
-
-            AlgorithmIdentifier algorithm1 = new DefaultSignatureAlgorithmIdentifierFinder().Find(algorithm);
-            string Sig = SignerUtilities.GetEncodingName(algorithm1.Algorithm);
-            Console.WriteLine(Sig);
-            byte[] encoded = tbs.GetEncoded();
-            IStreamCalculator streamCalculator = signatureCalculatorFactory.CreateCalculator();
-            streamCalculator.Stream.Write(encoded, 0, encoded.Length);
-            streamCalculator.Stream.Dispose();
-           
-            
-            DerBitString bitSig = new DerBitString(((IBlockResult)streamCalculator.GetResult()).Collect());
-          //  X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
-            
-            //Console.WriteLine("*******************************Check Signature************************************");
-            //// var signer = SignerUtilities.GetSigner(RootCA.SigAlgName);
-            var signer = SignerUtilities.GetSigner(algorithm1.Algorithm);
-            //// ICipherParameters parametre= new Ci
-            signer.Init(true, CAKey);
-            signer.BlockUpdate(encoded, 0, encoded.Length);
-            
-            byte[] signature1 = signer.GenerateSignature();
-            DerBitString bitSig1 = new DerBitString(signature1);
-            X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig1);
-            //byte[] signature = bitSig.GetBytes();
-            //Console.WriteLine(Hex.ToHexString(signature));
-            //Console.WriteLine(Hex.ToHexString(signature1));
-            //Console.WriteLine("*******************************Check Signature************************************");
-
-            return new X509Certificate(structure);
-        }
+       
+       
         public static X509Certificate SigneTbs(TbsCertificateStructure tbs,
                                                X509Certificate RootCA,
                                                AsymmetricKeyParameter CAKey)
@@ -326,18 +292,14 @@ namespace Certlib
             SecureRandom Random = new SecureRandom();
             ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
             String algorithm = RootCA.SigAlgName;
-           
-            algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
-            
-            
+            if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             AlgorithmIdentifier algorithm1 = new DefaultSignatureAlgorithmIdentifierFinder().Find(algorithm);
-            string Sig = SignerUtilities.GetEncodingName(algorithm1.Algorithm);
-            Console.WriteLine(Sig);
             byte[] encoded = tbs.GetDerEncoded();
             IStreamCalculator streamCalculator = signatureCalculatorFactory.CreateCalculator();
             streamCalculator.Stream.Write(encoded, 0, encoded.Length);
             streamCalculator.Stream.Dispose();
-            DerBitString bitSig = new DerBitString(((IBlockResult)streamCalculator.GetResult()).Collect());
+            byte[] signature = ((IBlockResult)streamCalculator.GetResult()).Collect();
+            DerBitString bitSig = new DerBitString(signature);
             X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
             return new X509Certificate(structure);
         }
@@ -363,7 +325,9 @@ namespace Certlib
                 AddExtendedKeyUsage(Generator, extendedKeyUsage);
             }
             string Sig = Certificate.SigAlgName;
-            Sig = Sig.Remove(Sig.IndexOf("-"), 1);
+
+           
+            if (!Sig.Contains("SHA3-")) Sig = Sig.Remove(Sig.IndexOf("-"), 1);
             SecureRandom random = new SecureRandom();
             
             ISignatureFactory signatureFactory = new Asn1SignatureFactory(Sig,CAkey,random);
@@ -383,9 +347,10 @@ namespace Certlib
             crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(RootCA));
             crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.One));
             string algorithme = RootCA.SigAlgName;
-            algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);
+            if (!algorithme.Contains("SHA3-")) algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);
             SecureRandom random = new SecureRandom();
             ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithme,CAkey, random);
+            
             return crlGenerator.Generate(signatureFactory);
         }
         public static X509Crl UpdateClr(X509Certificate RootCA, X509Certificate Certificate, int Reason,X509Crl crl ,AsymmetricKeyParameter CAkey)
@@ -402,10 +367,10 @@ namespace Certlib
             Asn1OctetString octetString = crl.GetExtensionValue(X509Extensions.CrlNumber);
             long number = CrlNumber.GetInstance(X509ExtensionUtilities.FromExtensionValue(octetString)).LongValueExact;
             BigInteger serial = BigInteger.ValueOf(number+1);
-            Console.WriteLine("seriale is" + serial);
+            
             crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(serial));
             string algorithme = RootCA.SigAlgName;
-            algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);
+            if (!algorithme.Contains("SHA3-")) algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);
             SecureRandom random = new SecureRandom();
             ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithme, CAkey, random);
             return crlGenerator.Generate(signatureFactory);
@@ -419,6 +384,7 @@ namespace Certlib
                                              string algorithm,
                                              int Validity)
         {
+            if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
             certificateGenerator.SetSerialNumber(SerialNumber);
             certificateGenerator.SetIssuerDN(new X509Name(SubjectName));
@@ -442,6 +408,7 @@ namespace Certlib
             SecureRandom random = new SecureRandom();
           
             ISignatureFactory signatureFactory = new Asn1SignatureFactory(algorithm, KeyPair.Private, random);
+            
             X509Certificate certificate = certificateGenerator.Generate(signatureFactory);
             return (certificate);
         }
@@ -459,45 +426,20 @@ namespace Certlib
             tbsGenerator.SetSerialNumber(new DerInteger(SubjectSerialNumber));
             tbsGenerator.SetSubjectPublicKeyInfo(Csr.GetCertificationRequestInfo().SubjectPublicKeyInfo);
             string s = RootCA.SigAlgName;
-            s = s.Remove(s.IndexOf("-"), 1);
+            if(!s.Contains("SHA3-")) s = s.Remove(s.IndexOf("-"), 1);
+
             AlgorithmIdentifier algorithm = new DefaultSignatureAlgorithmIdentifierFinder().Find(s);
             tbsGenerator.SetSignature(algorithm);
             DateTime dateTime = DateTime.UtcNow;
             tbsGenerator.SetStartDate(new DerUtcTime(dateTime));
             tbsGenerator.SetEndDate(new DerUtcTime(dateTime.AddYears(Validity)));
+       
             tbsGenerator.SetExtensions(GetX509ExtensionsFromCsr(Csr));
           
             return tbsGenerator.GenerateTbsCertificate();
         }
-        public static TbsCertificateStructure TbsCertificate(String SubjectDN,
-                                                             String IssuerDN,
-                                                             String[] subjectAlternativeNames,
-                                                             AsymmetricCipherKeyPair SubjectKeyPair,
-                                                             BigInteger SubjectSerialNumber,
-                                                             KeyUsage KeyUsage,
-                                                             KeyPurposeID[] ExtendedKeyUsage,
-                                                             AlgorithmIdentifier SignatureAlgorithm,
-                                                             int Validity,
-                                                             bool isCertificateAuthority)
-        {
-            
-            V3TbsCertificateGenerator tbsGenerator = new V3TbsCertificateGenerator();
-            tbsGenerator.SetSubject(new X509Name(SubjectDN));
-            tbsGenerator.SetIssuer(new X509Name(IssuerDN));
-            tbsGenerator.SetSerialNumber(new DerInteger(SubjectSerialNumber));
-            tbsGenerator.SetSignature(SignatureAlgorithm);
-            tbsGenerator.SetSubjectPublicKeyInfo(SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(SubjectKeyPair.Public));
-            DateTime dateTime = DateTime.UtcNow;
-            tbsGenerator.SetStartDate(new DerUtcTime(dateTime));
-            tbsGenerator.SetEndDate(new DerUtcTime(dateTime.AddYears(Validity)));
-            X509ExtensionsGenerator x509Extensions = new X509ExtensionsGenerator();
-            AddBasicConstraints(x509Extensions, isCertificateAuthority);
-            AddSubjectAlternativeNames(x509Extensions, subjectAlternativeNames);
-            AddKeyUsage(x509Extensions, KeyUsage);
-            AddExtendedKeyUsage(x509Extensions, ExtendedKeyUsage);
-            tbsGenerator.SetExtensions(x509Extensions.Generate());
-            return tbsGenerator.GenerateTbsCertificate();
-        }
+        
+
 
         public static string GeneratePassword(int size)
         {
@@ -565,6 +507,7 @@ namespace Certlib
                 X509Extensions.ExtendedKeyUsage.Id, false, extendedKeyUsage);
 
         }
+       
         public static void AddKeyUsage(X509V3CertificateGenerator certificateGenerator, KeyUsage usages)
         {
             certificateGenerator.AddExtension(X509Extensions.KeyUsage.Id, false, usages.ToAsn1Object());
