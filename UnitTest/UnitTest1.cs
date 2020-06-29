@@ -354,14 +354,20 @@ namespace UnitTest
             //    Console.WriteLine(rSA.ExportRSAPublicKey());
 
             //});
-            //TimeIt("RSA Key Generation dot net", () =>
-            //{
-            //   // AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(8192);
-            //    RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(8192*2);
+            TimeIt("RSA Key Generation dot net", () =>
+            {
+                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(8192);
+                //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048*4);
+                //string Public = ExportPublicKey(rsa);
+                //string Private= ExportPrivateKey(rsa);
+                // AsymmetricKeyParameter priv =PrivateKeyReader(Private);
+                // AsymmetricKeyParameter pub = PublicKeyReader(Public);
+                
+                //Console.WriteLine(KeyWriter(priv));
+                //Console.WriteLine(KeyWriter(pub));
+                //Console.WriteLine(Public);
 
-            //   Console.WriteLine(rsa.ExportRSAPublicKey());
-
-            //});
+            });
             //TimeIt("RSA Key Generation dot net CNG", () =>
             //{
             //    RSACng rSACng = new RSACng(8192*2);

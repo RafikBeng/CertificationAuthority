@@ -9,6 +9,7 @@ using Org.BouncyCastle.Utilities;
 using Org.BouncyCastle.Utilities.Encoders;
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Certlib
@@ -210,16 +211,17 @@ namespace Certlib
            // Console.WriteLine(Key);
             TextReader textReader = new StringReader(Key);
             PemReader pemReader = new PemReader(textReader);
-         
-            var KeyParameter = (AsymmetricCipherKeyPair) pemReader.ReadObject();
+
+            AsymmetricCipherKeyPair KeyParameter = (AsymmetricCipherKeyPair) pemReader.ReadObject();
             return KeyParameter.Private;
         }
+      
         public static AsymmetricKeyParameter PublicKeyReader(string Key)
         {
            // Console.WriteLine(Key);
             TextReader textReader = new StringReader(Key);
             PemReader pemReader = new PemReader(textReader);
-            var KeyParameter = (AsymmetricKeyParameter) pemReader.ReadObject();
+            AsymmetricKeyParameter KeyParameter = (AsymmetricKeyParameter) pemReader.ReadObject();
             return KeyParameter;
         }
         public static AsymmetricCipherKeyPair GenerateElGamalKeyPair(int keysize)
@@ -246,17 +248,23 @@ namespace Certlib
         }
         public static AsymmetricCipherKeyPair GenerateRsaKeyPair(int keysize)
         {
-            BigInteger publicExponent = BigInteger.ValueOf(0x10001);
-            SecureRandom secureRandom = new SecureRandom();
-            RsaKeyGenerationParameters rsaKeyGenerationParameters = new RsaKeyGenerationParameters(publicExponent, secureRandom, keysize, 112);
-            var keyGenerator = new RsaKeyPairGenerator();
-            keyGenerator.Init(rsaKeyGenerationParameters);
-            return keyGenerator.GenerateKeyPair();
+            //BigInteger publicExponent = BigInteger.ValueOf(0x10001);
+            //SecureRandom secureRandom = new SecureRandom();
+            //RsaKeyGenerationParameters rsaKeyGenerationParameters = new RsaKeyGenerationParameters(publicExponent, secureRandom, keysize, 112);
+            //var keyGenerator = new RsaKeyPairGenerator();
+            //keyGenerator.Init(rsaKeyGenerationParameters);
+            //return keyGenerator.GenerateKeyPair();
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(keysize);
+            string Private = ExportPrivateKey(rsa);
+            TextReader textReader = new StringReader(Private);
+            PemReader pemReader = new PemReader(textReader);
+            AsymmetricCipherKeyPair KeyParameter = (AsymmetricCipherKeyPair)pemReader.ReadObject();
+            return KeyParameter;
         }
 
         public static AsymmetricCipherKeyPair GenerateRsaKeyPair(RsaKeyParameters parameters)
         {
-            BigInteger publicExponent = BigInteger.ValueOf(0x10001);
+           
             SecureRandom secureRandom = new SecureRandom();
             RsaKeyGenerationParameters rsaKeyGenerationParameters = new RsaKeyGenerationParameters(parameters.Exponent, secureRandom, parameters.Modulus.BitLength, 80);
             var keyGenerator = new RsaKeyPairGenerator();
