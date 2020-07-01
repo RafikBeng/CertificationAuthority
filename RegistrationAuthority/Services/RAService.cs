@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace RegistrationAuthority.Services
 {
-    public class CsrService
+    public class RAService
     {
         private readonly IMongoCollection<CsrModel> _CsrModel;
         private readonly IMongoCollection<BsonDocument> _Contries;
         private readonly IMongoCollection<ServiceModel> _ServiceModel;
         private readonly IMongoCollection<CertModel> _Cert;
         private readonly IMongoCollection<CrlModel> _Clr;
-        public CsrService(IDatabaseSettings settings)
+        public RAService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);

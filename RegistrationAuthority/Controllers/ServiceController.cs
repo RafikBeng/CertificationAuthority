@@ -12,8 +12,8 @@ namespace RegistrationAuthority.Controllers
 {
     public class ServiceController : Controller
     {
-        private readonly CsrService _CsrService;
-        public ServiceController(CsrService CsrService)
+        private readonly RAService _CsrService;
+        public ServiceController(RAService CsrService)
         {
             _CsrService = CsrService;
         }

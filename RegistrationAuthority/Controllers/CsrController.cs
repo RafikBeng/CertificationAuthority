@@ -28,8 +28,8 @@ namespace RegistrationAuthority.Controllers
     
     public class CsrController : Controller
     {
-        private readonly CsrService _CsrService;
-        public CsrController(CsrService CsrService)
+        private readonly RAService _CsrService;
+        public CsrController(RAService CsrService)
         {
             _CsrService = CsrService;
         }

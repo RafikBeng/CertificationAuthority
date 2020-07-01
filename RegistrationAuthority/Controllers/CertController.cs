@@ -22,21 +22,21 @@ namespace RegistrationAuthority.Controllers
 {
     public class CertController : Controller
     {
-        private readonly CsrService _CsrService;
-        public CertController(CsrService CsrService)
+        private readonly RAService _RAService;
+        public CertController(RAService RAService)
         {
-            _CsrService = CsrService;
+            _RAService = RAService;
         }
         // GET: CertController
         public ActionResult Index(string searchString)
         {
             if(String.IsNullOrEmpty(searchString))
             {
-                return View( _CsrService.GetCerts());
+                return View(_RAService.GetCerts());
             }
             else
             {
-                return View(_CsrService.GetCerts(searchString));
+                return View(_RAService.GetCerts(searchString));
             }
           
         }
@@ -48,7 +48,7 @@ namespace RegistrationAuthority.Controllers
         // GET: CertController/Details/5
         public ActionResult Details(long Serial)
         {
-            CertModel result = _CsrService.GetCert(Serial);
+            CertModel result = _RAService.GetCert(Serial);
             X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
             result.Thumbprint = Hex.ToHexString(Certificate.GetSignature());
             result.Extensions = ShowExtensions(Certificate);
@@ -136,7 +136,7 @@ namespace RegistrationAuthority.Controllers
         }
         public  FileContentResult Download(long Serial)
         {
-            CertModel result = _CsrService.GetCert(Serial);
+            CertModel result = _RAService.GetCert(Serial);
             X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
             string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
             string path = name + "-"+ result.Serial.ToString() + ".cer";
@@ -145,7 +145,7 @@ namespace RegistrationAuthority.Controllers
         }
         public FileContentResult Download_PEM(long Serial)
         {
-            CertModel result = _CsrService.GetCert(Serial);
+            CertModel result = _RAService.GetCert(Serial);
             X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
             string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
             string path = name + "-" + result.Serial.ToString() + ".pem";
@@ -154,7 +154,7 @@ namespace RegistrationAuthority.Controllers
         }
         public FileContentResult Download_PEM_Public(long Serial)
         {
-            CertModel result = _CsrService.GetCert(Serial);
+            CertModel result = _RAService.GetCert(Serial);
             X509Certificate Certificate = new X509CertificateParser().ReadCertificate(CertReader(result.Certificat));
             string name = Certificate.SubjectDN.GetValueList(X509Name.CN)[0].ToString();
             string path = name + "-" + result.Serial.ToString()+ "-Public-Key"+ ".pem";
