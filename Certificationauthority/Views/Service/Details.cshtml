@@ -5,60 +5,57 @@
 }
 
 <h1>Details</h1>
-<div class="container">
-    <table class="table table-bordered table-hover table-striped table-sm">
+<div class="container-fluid row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+        <table class="table table-responsive-sm">
+            <tbody>
 
-        <tbody>
+                <tr>
+                    <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.Serial)</th>
+                    <td id="ser" class="bg-gradient-success">
+                        @Html.DisplayFor(model => model.Serial)
+                    </td>
 
-            <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.Serial)</th>
-                <td id="ser">
-                    @Html.DisplayFor(model => model.Serial)
-                </td>
+                </tr>
 
-            </tr>
-            
-            <tr >
-                <th scope="row">@Html.DisplayNameFor(model => model.Object)</th>
-                <td id="objec">
-                    @Html.DisplayFor(model => model.Object)
-                </td>
-            </tr>
-            <tr id="reas">
-                <th scope="row">@Html.DisplayNameFor(model => model.Reason)</th>
-                <td>
-                    @Html.DisplayFor(model => model.Reason)
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class="container">
-  
- <input type="button" class="btn btn-primary" id="create" value="Validate" onclick="location.href='@Url.Action("Validate", "Service", new { Serial = Model.Serial })'" />
-  <input type="button" class="btn btn-primary" id="Delete" value="Delete" onclick="location.href='@Url.Action("Delete", "Service", new { id = Model.Id })'" />
-<div> 
+                <tr>
+                    <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.Object)</th>
+                    <td id="objec" class="bg-gradient-success">
+                        @Html.DisplayFor(model => model.Object)
+                    </td>
+                </tr>
+                <tr id="reas" class="bg-gradient-success">
+                    <th scope="row">@Html.DisplayNameFor(model => model.Reason)</th>
+                    <td class="bg-gradient-success">
+                        @Html.DisplayFor(model => model.Reason)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="container card-header">
+            <input type="button" class="btn btn-success" id="create" value="Validate" onclick="location.href='@Url.Action("Validate", "Service", new { Serial = Model.Serial })'" />
+            <input type="button" class="btn btn-warning" id="Delete" value="Delete" onclick="location.href='@Url.Action("Delete", "Service", new { id = Model.Id })'" />
+        </div>
+    </div>
+
+    </div>
     
-</div>
-  
-    <a asp-action="Index">Back to List</a>
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        <script type="text/javascript">
+            $(document).ready(function () {
 
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script type="text/javascript">
-        $(document).ready(function () {
-          
-        var val = document.getElementById("objec").innerText;
-          //  var val = $("#objec").text();
+                var val = document.getElementById("objec").innerText;
+                //  var val = $("#objec").text();
 
-            if (val != "Revoke") {
-                $('#reas').hide();
-            }
-            else $('#reas').show();
+                if (val != "Revoke") {
+                    $('#reas').hide();
+                }
+                else $('#reas').show();
 
-        });
+            });
 
-    
-</script>
-}
+
+        </script>
+    }

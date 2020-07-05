@@ -184,8 +184,7 @@ namespace Certificationauthority.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(CertModel Cert)
         {
-            try
-            {
+           
                 String SubjectDN = $"CN={Cert.CommonName},O={Cert.OrganizationName},OU={Cert.OrganizationalUnitName},C={Cert.CountryName},ST={Cert.StateName},L={Cert.City},STREET={Cert.StreetAddress},E={Cert.MAIL}";
                 String[] subjectAlternativeNames = new List<String>().ToArray();
 
@@ -261,11 +260,8 @@ namespace Certificationauthority.Controllers
                 TempData.Add("MyTempData", data);
                 TempData.Add("MyRoot", Root);
                 return RedirectToAction(nameof(Details));
-            }
-            catch
-            {
-                return View();
-            }
+       
+          
         }
 
         // GET: Cert/Edit/5

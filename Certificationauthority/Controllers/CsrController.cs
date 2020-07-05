@@ -185,9 +185,10 @@ namespace Certificationauthority.Controllers
         }
 
         // GET: ListCsr/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(String id)
         {
-            return View();
+            _CertService.DelCsr(id);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: ListCsr/Delete/5

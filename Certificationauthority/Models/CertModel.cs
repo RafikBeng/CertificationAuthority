@@ -99,17 +99,16 @@ namespace Certificationauthority.Models
 
         public List<SelectListItem> Hashs { get; } = new List<SelectListItem>
         {
-            //new SelectListItem { Value = "MD2", Text = "MD2" },
-            //new SelectListItem { Value = "MD5", Text = "MD5" },
-            //new SelectListItem { Value = "SHA1", Text = "SHA1" },
+           
             new SelectListItem { Value = "SHA224", Text = "SHA224" },
             new SelectListItem { Value = "SHA256", Text = "SHA256" },
             new SelectListItem { Value = "SHA384", Text = "SHA384" },
-           // new SelectListItem { Value = "SHA384", Text = "SHA384" },
+           
             new SelectListItem { Value = "SHA512", Text = "SHA512" },
-            //new SelectListItem { Value = "RIPEMD160", Text = "RIPEMD160" },
-            //new SelectListItem { Value = "RIPEMD128", Text = "RIPEMD128" },
-            //new SelectListItem { Value = "RIPEMD256", Text = "RIPEMD256" },
+            new SelectListItem { Value = "SHA3-224", Text = "SHA3-224" },
+            new SelectListItem { Value = "SHA3-256", Text = "SHA3-256" },
+            new SelectListItem { Value = "SHA3-384", Text = "SHA3-384" },
+            new SelectListItem { Value = "SHA3-512", Text = "SHA3-512" },
         };
        
        // [BsonIgnore]

@@ -36,8 +36,7 @@ namespace RegistrationAuthority
                 sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
             services.AddSingleton<RAService>();
-            services.AddSingleton<IFileProvider>(
-            new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+          
            
             services.AddControllersWithViews();
 

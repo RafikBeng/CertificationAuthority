@@ -220,9 +220,10 @@ namespace RegistrationAuthority.Controllers
                     string resultString = Regex.Match(Csr.Curve, @"\d\d\d+").Value;
                     Csr.KeySize = Int32.Parse(resultString);
                 }
-               
-                
-                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, Key, Csr.Signature, keyUsage, ExtendUsage.ToArray(), false);
+
+                X509Name name = new X509Name(SubjectDN);
+           
+                Pkcs10CertificationRequest pkcs10 = CertRequest(name, subjectAlternativeNames, Key, Csr.Signature, keyUsage, ExtendUsage.ToArray(), false);
                 Csr.Certificat = CsrWriter(pkcs10);
                 Csr.Password = GetHash(Csr.Password);
                 _CsrService.Create(Csr);

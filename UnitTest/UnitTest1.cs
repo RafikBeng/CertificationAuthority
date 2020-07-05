@@ -44,45 +44,45 @@ namespace UnitTest
         {
             TimeIt("SigneTbs", () =>
             {
-                AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
-                String name = "rafik";
-                String organization = "ANP";
-                String organizationalUnit = "ESDAT";
-                String city = "Réghaïa";
-                String stateCode = "35";
-                String countryCode = "DZ";
-                String SubjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
-                string algorithm = "SHA-256WITHRSA";
-                String[] subjectAlternativeNames = new List<String>().ToArray();
+                //AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(2048);
+                //String name = "rafik";
+                //String organization = "ANP";
+                //String organizationalUnit = "ESDAT";
+                //String city = "Réghaïa";
+                //String stateCode = "35";
+                //String countryCode = "DZ";
+                //String SubjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
+                //string algorithm = "SHA-256WITHRSA";
+                //String[] subjectAlternativeNames = new List<String>().ToArray();
 
-                int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
-                int us = 0;
-                for (int i = 0; i < 9; i++) us = us | usage[i];
-                KeyUsage keyUsage = new KeyUsage(us);
-                KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,
-                                                                    KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,
-                                                                    KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
-                                                                    KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
+                //int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
+                //int us = 0;
+                //for (int i = 0; i < 9; i++) us = us | usage[i];
+                //KeyUsage keyUsage = new KeyUsage(us);
+                //KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,
+                //                                                    KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,
+                //                                                    KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
+                //                                                    KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
 
-                Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage, false);
-                RsaKeyParameters pubkey =(RsaKeyParameters)PublicKeyFactory.CreateKey(pkcs10.GetCertificationRequestInfo().SubjectPublicKeyInfo);
+                //Pkcs10CertificationRequest pkcs10 = CertRequest(new X509Name(SubjectDN), subjectAlternativeNames, asymmetricCipherKeyPair, algorithm, keyUsage, ExtendUsage, false);
+                //RsaKeyParameters pubkey =(RsaKeyParameters)PublicKeyFactory.CreateKey(pkcs10.GetCertificationRequestInfo().SubjectPublicKeyInfo);
               
                 //*********************************************************************************************************************
-                String name1 = "RoortCA";
-                String organization1 = "ANP";
-                String organizationalUnit1 = "ESDAT";
-                String city1 = "alger";
-                String countryCode1 = "DZ";
-                String SubjectDN1 = $"CN={name1},O={organization1},OU={organizationalUnit1},L={city1},C={countryCode1}";
-                AsymmetricCipherKeyPair asymmetricCipherKeyPair1 = GenerateRsaKeyPair(1024);
-                AsymmetricCipherKeyPair asymmetricCipherKeyPair3 = GenerateEcKeyPair("secp521r1");
-                string algorithm1 = "SHA-512WITHRSA";
-                string algorithm5 = "SHA3-384withECDSA";
+                //String name1 = "RoortCA";
+                //String organization1 = "ANP";
+                //String organizationalUnit1 = "ESDAT";
+                //String city1 = "alger";
+                //String countryCode1 = "DZ";
+                //String SubjectDN1 = $"CN={name1},O={organization1},OU={organizationalUnit1},L={city1},C={countryCode1}";
+                //AsymmetricCipherKeyPair asymmetricCipherKeyPair1 = GenerateRsaKeyPair(1024);
+                //AsymmetricCipherKeyPair asymmetricCipherKeyPair3 = GenerateEcKeyPair("secp521r1");
+                //string algorithm1 = "SHA-512WITHRSA";
+                //string algorithm5 = "SHA3-384withECDSA";
                // string algorithm1 = "SHA3-512WITHECDSA";
-                SecureRandom random = new SecureRandom();
-                BigInteger SerialNumber = GenerateSerialNumber(random);
-                X509Certificate Root = RootCA(SerialNumber, asymmetricCipherKeyPair, SubjectDN1, subjectAlternativeNames, keyUsage, ExtendUsage, algorithm1, 20);
-                File.WriteAllText("d:/folder/Root.cer", CertWriter(Root));
+                //SecureRandom random = new SecureRandom();
+                //BigInteger SerialNumber = GenerateSerialNumber(random);
+                //X509Certificate Root = RootCA(SerialNumber, asymmetricCipherKeyPair, SubjectDN1, subjectAlternativeNames, keyUsage, ExtendUsage, algorithm1, 20);
+                //File.WriteAllText("d:/folder/Root.cer", CertWriter(Root));
 
                 // Console.WriteLine(SignerUtilities.GetDefaultX509Parameters(NistObjectIdentifiers.IdRsassaPkcs1V15WithSha3_512));
                // AlgorithmIdentifier identifier = new AlgorithmIdentifier(NistObjectIdentifiers.IdRsassaPkcs1V15WithSha3_512);
@@ -93,19 +93,19 @@ namespace UnitTest
                 //    Console.WriteLine(item.ToString());
                 //}
                 //*********************************************************************************************************************
-                BigInteger SerialNumber1 = GenerateSerialNumber(random);
-                BigInteger SerialNumber2 = GenerateSerialNumber(random);
-                // AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
+               // BigInteger SerialNumber1 = GenerateSerialNumber(random);
+               // BigInteger SerialNumber2 = GenerateSerialNumber(random);
+               // // AlgorithmIdentifier algorithm2 = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
 
-               // TbsCertificateStructure tbs = TbsCertificate1(pkcs10, 5, SerialNumber1, Root);
-                TbsCertificateStructure tbs1 = TbsCertificate(pkcs10, 5, SerialNumber2, Root);
+               //// TbsCertificateStructure tbs = TbsCertificate1(pkcs10, 5, SerialNumber1, Root);
+               // TbsCertificateStructure tbs1 = TbsCertificate(pkcs10, 5, SerialNumber2, Root);
                 
               
-                //*********************************************************************************************************************
-                  X509Certificate certificate = SigneTbs(tbs1, Root, asymmetricCipherKeyPair1.Private);
+                ////*********************************************************************************************************************
+                //  X509Certificate certificate = SigneTbs(tbs1, Root, asymmetricCipherKeyPair1.Private);
                
-                Console.WriteLine(certificate.GetSignature().Length);
-                Console.WriteLine(certificate.CertificateStructure.GetSignatureOctets().Length);
+                //Console.WriteLine(certificate.GetSignature().Length);
+                //Console.WriteLine(certificate.CertificateStructure.GetSignatureOctets().Length);
 
                 // Console.WriteLine("***********************************encoder end der encoded***************************************************************");
                 //X509Certificate test = SigneTbs(tbs, Root, asymmetricCipherKeyPair1.Private);
@@ -114,7 +114,7 @@ namespace UnitTest
                 //Console.WriteLine(test.GetHashCode());
                 //Console.WriteLine(test1.GetHashCode());
                 
-                File.WriteAllText("d:/folder/certificate.cer", CertWriter(certificate));
+                //File.WriteAllText("d:/folder/certificate.cer", CertWriter(certificate));
                 // File.WriteAllText("d:/folder/test1.cer", CertWriter(test1));
                 // Console.WriteLine(Encoding.Default.EncodingName);
 
@@ -313,32 +313,32 @@ namespace UnitTest
         [TestMethod]
         public void TbsGenTest()
         {
-            String name = "rafik";
-            String issuer = "Root CA";
-            String organization = "ANP";
-            String organizationalUnit = "ESDAT";
-            String city = "Réghaïa";
-            String stateCode = "35";
-            String countryCode = "DZ";
-            String subjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
-            String issuerDN = $"CN={issuer},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
-            String[] subjectAlternativeNames = new List<String>().ToArray();
-            KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,
-                                                                    KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,
-                                                                    KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
-                                                                    KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
-            int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
-            int us = 0;
-            for (int i = 0; i < 9; i++) us = us | usage[i];
-            KeyUsage keyUsage = new KeyUsage(us);
-            BigInteger SerialNumber= GenerateSerialNumber(new SecureRandom());
-            AlgorithmIdentifier algorithm = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
-            TimeIt("GenerateEcKeyPair", () =>
-            {
-             
-               
-                
-            });
+            //String name = "rafik";
+            //String issuer = "Root CA";
+            //String organization = "ANP";
+            //String organizationalUnit = "ESDAT";
+            //String city = "Réghaïa";
+            //String stateCode = "35";
+            //String countryCode = "DZ";
+            //String subjectDN = $"CN={name},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
+            //String issuerDN = $"CN={issuer},O={organization},OU={organizationalUnit},L={city},C={countryCode},ST={stateCode}";
+            //String[] subjectAlternativeNames = new List<String>().ToArray();
+            //KeyPurposeID[] ExtendUsage = new List<KeyPurposeID>() { KeyPurposeID.AnyExtendedKeyUsage, KeyPurposeID.IdKPServerAuth ,KeyPurposeID.IdKPClientAuth,
+            //                                                        KeyPurposeID.IdKPCodeSigning,KeyPurposeID.IdKPEmailProtection,KeyPurposeID.IdKPIpsecEndSystem,
+            //                                                        KeyPurposeID.IdKPIpsecTunnel,KeyPurposeID.IdKPIpsecUser,KeyPurposeID.IdKPTimeStamping,
+            //                                                        KeyPurposeID.IdKPOcspSigning,KeyPurposeID.IdKPSmartCardLogon,KeyPurposeID.IdKPMacAddress}.ToArray();
+            //int[] usage = { 128, 64, 32, 16, 8, 4, 2, 1, 32768 };
+            //int us = 0;
+            //for (int i = 0; i < 9; i++) us = us | usage[i];
+            //KeyUsage keyUsage = new KeyUsage(us);
+            //BigInteger SerialNumber= GenerateSerialNumber(new SecureRandom());
+            //AlgorithmIdentifier algorithm = new AlgorithmIdentifier(X9ObjectIdentifiers.ECDsaWithSha512);
+            //TimeIt("GenerateEcKeyPair", () =>
+            //{
+
+
+
+            //});
             //TimeIt("RSA Key Generation dot net openssl", () =>
             //{
             //    RSAOpenSsl rSAOpenSsl = new RSAOpenSsl(8192);
@@ -354,20 +354,96 @@ namespace UnitTest
             //    Console.WriteLine(rSA.ExportRSAPublicKey());
 
             //});
-            TimeIt("RSA Key Generation dot net", () =>
+            TimeIt("PFX test", () =>
             {
-                 AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(8192);
-                //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048*4);
-                //string Public = ExportPublicKey(rsa);
-                //string Private= ExportPrivateKey(rsa);
-                // AsymmetricKeyParameter priv =PrivateKeyReader(Private);
-                // AsymmetricKeyParameter pub = PublicKeyReader(Public);
+                string name = "ServerCert";
+                String SubjectDN = $"CN={name}";
+                List<string> AlternativeNames = new List<string>();
+                AlternativeNames.Add("localhost");
+                AlternativeNames.Add("192.168.8.105");
+                String[] subjectAlternativeNames = AlternativeNames.ToArray();
                 
-                //Console.WriteLine(KeyWriter(priv));
-                //Console.WriteLine(KeyWriter(pub));
-                //Console.WriteLine(Public);
+                List<int> L = new List<int>
+                {
+                    128,
+                   // 64,
+                    32,
+                   // 16,
+                   // 8,
+                  //  4,
+                   // 2,
+                   // 1,
+                  //  32768
+                };
+
+                KeyUsage keyUsage = new KeyUsage(L.Sum());
+
+                List<KeyPurposeID> ExtendUsage = new List<KeyPurposeID>
+                {
+                  //  KeyPurposeID.AnyExtendedKeyUsage,
+                    KeyPurposeID.IdKPServerAuth,
+                  //  KeyPurposeID.IdKPClientAuth,
+                 //   KeyPurposeID.IdKPCodeSigning,
+                 //   KeyPurposeID.IdKPEmailProtection,
+                 //   KeyPurposeID.IdKPIpsecEndSystem,
+                   // KeyPurposeID.IdKPIpsecTunnel,
+                  //  KeyPurposeID.IdKPIpsecUser,
+                  //  KeyPurposeID.IdKPTimeStamping,
+                  //  KeyPurposeID.IdKPOcspSigning,
+                  //  KeyPurposeID.IdKPSmartCardLogon,
+                  //  KeyPurposeID.IdKPMacAddress
+                };
+
+                //AsymmetricCipherKeyPair Key = GenerateEcKeyPair("P-521");
+                //string algorithm1 = "SHA-512WITHECDSA";
+                AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(4096);
+                string algorithm1 = "SHA-512WITHRSA";
+                SecureRandom random = new SecureRandom();
+                BigInteger Serial = GenerateSerialNumber(random);
+                X509Certificate certificate = RootCA(Serial, Key, SubjectDN, subjectAlternativeNames, keyUsage, ExtendUsage.ToArray(), algorithm1, 2);
+                //******************************************************************************************
+                string root = File.ReadAllText("D:/test/RootCA.pem");
+                string user = File.ReadAllText("D:/test/localhost.pem");
+                string key = File.ReadAllText("D:/test/RootCAPrivateKey.pem");
+                X509Certificate userCert = new X509CertificateParser().ReadCertificate(CertReader(user));
+                X509Certificate rootCert = new X509CertificateParser().ReadCertificate(CertReader(root));
+                AsymmetricKeyParameter Private = PrivateKeyReader(key);
+                AsymmetricCipherKeyPair keyPair = new AsymmetricCipherKeyPair(rootCert.GetPublicKey(), Private);
+                string pass = "test";
+                // X509Certificate2 certificate2 = ConvertCertificate(userCert, keyPair, new SecureRandom(),pass) ;
+                // X509Certificate2 certificate2 = new X509Certificate2(userCert.GetEncoded());
+                // ExportCertificateAsPfx(certificate2, "D:/test/localhost.pfx",pass);
+                var store = new Pkcs12Store();
+                
+                string friendlyName = certificate.SubjectDN.ToString();
+                var certificateEntry = new X509CertificateEntry(certificate);
+               // var certificateEntry1 = new X509CertificateEntry(rootCert);
+              
+                
+                store.SetCertificateEntry(friendlyName, certificateEntry);
+               // store.SetCertificateEntry(rootCert.SubjectDN.ToString(), certificateEntry1);
+                store.SetKeyEntry(friendlyName, new AsymmetricKeyEntry(Key.Private), new[] { certificateEntry });
+
+                var stream = new MemoryStream();
+                store.Save(stream, pass.ToCharArray(), new SecureRandom());
+                File.WriteAllBytes("D:/test/ServerCert.pfx", stream.ToArray());
+                File.WriteAllBytes("D:/test/ServerCert.cer", certificate.GetEncoded());
 
             });
+            //TimeIt("RSA Key Generation dot net", () =>
+            //{
+            //     AsymmetricCipherKeyPair asymmetricCipherKeyPair = GenerateRsaKeyPair(8192);
+            //    //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048*4);
+            //    //string Public = ExportPublicKey(rsa);
+            //    //string Private= ExportPrivateKey(rsa);
+            //    // AsymmetricKeyParameter priv =PrivateKeyReader(Private);
+            //    // AsymmetricKeyParameter pub = PublicKeyReader(Public);
+                
+            //    //Console.WriteLine(KeyWriter(priv));
+            //    //Console.WriteLine(KeyWriter(pub));
+            //    //Console.WriteLine(Public);
+
+            //});
             //TimeIt("RSA Key Generation dot net CNG", () =>
             //{
             //    RSACng rSACng = new RSACng(8192*2);

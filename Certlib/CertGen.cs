@@ -26,12 +26,43 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
-
+using X509Certificate2 = System.Security.Cryptography.X509Certificates.X509Certificate2;
 namespace Certlib
 {
     public  class CertGen
 
     {
+        public static X509Certificate2 ConvertCertificate(X509Certificate certificate,
+                                                           AsymmetricCipherKeyPair subjectKeyPair,
+                                                           SecureRandom random,String password)
+        {
+
+            var store = new Pkcs12Store();
+            string friendlyName = certificate.SubjectDN.ToString();
+            var certificateEntry = new X509CertificateEntry(certificate);
+            store.SetCertificateEntry(friendlyName, certificateEntry);
+            store.SetKeyEntry(friendlyName, new AsymmetricKeyEntry(subjectKeyPair.Private), new[] { certificateEntry });
+            
+            var stream = new MemoryStream();
+            store.Save(stream, password.ToCharArray(), random);
+            var convertedCertificate =
+                new X509Certificate2(stream.ToArray(),
+                                     password,
+                                     System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.PersistKeySet | System.Security.Cryptography.X509Certificates.X509KeyStorageFlags.Exportable);
+            return convertedCertificate;
+        }
+
+        public static void ExportCertificateAsPfx(X509Certificate2 certificate, String outputFileName, String password = null)
+        {
+            if (certificate == null)
+                throw new ArgumentNullException(nameof(certificate));
+            if (String.IsNullOrWhiteSpace(outputFileName))
+                throw new ArgumentException($"Argument \"{nameof(outputFileName)}\" cannot be null or empty.", nameof(outputFileName));
+            
+            Byte[] bytes = certificate.Export(System.Security.Cryptography.X509Certificates.X509ContentType.Pfx, password);
+
+            File.WriteAllBytes(outputFileName, bytes);
+        }
         public static string GetReasonCode(int Reason)
         {
             return Reason switch
@@ -269,7 +300,7 @@ namespace Certlib
                                                              KeyPurposeID[] ExtendedKeyUsage,
                                                              bool isCertificateAuthority)
         {
-            if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
+           // if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             X509ExtensionsGenerator generator = new X509ExtensionsGenerator();
             AddKeyUsage(generator, KeyUsage);
             AddExtendedKeyUsage(generator, ExtendedKeyUsage);
@@ -384,7 +415,7 @@ namespace Certlib
                                              string algorithm,
                                              int Validity)
         {
-            if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
+           // if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
             certificateGenerator.SetSerialNumber(SerialNumber);
             certificateGenerator.SetIssuerDN(new X509Name(SubjectName));
@@ -517,27 +548,28 @@ namespace Certlib
         public static void AddSubjectAlternativeNames(X509V3CertificateGenerator certificateGenerator,
                                                       IEnumerable<string> subjectAlternativeNames)
         {
-            List<Asn1Encodable> sanEntries = new List<Asn1Encodable>();
+            List<Asn1Encodable> Entries = new List<Asn1Encodable>();
+          
+           
             foreach (string subjectAlternativeName in subjectAlternativeNames)
             {
                 // Test if an IP Address
                 IPAddress ip = null;
                 if (IPAddress.TryParse(subjectAlternativeName, out ip))
                 {
-                    sanEntries.Add(new GeneralName(GeneralName.IPAddress, subjectAlternativeName));
+                    Entries.Add(new GeneralName(GeneralName.IPAddress, subjectAlternativeName));
                 }
                 else
                 {
-                    sanEntries.Add(new GeneralName(GeneralName.DnsName, subjectAlternativeName));
+                    Entries.Add(new GeneralName(GeneralName.DnsName, subjectAlternativeName));
+                    
                 }
-
-
-                DerSequence subjectAlternativeNamesExtension = new DerSequence(sanEntries.ToArray());
-
-
-                certificateGenerator.AddExtension(
-                X509Extensions.SubjectAlternativeName.Id, false, subjectAlternativeNamesExtension);
+               
             }
+           
+            DerSequence subjectAlternativeNamesExtension = new DerSequence(Entries.ToArray());
+            certificateGenerator.AddExtension(
+            X509Extensions.SubjectAlternativeName.Id, false, subjectAlternativeNamesExtension);
         }
         public static  void AddAuthorityKeyIdentifier(X509ExtensionsGenerator ExtensionsGenerator,
                                                      X509Name issuerDN,
@@ -600,10 +632,11 @@ namespace Certlib
                     sanEntries.Add(new GeneralName(GeneralName.DnsName, subjectAlternativeName));
                 }
 
-                DerSequence subjectAlternativeNamesExtension = new DerSequence(sanEntries.ToArray());
-                ExtensionsGenerator.AddExtension(
-                X509Extensions.SubjectAlternativeName, false, subjectAlternativeNamesExtension);
+               
             }
+            DerSequence subjectAlternativeNamesExtension = new DerSequence(sanEntries.ToArray());
+            ExtensionsGenerator.AddExtension(
+            X509Extensions.SubjectAlternativeName, false, subjectAlternativeNamesExtension);
         }
     }
 }
