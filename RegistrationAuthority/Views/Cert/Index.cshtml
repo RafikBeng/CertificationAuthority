@@ -5,59 +5,63 @@
 }
 
 
-
-
-    <div class="container">
-        <h1>Certificates List</h1>
-        <form class="form-inline my-2 my-lg-0" asp-controller="Cert" asp-action="Index">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="SearchString">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-        <table class="table table-bordered table-hover table-striped table-sm">
-
-            <thead class="thead-light">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Serial)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SubjectDN)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NotBefore)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.NotAfter)
-                    </th>
-
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Serial)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SubjectDN)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NotBefore)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.NotAfter)
-                        </td>
-
-                        <td>
-
-                            @Html.ActionLink("Details", "Details", new { Serial = item.Serial })
-
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="bs-component">
+    <div class="alert alert-dismissible alert-success">
+        <strong>Certificates List</strong>
     </div>
+</div>
+
+<div class="container">
+   
+    <form class="form-inline my-2 my-lg-0" asp-controller="Cert" asp-action="Index">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="SearchString">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <table class="table table-responsive-sm">
+
+        <thead class="thead-light">
+            <tr>
+                <th class="bg-gradient-success">
+                    @Html.DisplayNameFor(model => model.Serial)
+                </th>
+                <th class="bg-gradient-success">
+                    @Html.DisplayNameFor(model => model.SubjectDN)
+                </th>
+                <th class="bg-gradient-success">
+                    @Html.DisplayNameFor(model => model.NotBefore)
+                </th>
+                <th class="bg-gradient-success">
+                    @Html.DisplayNameFor(model => model.NotAfter)
+                </th>
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="bg-gradient-success">
+                        @Html.DisplayFor(modelItem => item.Serial)
+                    </td>
+                    <td class="bg-gradient-success">
+                        @Html.DisplayFor(modelItem => item.SubjectDN)
+                    </td>
+                    <td class="bg-gradient-success">
+                        @Html.DisplayFor(modelItem => item.NotBefore)
+                    </td>
+                    <td class="bg-gradient-success">
+                        @Html.DisplayFor(modelItem => item.NotAfter)
+                    </td>
+
+                    <td class="bg-gradient-success">
+                        <input type="button" class="btn btn-info" value="Details" onclick="location.href='@Url.Action("Details", "Cert", new { Serial = item.Serial })'" />
+
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 

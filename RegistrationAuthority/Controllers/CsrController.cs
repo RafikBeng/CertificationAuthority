@@ -171,7 +171,14 @@ namespace RegistrationAuthority.Controllers
             //{
 
                 String SubjectDN = $"CN={Csr.CommonName},O={Csr.OrganizationName},OU={Csr.OrganizationalUnitName},C={Csr.CountryName},ST={Csr.StateName},L={Csr.City},STREET={Csr.StreetAddress},E={Csr.MAIL}";
-                String[] subjectAlternativeNames = new List<String>().ToArray();
+            // String[] subjectAlternativeNames = new List<String>().ToArray();
+            String[] subjectAlternativeNames = null;
+            if (Csr.AlternativeNames!=null && Csr.AlternativeNames.Any())
+            {
+               subjectAlternativeNames = Csr.AlternativeNames.Split(";");
+            }
+
+                
                 Csr.SubjectDN = SubjectDN;
                 List<int> L = new List<int>();
                 if (Csr.DigitalSignature) L.Add(128);

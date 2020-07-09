@@ -4,42 +4,46 @@
     ViewData["Title"] = "Details";
 }
 
-
+<div class="bs-component">
+    <div class="alert alert-dismissible alert-success">
+        <strong>CRL Details</strong>
+    </div>
+</div>
 <div class="container-fluid">
-    <h1>CRL Details</h1>
-    <table class="table table-bordered table-hover table-striped table-sm">
+   
+    <table class="table table-responsive-sm">
 
         <tbody>
             <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.Serial)</th>
-                <td>
+                <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.Serial)</th>
+                <td class="bg-gradient-success">
                     @Html.DisplayFor(model => model.Serial)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.ThisUpdate)</th>
-                <td>
+                <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.ThisUpdate)</th>
+                <td class="bg-gradient-success">
                     @Html.DisplayFor(model => model.ThisUpdate)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row">@Html.DisplayNameFor(model => model.NextUpdate)</th>
-                <td>
+                <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.NextUpdate)</th>
+                <td class="bg-gradient-success">
                     @Html.DisplayFor(model => model.NextUpdate)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row">Revoked Certificates</th>
-                <td>
-                    <table class="table table-striped">
+                <th scope="row" class="bg-gradient-success">Revoked Certificates</th>
+                <td class="bg-gradient-success">
+                    <table class="table table-responsive-sm ">
                         <thead class=" thead-light">
                             <tr>
-                                <th>Serial Number</th>
-                                <th>Revocation Date</th>
-                                <th>Revocation Reason</th>
+                                <th class="bg-gradient-warning">Serial Number</th>
+                                <th class="bg-gradient-warning">Revocation Date</th>
+                                <th class="bg-gradient-warning">Revocation Reason</th>
                             </tr>
 
                         </thead>
@@ -47,14 +51,14 @@
                             @foreach (var item in Model.RevokedCertificates)
                             {
                                 <tr>
-                                    <td>
+                                    <td class="bg-gradient-warning">
                                         @Html.DisplayFor(modelItem => item.Serial)
                                     </td>
-                                    <td>
+                                    <td class="bg-gradient-warning">
                                         @Html.DisplayFor(modelItem => item.RevocationDate)
                                     </td>
 
-                                    <td>
+                                    <td class="bg-gradient-warning">
                                         @Html.DisplayFor(modelItem => item.Reason)
                                     </td>
                                 </tr>
@@ -65,9 +69,9 @@
 
             </tr>
             <tr>
-                <th scope="row">Crl</th>
-                <td>
-                    <TEXTAREA wrap="hard" rows="12" cols="30" readonly class="form-control text-monospace">@Html.DisplayFor(model => model.Content)</TEXTAREA>
+                <th scope="row" class="bg-gradient-success">CRL</th>
+                <td class="bg-gradient-success">
+                    <TEXTAREA rows="12" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Content)</TEXTAREA>
                     <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Crl")'" />
                     <input type="button" class="btn btn-primary" value="Save .clr" onclick="location.href='@Url.Action("Download", "Crl")'" />
                 </td>

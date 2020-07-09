@@ -2,10 +2,12 @@
     ViewData["Title"] = "Error";
 }
 
-   
-    <div class="container">
-        <div class="alert alert-warning" role="alert">
-            @ViewBag.Message
-        </div> 
+    <div class="container-fluid">
+        <div class="bs-component">
+            <div class="alert alert-dismissible alert-warning">
+                <strong> @ViewBag.Message</strong>
+            </div>
+        </div>
+
     </div>
   

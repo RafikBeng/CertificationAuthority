@@ -22,7 +22,9 @@ namespace RegistrationAuthority.Models
         [BsonIgnore]
         [Display(Name = "EMAIL")]
         public string MAIL { get; set; }
-    
+        [BsonIgnore]
+        [Display(Name = "Alternative Names")]
+        public string AlternativeNames { get; set; }
         [BsonIgnore]
         [Display(Name = "Organization")]
         public string OrganizationName { get; set; }

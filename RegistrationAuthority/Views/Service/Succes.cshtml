@@ -1,8 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Succes";
 }
-<div class="container">
-    <div class="alert alert-success" role="alert">
-        @ViewBag.Message
+    <div class="container-fluid">
+        <div class="bs-component">
+            <div class="alert alert-dismissible alert-success">
+                <strong> @ViewBag.Message</strong>
+            </div>
+        </div>
+      
     </div>
-</div>

@@ -18,9 +18,9 @@ namespace RegistrationAuthority.Models
         public Int64 Serial { get; set; }
         [Display(Name = "Issuer DN")]
         public string DN { get; set; }
-        [Display(Name = "ThisUpdate")]
+        [Display(Name = "This Update")]
         public DateTime ThisUpdate { get; set; }
-        [Display(Name = "NextUpdate")]
+        [Display(Name = "Next Update")]
         public DateTime NextUpdate { get; set; }
         [Display(Name = "Content")]
         public string Content { get; set; }
