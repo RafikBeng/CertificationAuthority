@@ -56,10 +56,10 @@ namespace RegistrationAuthority.Controllers
             result.Signature = Certificate.SigAlgName;
             
             AsymmetricKeyParameter key = Certificate.GetPublicKey();
-            if (Certificate.SigAlgName.Contains("RSA"))
+            if (key is RsaKeyParameters parameters)
             {
                 result.Algorithme = "RSA";
-                RsaKeyParameters rsaKey = (RsaKeyParameters)key;
+                RsaKeyParameters rsaKey = parameters;
                 result.KeySize = rsaKey.Modulus.BitLength;
             }
             else

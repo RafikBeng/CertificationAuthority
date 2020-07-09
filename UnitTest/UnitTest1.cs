@@ -367,7 +367,7 @@ namespace UnitTest
                 {
                     128,
                    // 64,
-                    32,
+                  //  32,
                    // 16,
                    // 8,
                   //  4,
@@ -396,8 +396,10 @@ namespace UnitTest
 
                 //AsymmetricCipherKeyPair Key = GenerateEcKeyPair("P-521");
                 //string algorithm1 = "SHA-512WITHECDSA";
-                AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(4096);
-                string algorithm1 = "SHA-512WITHRSA";
+               // AsymmetricCipherKeyPair Key = GenerateRsaKeyPair(4096);
+                AsymmetricCipherKeyPair Key = GenerateEcKeyPair("sect571r1");
+               // string algorithm1 = "SHA512WITHRSA";
+                string algorithm1 = "SHA512WITHECDSA";
                 SecureRandom random = new SecureRandom();
                 BigInteger Serial = GenerateSerialNumber(random);
                 X509Certificate certificate = RootCA(Serial, Key, SubjectDN, subjectAlternativeNames, keyUsage, ExtendUsage.ToArray(), algorithm1, 2);
@@ -428,6 +430,10 @@ namespace UnitTest
                 store.Save(stream, pass.ToCharArray(), new SecureRandom());
                 File.WriteAllBytes("D:/test/ServerCert.pfx", stream.ToArray());
                 File.WriteAllBytes("D:/test/ServerCert.cer", certificate.GetEncoded());
+
+                Console.WriteLine(X509Extensions.AuthorityKeyIdentifier.Id);
+                
+
 
             });
             //TimeIt("RSA Key Generation dot net", () =>

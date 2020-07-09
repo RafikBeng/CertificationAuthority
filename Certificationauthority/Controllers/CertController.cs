@@ -117,10 +117,10 @@ namespace Certificationauthority.Controllers
                 NotBefore=Certificate.NotBefore
             };
             AsymmetricKeyParameter key = Certificate.GetPublicKey();
-            if (Certificate.SigAlgName.Contains("RSA"))
-            {
+            if (key is RsaKeyParameters parameters)
+            {    
                 Model.Algorithme = "RSA";
-                RsaKeyParameters rsaKey = (RsaKeyParameters)key;
+                RsaKeyParameters rsaKey = parameters;
                 Model.KeySize = rsaKey.Modulus.BitLength;
             }
             else

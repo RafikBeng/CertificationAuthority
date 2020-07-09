@@ -80,130 +80,187 @@ namespace Certlib
         public static string ShowExtensions(X509Certificate Certificate)
         {
             string Info = "Extensions:" + Environment.NewLine;
+           
 
             X509Extensions Extensions = Certificate.CertificateStructure.TbsCertificate.Extensions;
+            
             foreach (var v in Extensions.GetExtensionOids())
             {
 
                 X509Extension extension = Extensions.GetExtension(v);
                 System.Security.Cryptography.X509Certificates.X509Extension x509 = new System.Security.Cryptography.X509Certificates.X509Extension(v.Id, extension.Value.GetOctets(), extension.IsCritical);
-
-                // Console.WriteLine(x509.Format(true));
-                if (x509.Oid.Value == "2.5.29.15")
-                {
-                    System.Security.Cryptography.X509Certificates.X509KeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509KeyUsageExtension(x509, x509.Critical);
-                    Info += "\t";
-                    Info += "KeyUsages " + x509.Oid.Value + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += ext.KeyUsages.ToString() + Environment.NewLine;
-                }
-
-                if (x509.Oid.Value == "2.5.29.19")
-                {
-                    System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension ext = new System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension(x509, x509.Critical);
-                    Info += "\t";
-                    Info += "BasicConstraints " + x509.Oid.Value + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += "CertificateAuthority:" + ext.CertificateAuthority.ToString() + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += "HasPathLengthConstraint:" + ext.HasPathLengthConstraint.ToString() + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += "PathLengthConstraint:" + ext.PathLengthConstraint.ToString() + Environment.NewLine;
-
-                }
-
-                if (x509.Oid.Value == "2.5.29.14")
-                {
-                    System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension ext = new System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension(x509, x509.Critical);
-                    Info += "\t";
-                    Info += "SubjectKeyIdentifier " + x509.Oid.Value + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += ext.SubjectKeyIdentifier.ToString() + Environment.NewLine;
-
-                }
-
-                if (x509.Oid.Value == "2.5.29.37")
-                {
-                    System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension(x509, x509.Critical);
-                    System.Security.Cryptography.OidCollection oids = ext.EnhancedKeyUsages;
-                    Info += "\t";
-                    Info += "ExtendedKeyUsage " + x509.Oid.Value + Environment.NewLine;
-                    foreach (System.Security.Cryptography.Oid oid in oids)
-                    {
-                        Info += "\t"; Info += "\t";
-                        Info += oid.FriendlyName + " " + oid.Value + Environment.NewLine;
-
-                    }
-
-                }
+                AsnEncodedData asndata = new AsnEncodedData(x509.Oid, extension.Value.GetOctets());
+                Info += asndata.Oid.FriendlyName+":" + Environment.NewLine;
+                Info += asndata.Format(true) + Environment.NewLine;
+               
             }
 
             return Info;
         }
+        //public static string ShowExtensions(X509Certificate Certificate)
+        //{
+        //    string Info = "Extensions:" + Environment.NewLine;
 
+        //    X509Extensions Extensions = Certificate.CertificateStructure.TbsCertificate.Extensions;
+        //    foreach (var v in Extensions.GetExtensionOids())
+        //    {
+
+        //        X509Extension extension = Extensions.GetExtension(v);
+        //        System.Security.Cryptography.X509Certificates.X509Extension x509 = new System.Security.Cryptography.X509Certificates.X509Extension(v.Id, extension.Value.GetOctets(), extension.IsCritical);
+
+        //        // Console.WriteLine(x509.Format(true));
+        //        if (x509.Oid.Value == "2.5.29.15")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509KeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509KeyUsageExtension(x509, x509.Critical);
+        //            Info += "\t";
+        //            Info += "KeyUsages " + x509.Oid.Value + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += ext.KeyUsages.ToString() + Environment.NewLine;
+        //        }
+
+        //        if (x509.Oid.Value == "2.5.29.19")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension ext = new System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension(x509, x509.Critical);
+        //            Info += "\t";
+        //            Info += "BasicConstraints " + x509.Oid.Value + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += "CertificateAuthority:" + ext.CertificateAuthority.ToString() + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += "HasPathLengthConstraint:" + ext.HasPathLengthConstraint.ToString() + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += "PathLengthConstraint:" + ext.PathLengthConstraint.ToString() + Environment.NewLine;
+
+        //        }
+
+        //        if (x509.Oid.Value == "2.5.29.14")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension ext = new System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension(x509, x509.Critical);
+        //            Info += "\t";
+        //            Info += "SubjectKeyIdentifier " + x509.Oid.Value + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += ext.SubjectKeyIdentifier.ToString() + Environment.NewLine;
+
+        //        }
+        //        if (x509.Oid.Value == "2.5.29.35")
+        //        {
+
+        //            Info += "\t";
+        //            Info += "AuthorityKeyIdentifier " + x509.Oid.Value + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            AsnEncodedData asndata = new AsnEncodedData(x509.Oid, extension.Value.GetOctets());
+        //            Info += asndata.Format(true) + Environment.NewLine;
+
+        //        }
+        //        if (x509.Oid.Value == "2.5.29.37")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension(x509, x509.Critical);
+        //            System.Security.Cryptography.OidCollection oids = ext.EnhancedKeyUsages;
+        //            Info += "\t";
+        //            Info += "ExtendedKeyUsage " + x509.Oid.Value + Environment.NewLine;
+        //            foreach (System.Security.Cryptography.Oid oid in oids)
+        //            {
+        //                Info += "\t"; Info += "\t";
+        //                Info += oid.FriendlyName + " " + oid.Value + Environment.NewLine;
+
+        //            }
+
+        //        }
+        //    }
+
+        //    return Info;
+        //}
         public static string ShowExtensions(Pkcs10CertificationRequest pkcs10)
         {
             string Info = "Extensions:" + Environment.NewLine;
-           
+
             X509Extensions Extensions = GetX509ExtensionsFromCsr(pkcs10);
             foreach (var v in Extensions.GetExtensionOids())
             {
 
                 X509Extension extension = Extensions.GetExtension(v);
                 System.Security.Cryptography.X509Certificates.X509Extension x509 = new System.Security.Cryptography.X509Certificates.X509Extension(v.Id, extension.Value.GetOctets(), extension.IsCritical);
-               
-                // Console.WriteLine(x509.Format(true));
-                if (x509.Oid.Value == "2.5.29.15")
-                {
-                    System.Security.Cryptography.X509Certificates.X509KeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509KeyUsageExtension(x509, x509.Critical);
-                    Info += "\t";
-                    Info += "KeyUsages "+ x509.Oid.Value+ Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += ext.KeyUsages.ToString()+ Environment.NewLine;  
-                }
-
-                if (x509.Oid.Value == "2.5.29.19")
-                {
-                    System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension ext = new System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension(x509, x509.Critical);
-                    Info += "\t";
-                    Info += "BasicConstraints "+ x509.Oid.Value + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += "CertificateAuthority:"+ ext.CertificateAuthority.ToString() + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += "HasPathLengthConstraint:"+ ext.HasPathLengthConstraint.ToString() + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += "PathLengthConstraint:"+ ext.PathLengthConstraint.ToString() + Environment.NewLine;
-                   
-                }
-
-                if (x509.Oid.Value == "2.5.29.14")
-                {
-                    System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension ext = new System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension(x509, x509.Critical);
-                    Info += "\t";
-                    Info += "SubjectKeyIdentifier "+ x509.Oid.Value + Environment.NewLine;
-                    Info += "\t"; Info += "\t";
-                    Info += ext.SubjectKeyIdentifier.ToString() + Environment.NewLine;
-                    
-                }
-
-                if (x509.Oid.Value == "2.5.29.37")
-                {
-                    System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension(x509, x509.Critical);
-                    System.Security.Cryptography.OidCollection oids = ext.EnhancedKeyUsages;
-                    Info += "\t";
-                    Info += "ExtendedKeyUsage "+ x509.Oid.Value + Environment.NewLine;
-                    foreach (System.Security.Cryptography.Oid oid in oids)
-                    {
-                        Info += "\t"; Info += "\t";
-                        Info +=oid.FriendlyName+" "+oid.Value+Environment.NewLine;
-                        
-                    }
-                    
-                }
+                AsnEncodedData asndata = new AsnEncodedData(x509.Oid, extension.Value.GetOctets());
+                Info += asndata.Oid.FriendlyName + ":" + Environment.NewLine;
+                Info += asndata.Format(true) + Environment.NewLine;
             }
-            
+
             return Info;
         }
+        //public static string ShowExtensions(Pkcs10CertificationRequest pkcs10)
+        //{
+        //    string Info = "Extensions:" + Environment.NewLine;
+           
+        //    X509Extensions Extensions = GetX509ExtensionsFromCsr(pkcs10);
+            
+        //    foreach (var v in Extensions.GetExtensionOids())
+        //    {
+
+        //        X509Extension extension = Extensions.GetExtension(v);
+               
+        //        System.Security.Cryptography.X509Certificates.X509Extension x509 = new System.Security.Cryptography.X509Certificates.X509Extension(v.Id, extension.Value.GetOctets(), extension.IsCritical);
+               
+        //        // Console.WriteLine(x509.Format(true));
+        //        if (x509.Oid.Value == "2.5.29.15")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509KeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509KeyUsageExtension(x509, x509.Critical);
+        //            Info += "\t";
+        //            Info += "KeyUsages "+ x509.Oid.Value+ Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += ext.KeyUsages.ToString()+ Environment.NewLine;  
+        //        }
+
+        //        if (x509.Oid.Value == "2.5.29.19")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension ext = new System.Security.Cryptography.X509Certificates.X509BasicConstraintsExtension(x509, x509.Critical);
+        //            Info += "\t";
+        //            Info += "BasicConstraints "+ x509.Oid.Value + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += "CertificateAuthority:"+ ext.CertificateAuthority.ToString() + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += "HasPathLengthConstraint:"+ ext.HasPathLengthConstraint.ToString() + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += "PathLengthConstraint:"+ ext.PathLengthConstraint.ToString() + Environment.NewLine;
+                   
+        //        }
+
+        //        if (x509.Oid.Value == "2.5.29.14")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension ext = new System.Security.Cryptography.X509Certificates.X509SubjectKeyIdentifierExtension(x509, x509.Critical);
+        //            Info += "\t";
+        //            Info += "SubjectKeyIdentifier "+ x509.Oid.Value + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            Info += ext.SubjectKeyIdentifier.ToString() + Environment.NewLine;
+                    
+        //        }
+        //        if (x509.Oid.Value == "2.5.29.35")
+        //        {
+                   
+        //            Info += "\t";
+        //            Info += "AuthorityKeyIdentifier " + x509.Oid.Value + Environment.NewLine;
+        //            Info += "\t"; Info += "\t";
+        //            AsnEncodedData asndata = new AsnEncodedData(x509.Oid,extension.Value.GetOctets());
+        //            Info += asndata.Format(true) + Environment.NewLine;
+
+        //        }
+
+        //        if (x509.Oid.Value == "2.5.29.37")
+        //        {
+        //            System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension ext = new System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension(x509, x509.Critical);
+        //            System.Security.Cryptography.OidCollection oids = ext.EnhancedKeyUsages;
+        //            Info += "\t";
+        //            Info += "ExtendedKeyUsage "+ x509.Oid.Value + Environment.NewLine;
+        //            foreach (System.Security.Cryptography.Oid oid in oids)
+        //            {
+        //                Info += "\t"; Info += "\t";
+        //                Info +=oid.FriendlyName+" "+oid.Value+Environment.NewLine;
+                        
+        //            }
+                    
+        //        }
+        //    }
+            
+        //    return Info;
+        //}
 
       public static  X509Extensions GetX509ExtensionsFromCsr(Pkcs10CertificationRequest certificateSigningRequest)
         {
@@ -302,10 +359,11 @@ namespace Certlib
         {
            // if(!algorithm.Contains("SHA3-")) algorithm = algorithm.Remove(algorithm.IndexOf("-"), 1);
             X509ExtensionsGenerator generator = new X509ExtensionsGenerator();
-            AddKeyUsage(generator, KeyUsage);
-            AddExtendedKeyUsage(generator, ExtendedKeyUsage);
-            AddSubjectAlternativeNames(generator, subjectAlternativeNames);
+            if (KeyUsage!=null) AddKeyUsage(generator, KeyUsage);
+            if (ExtendedKeyUsage != null && ExtendedKeyUsage.Any()) AddExtendedKeyUsage(generator, ExtendedKeyUsage);
+            if (subjectAlternativeNames != null && subjectAlternativeNames.Any()) AddSubjectAlternativeNames(generator, subjectAlternativeNames);
             AddSubjectKeyIdentifier(generator, Key);
+           
             AddBasicConstraints(generator, isCertificateAuthority);
             Org.BouncyCastle.Asn1.Cms.Attribute attributes = new Org.BouncyCastle.Asn1.Cms.Attribute(PkcsObjectIdentifiers.Pkcs9AtExtensionRequest, new DerSet(generator.Generate()));
             Pkcs10CertificationRequest pkcs10 = new Pkcs10CertificationRequest(algorithm, SubjectDN, Key.Public, new DerSet(attributes), Key.Private);
@@ -320,6 +378,7 @@ namespace Certlib
                                                X509Certificate RootCA,
                                                AsymmetricKeyParameter CAKey)
         {
+            
             SecureRandom Random = new SecureRandom();
             ISignatureFactory signatureCalculatorFactory = new Asn1SignatureFactory(RootCA.SigAlgOid, CAKey, Random);
             String algorithm = RootCA.SigAlgName;
@@ -332,6 +391,7 @@ namespace Certlib
             byte[] signature = ((IBlockResult)streamCalculator.GetResult()).Collect();
             DerBitString bitSig = new DerBitString(signature);
             X509CertificateStructure structure = new X509CertificateStructure(tbs, algorithm1, bitSig);
+            
             return new X509Certificate(structure);
         }
        
@@ -451,7 +511,8 @@ namespace Certlib
         {
 
             
-            V3TbsCertificateGenerator tbsGenerator = new V3TbsCertificateGenerator();            
+            V3TbsCertificateGenerator tbsGenerator = new V3TbsCertificateGenerator();
+           
             tbsGenerator.SetSubject(Csr.GetCertificationRequestInfo().Subject);
             tbsGenerator.SetIssuer(RootCA.SubjectDN);
             tbsGenerator.SetSerialNumber(new DerInteger(SubjectSerialNumber));
@@ -501,9 +562,9 @@ namespace Certlib
         {
             var authorityKeyIdentifierExtension =
                 new AuthorityKeyIdentifier(
-                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(issuerKeyPair.Public));
-            //                    new GeneralNames(new GeneralName(issuerDN)),
-            //                   issuerSerialNumber);
+                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(issuerKeyPair.Public),
+                               new GeneralNames(new GeneralName(issuerDN)),
+                               issuerSerialNumber);
             certificateGenerator.AddExtension(
                 X509Extensions.AuthorityKeyIdentifier.Id, false, authorityKeyIdentifierExtension);
         }
@@ -578,9 +639,9 @@ namespace Certlib
         {
             var authorityKeyIdentifierExtension =
                 new AuthorityKeyIdentifier(
-                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(issuerKeyPair.Public));
-            //                    new GeneralNames(new GeneralName(issuerDN)),
-            //                   issuerSerialNumber);
+                    SubjectPublicKeyInfoFactory.CreateSubjectPublicKeyInfo(issuerKeyPair.Public),
+                                new GeneralNames(new GeneralName(issuerDN)),
+                               issuerSerialNumber);
             ExtensionsGenerator.AddExtension(
                 X509Extensions.AuthorityKeyIdentifier, false, authorityKeyIdentifierExtension);
         }
