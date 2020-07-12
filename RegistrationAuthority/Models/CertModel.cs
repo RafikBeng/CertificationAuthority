@@ -26,7 +26,9 @@ namespace RegistrationAuthority.Models
         public string Signature { get; set; }
         public string Extensions { get; set; }
         public bool   IsRootCA { get; set; }
+        [Display(Name = "Not After")]
         public DateTime NotAfter { get; set; }
+        [Display(Name = "Not Before")]
         public DateTime NotBefore { get; set; }
         public string Privatekey { get; set; }
         public string Publickey { get; set; }
