@@ -6,104 +6,104 @@
 
 
     <div class="bs-component">
-        <div class="alert alert-dismissible alert-success">
+        <div class="alert  bg-gradient-primary text-dark">
             <strong>Certificate Details</strong>
         </div>
     </div>
 <div class="container">
   
-    <table class="table  table-responsive-sm">
+    <table class="table  table-responsive-sm table-hover text-dark">
 
         <tbody>
             <tr>
-                <th scope="row" class="bg-gradient-success">Serial Number</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Serial Number</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.Serial)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Distinguished Name</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Distinguished Name</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.SubjectDN)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Issuer Distinguished Name</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Issuer Distinguished Name</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.IssuerDN)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Not Before</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Not Before</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.NotBefore)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Not After</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Not After</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.NotAfter)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Signature Algorithm</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Signature Algorithm</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.Signature)
                 </td>
 
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Public key Algorithm</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Public key Algorithm</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.Algorithme)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">key Size</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">key Size</th>
+                <td class="bg-gradient-secondary">
                     @Html.DisplayFor(model => model.KeySize)
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Thumbprint</th>
-                <td class="bg-gradient-success">
+                <th scope="row" class="bg-gradient-primary">Thumbprint</th>
+                <td class="bg-gradient-secondary">
 
-                    <TEXTAREA  rows="5" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
+                    <TEXTAREA  rows="5" cols="30" readonly class="form-control text-monospace bg-success">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
                 </td>
 
             </tr>
             <tr>
-                <th scope="row" class="bg-gradient-success">Public Key</th>
-                <td class="bg-gradient-success">
-                    <TEXTAREA  rows="12" cols="30" readonly id="public" class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
-                    <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM_Public", "Cert", new { Serial = Model.Serial })'" />
+                <th scope="row" class="bg-gradient-primary">Public Key</th>
+                <td class="bg-gradient-secondary">
+                    <TEXTAREA  rows="12" cols="30" readonly id="public" class="form-control text-monospace bg-success">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
+                    <input type="button" class="btn btn-danger" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM_Public", "Cert", new { Serial = Model.Serial })'" />
                 </td>
 
             </tr>
 
             <tr>
-                <th scope="row" class="bg-gradient-success">Extensions</th>
-                <td class="bg-gradient-success">
-                    <TEXTAREA  rows="12" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
+                <th scope="row" class="bg-gradient-primary">Extensions</th>
+                <td class="bg-gradient-secondary">
+                    <TEXTAREA  rows="12" cols="30" readonly class="form-control text-monospace bg-success">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
 
                 </td>
 
             </tr>
             <tr>
-                <th scope="row"class="bg-gradient-success">Certificate</th>
-                <td class="bg-gradient-success">
-                    <TEXTAREA  rows="12" cols="30" readonly id="cert" class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
+                <th scope="row"class="bg-gradient-primary">Certificate</th>
+                <td class="bg-gradient-secondary">
+                    <TEXTAREA  rows="12" cols="30" readonly id="cert" class="form-control text-monospace bg-success">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
                   
-                    <input type="button" class="btn btn-primary"  value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Cert", new { Serial = Model.Serial })'" />
-                    <input type="button" class="btn btn-primary"  value="Save .cer" onclick="location.href='@Url.Action("Download", "Cert", new { Serial = Model.Serial })'" />
+                    <input type="button" class="btn btn-danger"  value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Cert", new { Serial = Model.Serial })'" />
+                    <input type="button" class="btn btn-warning"  value="Save .cer" onclick="location.href='@Url.Action("Download", "Cert", new { Serial = Model.Serial })'" />
                 </td>
 
             </tr>

@@ -4,79 +4,79 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="bs-component">
-    <div class="alert alert-dismissible alert-success">
-        <strong>CRL Details</strong>
+    <div class="bs-component">
+        <div class="alert  bg-gradient-primary text-dark">
+            <strong>CRL Details</strong>
+        </div>
     </div>
-</div>
-<div class="container-fluid">
-   
-    <table class="table table-responsive-sm">
+    <div class="container-fluid">
 
-        <tbody>
-            <tr>
-                <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.Serial)</th>
-                <td class="bg-gradient-success">
-                    @Html.DisplayFor(model => model.Serial)
-                </td>
+        <table class="table  table-responsive-sm table-hover text-dark">
 
-            </tr>
-            <tr>
-                <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.ThisUpdate)</th>
-                <td class="bg-gradient-success">
-                    @Html.DisplayFor(model => model.ThisUpdate)
-                </td>
+            <tbody>
+                <tr>
+                    <th scope="row" class="bg-gradient-primary">@Html.DisplayNameFor(model => model.Serial)</th>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(model => model.Serial)
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.NextUpdate)</th>
-                <td class="bg-gradient-success">
-                    @Html.DisplayFor(model => model.NextUpdate)
-                </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-gradient-primary">@Html.DisplayNameFor(model => model.ThisUpdate)</th>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(model => model.ThisUpdate)
+                    </td>
 
-            </tr>
-            <tr>
-                <th scope="row" class="bg-gradient-success">Revoked Certificates</th>
-                <td class="bg-gradient-success">
-                    <table class="table table-responsive-sm ">
-                        <thead class=" thead-light">
-                            <tr>
-                                <th class="bg-gradient-warning">Serial Number</th>
-                                <th class="bg-gradient-warning">Revocation Date</th>
-                                <th class="bg-gradient-warning">Revocation Reason</th>
-                            </tr>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-gradient-primary">@Html.DisplayNameFor(model => model.NextUpdate)</th>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(model => model.NextUpdate)
+                    </td>
 
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.RevokedCertificates)
-                            {
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-gradient-primary">Revoked Certificates</th>
+                    <td class="bg-gradient-secondary">
+                        <table class="table  table-responsive-sm table-hover text-dark">
+                            <thead class="bg-gradient-primary">
                                 <tr>
-                                    <td class="bg-gradient-warning">
-                                        @Html.DisplayFor(modelItem => item.Serial)
-                                    </td>
-                                    <td class="bg-gradient-warning">
-                                        @Html.DisplayFor(modelItem => item.RevocationDate)
-                                    </td>
-
-                                    <td class="bg-gradient-warning">
-                                        @Html.DisplayFor(modelItem => item.Reason)
-                                    </td>
+                                    <th class="bg-gradient-primary">Serial Number</th>
+                                    <th class="bg-gradient-primary">Revocation Date</th>
+                                    <th class="bg-gradient-primary">Revocation Reason</th>
                                 </tr>
-                            }
-                        </tbody>
-                    </table>
-                </td>
 
-            </tr>
-            <tr>
-                <th scope="row" class="bg-gradient-success">CRL</th>
-                <td class="bg-gradient-success">
-                    <TEXTAREA rows="12" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Content)</TEXTAREA>
-                    <input type="button" class="btn btn-primary" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Crl")'" />
-                    <input type="button" class="btn btn-primary" value="Save .clr" onclick="location.href='@Url.Action("Download", "Crl")'" />
-                </td>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.RevokedCertificates)
+                                {
+                                    <tr>
+                                        <td class="bg-gradient-warning">
+                                            @Html.DisplayFor(modelItem => item.Serial)
+                                        </td>
+                                        <td class="bg-gradient-warning">
+                                            @Html.DisplayFor(modelItem => item.RevocationDate)
+                                        </td>
 
-            </tr>
-        </tbody>
-    </table>
-</div>
+                                        <td class="bg-gradient-warning">
+                                            @Html.DisplayFor(modelItem => item.Reason)
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-gradient-primary">CRL</th>
+                    <td class="bg-gradient-secondary">
+                        <TEXTAREA rows="12" cols="30" readonly class="form-control text-monospace bg-success">@Html.DisplayFor(model => model.Content)</TEXTAREA>
+                        <input type="button" class="btn btn-danger" value="Save .pem" onclick="location.href='@Url.Action("Download_PEM", "Crl")'" />
+                        <input type="button" class="btn btn-warning" value="Save .clr" onclick="location.href='@Url.Action("Download", "Crl")'" />
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>

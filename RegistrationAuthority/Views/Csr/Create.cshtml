@@ -6,275 +6,275 @@
 
     
     <div class="bs-component">
-        <div class="alert alert-dismissible alert-success">
+        <div class="alert  bg-gradient-primary text-dark">
             <strong>Create CSR</strong>
         </div>
     </div>
 <div class="container-fluid row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="CommonName" class="control-label "></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="CommonName" class="control-label " style="font-weight:bold;"></label></div>
                 <div class="col-sm-9"><input asp-for="CommonName" class="form-control " /></div>
                 <span asp-validation-for="CommonName" class="text-danger"></span>
             </div>
 
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="AlternativeNames" class="control-label "></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="AlternativeNames" class="control-label " style="font-weight:bold;"></label></div>
                 <div class="col-sm-9"><input asp-for="AlternativeNames" class="form-control " /></div>
                 <span asp-validation-for="AlternativeNames" class="text-danger"></span>
             </div>
 
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"><label asp-for="MAIL" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"><label asp-for="MAIL" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9"> <input asp-for="MAIL" class="form-control" /></div>
                 <span asp-validation-for="MAIL" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="OrganizationName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="OrganizationName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9"> <input asp-for="OrganizationName" class="form-control" /></div>
                 <span asp-validation-for="OrganizationName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"><label asp-for="OrganizationalUnitName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"><label asp-for="OrganizationalUnitName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">  <input asp-for="OrganizationalUnitName" class="form-control" /></div>
                 <span asp-validation-for="OrganizationalUnitName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="CountryName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="CountryName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="CountryName" asp-items="Model.Countries" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="CountryName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3">  <label asp-for="StateName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">  <label asp-for="StateName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="StateName" asp-items="Model.states" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="StateName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"><label asp-for="City" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"><label asp-for="City" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="City" asp-items="Model.cities" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="City" class="text-danger"></span>
+                <span asp-validation-for="City" class="text-danger "></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="StreetAddress" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="StreetAddress" class="control-label " style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">   <input asp-for="StreetAddress" class="form-control" /></div>
                 <span asp-validation-for="StreetAddress" class="text-danger"></span>
             </div>
 
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3">  <label asp-for="Validity" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">  <label asp-for="Validity" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Validity" asp-items="Model.Validitys" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="Validity" class="text-danger"></span>
+                <span asp-validation-for="Validity" class="text-danger text-dark"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3">  <label asp-for="Algorithme" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">  <label asp-for="Algorithme" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Algorithme" asp-items="Model.Algorithmes" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="Algorithme" class="text-danger"></span>
+                <span asp-validation-for="Algorithme" class="text-danger text-dark"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="KeySizeDiv">
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="KeySizeDiv">
                 <div class="col-sm-3">
-                    <label asp-for="KeySize" class="control-label"></label>
-                    <span id="ex6CurrentSliderValLabel">:<span id="ex6SliderVal">2048</span></span>
+                    <label asp-for="KeySize" class="control-label" style="font-weight:bold;"></label>
+                    <span id="ex6CurrentSliderValLabel" style="font-weight:bold;">: <span id="ex6SliderVal" style="font-weight:bold;">2048</span></span>
                 </div>
 
-                <div class="col-sm-9 ">
+                <div class="col-sm-9 text-dark">
                     <input type="text" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="16384" data-slider-step="256" data-slider-value="2048" />
 
                 </div>
 
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="ECTypeDiv">
-                <div class="col-sm-3"> <label asp-for="ECType" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="ECTypeDiv">
+                <div class="col-sm-3"> <label asp-for="ECType" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="ECType" asp-items="Model.ECTypes" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="ECType" class="text-danger"></span>
+                <span asp-validation-for="ECType" class="text-danger text-dark"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="CurveDiv">
-                <div class="col-sm-3"> <label asp-for="Curve" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="CurveDiv">
+                <div class="col-sm-3"> <label asp-for="Curve" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Curve" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3">   <label asp-for="Hash" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">   <label asp-for="Hash" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Hash" asp-items="Model.Hashs" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <input type="button" value="Generate Keys" class="btn btn-primary" id="keygen" />
+            <div class="form-group card-header bg-gradient-primary row text-dark">
+                <input type="button" value="Generate Keys" class="btn btn-success" id="keygen" />
             </div>
 
-            <div class="form-group card-header bg-gradient-success row" id="privdiv">
-                <TEXTAREA asp-for="Privatekey" id="Private" readonly class="form-control text-monospace bg-gradient-info" rows="10" style="font-size:small"></TEXTAREA>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="privdiv">
+                <TEXTAREA asp-for="Privatekey" id="Private" readonly class="form-control text-monospace bg-success" rows="10" style="font-size:small"></TEXTAREA>
 
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="pubdiv">
-                <TEXTAREA asp-for="Publickey" id="Public" readonly class="form-control text-monospace bg-gradient-info" rows="5" style="font-size:small"></TEXTAREA>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="pubdiv">
+                <TEXTAREA asp-for="Publickey" id="Public" readonly class="form-control text-monospace bg-success" rows="5" style="font-size:small"></TEXTAREA>
             </div>
 
-            <div class="form-check card-header bg-gradient-success row">
+            <div class="form-check card-header bg-gradient-secondary row text-dark">
 
 
-                <label>Key Usage</label>
+                <label style="font-weight:bold;">Key Usage</label>
 
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="DigitalSignature" type="checkbox" class="form-check-input" id="DigitalSignature">
-                        <label class="form-check-label" for="DigitalSignature" title="the subject public key is used for verifying digital signatures.">Digital Signature</label>
+                        <label class="form-check-label" for="DigitalSignature" title="the subject public key is used for verifying digital signatures." style="font-weight:bold;">Digital Signature</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="NonRepudiation" type="checkbox" class="form-check-input" id="NonRepudiation">
-                        <label class="form-check-label" for="NonRepudiation" title="the subject public key provide a non-repudiation service that protects against the signing entity falsely denying some action.">Non Repudiation</label>
+                        <label class="form-check-label" for="NonRepudiation" title="the subject public key provide a non-repudiation service that protects against the signing entity falsely denying some action." style="font-weight:bold;">Non Repudiation</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="KeyEncipherment" type="checkbox" class="form-check-input" id="KeyEncipherment">
-                        <label class="form-check-label" for="KeyEncipherment" title="the subject public key is used for enciphering private or secret keys.">Key Encipherment</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="KeyEncipherment" title="the subject public key is used for enciphering private or secret keys.">Key Encipherment</label>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row text-dark">
                     <div class="col-sm-4">
                         <input asp-for="DataEncipherment" type="checkbox" class="form-check-input" id="DataEncipherment">
-                        <label class="form-check-label" for="DataEncipherment" title="the subject public key is used for directly enciphering raw user data without the use of an intermediate symmetric cipher.">Data Encipherment</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="DataEncipherment" title="the subject public key is used for directly enciphering raw user data without the use of an intermediate symmetric cipher.">Data Encipherment</label>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="KeyAgreement" type="checkbox" class="form-check-input" id="KeyAgreement">
-                        <label class="form-check-label" for="KeyAgreement" title="the subject public key is used for key agreement.">Key Agreement</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="KeyAgreement" title="the subject public key is used for key agreement.">Key Agreement</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="KeyCertSign" asp- type="checkbox" class="form-check-input" id="KeyCertSign">
-                        <label class="form-check-label" for="KeyCertSign" title="the subject public key is used for verifying signatures on public key certificates.">Key Cert Sign</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="KeyCertSign" title="the subject public key is used for verifying signatures on public key certificates.">Key Cert Sign</label>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-sm-4">
+                <div class="row ">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="CrlSign" type="checkbox" class="form-check-input" id="CrlSign">
-                        <label class="form-check-label" for="CrlSign" title="the subject public key is used for verifying signatures on certificate revocation lists.">Crl Sign</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="CrlSign" title="the subject public key is used for verifying signatures on certificate revocation lists.">Crl Sign</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="EncipherOnly" type="checkbox" class="form-check-input" id="EncipherOnly">
-                        <label class="form-check-label" for="EncipherOnly" title="When the encipherOnly bit is asserted and the keyAgreement bit is also set, the subject public key may be used only for enciphering data while performing key agreement.">Encipher Only</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="EncipherOnly" title="When the encipherOnly bit is asserted and the keyAgreement bit is also set, the subject public key may be used only for enciphering data while performing key agreement.">Encipher Only</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="DecipherOnly" type="checkbox" class="form-check-input" id="DecipherOnly">
-                        <label class="form-check-label" for="DecipherOnly" title="When the decipherOnly bit is asserted and the keyAgreement bit is also set, the subject public key may be used only for deciphering data while performing key agreement.">Decipher Only</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="DecipherOnly" title="When the decipherOnly bit is asserted and the keyAgreement bit is also set, the subject public key may be used only for deciphering data while performing key agreement.">Decipher Only</label>
                     </div>
                 </div>
 
             </div>
-            <div class="form-check card-header bg-gradient-success row">
+            <div class="form-check card-header bg-gradient-secondary row text-dark">
 
-                <label>Extended Key Usage</label>
+                <label style="font-weight:bold;">Extended Key Usage</label>
 
-                <div class="row">
-                    <div class="col-sm-4">
+                <div class="row ">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="AnyExtendedKeyUsage" type="checkbox" class="form-check-input" id="AnyExtendedKeyUsage">
-                        <label class="form-check-label" for="AnyExtendedKeyUsage." title="Any extended key usage">Any Extended Key Usage</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="AnyExtendedKeyUsage." title="Any extended key usage">Any Extended Key Usage</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPServerAuth" type="checkbox" class="form-check-input" id="IdKPServerAuth">
-                        <label class="form-check-label" for="IdKPServerAuth" title="Transport Layer Security (TLS) World Wide Web (WWW) server authentication.">Server Auth</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPServerAuth" title="Transport Layer Security (TLS) World Wide Web (WWW) server authentication.">Server Auth</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPClientAuth" type="checkbox" class="form-check-input" id="IdKPClientAuth">
-                        <label class="form-check-label" for="IdKPClientAuth" title="Transport Layer Security (TLS) World Wide Web (WWW) client authentication.">Client Auth</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPClientAuth" title="Transport Layer Security (TLS) World Wide Web (WWW) client authentication.">Client Auth</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPCodeSigning" type="checkbox" class="form-check-input" id="IdKPCodeSigning">
-                        <label class="form-check-label" for="IdKPCodeSigning" title="Signing of downloadable executable code.">Code Signing</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPCodeSigning" title="Signing of downloadable executable code.">Code Signing</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPEmailProtection" type="checkbox" class="form-check-input" id="IdKPEmailProtection">
-                        <label class="form-check-label" for="IdKPEmailProtection" title="Email protection.">Email Protection</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPEmailProtection" title="Email protection.">Email Protection</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPIpsecEndSystem" type="checkbox" class="form-check-input" id="IdKPIpsecEndSystem">
-                        <label class="form-check-label" for="IdKPIpsecEndSystem" title="Internet Protocol SECurity (IPSEC) end system certificate.">Ipsec End System</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPIpsecEndSystem" title="Internet Protocol SECurity (IPSEC) end system certificate.">Ipsec End System</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPIpsecTunnel" type="checkbox" class="form-check-input" id="IdKPIpsecTunnel">
-                        <label class="form-check-label" for="IdKPIpsecTunnel" title="Internet Protocol SECurity (IPSEC) tunnel certificate.">Ipsec Tunnel</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPIpsecTunnel" title="Internet Protocol SECurity (IPSEC) tunnel certificate.">Ipsec Tunnel</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPIpsecUser" type="checkbox" class="form-check-input" id="IdKPIpsecUser">
-                        <label class="form-check-label" for="IdKPIpsecUser" title="Internet Protocol SECurity (IPSEC) user certificate.">Ipsec User</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPIpsecUser" title="Internet Protocol SECurity (IPSEC) user certificate.">Ipsec User</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPTimeStamping" type="checkbox" class="form-check-input" id="IdKPTimeStamping">
-                        <label class="form-check-label" for="IdKPTimeStamping" title="Binding the hash of an object to a time.">Time Stamping</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPTimeStamping" title="Binding the hash of an object to a time.">Time Stamping</label>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPOcspSigning" type="checkbox" class="form-check-input" id="IdKPOcspSigning">
-                        <label class="form-check-label" for="IdKPOcspSigning" title="Signing Online Certificate Status Protocol (OCSP) responses.">Ocsp Signing</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPOcspSigning" title="Signing Online Certificate Status Protocol (OCSP) responses.">Ocsp Signing</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPSmartCardLogon" type="checkbox" class="form-check-input" id="IdKPSmartCardLogon">
-                        <label class="form-check-label" for="IdKPSmartCardLogon" title="Smartcard logon (extKeyUsage extension) to Microsoft Windows.">SmartCard Logon</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPSmartCardLogon" title="Smartcard logon (extKeyUsage extension) to Microsoft Windows.">SmartCard Logon</label>
                     </div>
 
-                    <div class="col-sm-4">
+                    <div class="col-sm-4 text-dark">
                         <input asp-for="IdKPMacAddress" type="checkbox" class="form-check-input" id="IdKPMacAddress">
-                        <label class="form-check-label" for="IdKPMacAddress" title="MAC address in maximal, colon separated hex notation.">MacAddress</label>
+                        <label style="font-weight:bold;" class="form-check-label" for="IdKPMacAddress" title="MAC address in maximal, colon separated hex notation.">MacAddress</label>
                     </div>
                 </div>
 
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div> <input type="button" value="Generate Password" class="btn btn-primary" id="passbt" /></div>
+            <div class="form-group card-header bg-gradient-primary row text-dark">
+                <div> <input type="button" value="Generate Password" class="btn btn-success" id="passbt" /></div>
                 <div class="col-sm-7">   <input asp-for="Password" class="form-control" id="pass" /></div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
-            <div class="form-group card-header row ">
+            <div class="form-group card-header row bg-gradient-primary text-dark">
                 <input type="submit" value="Generate CSR" class="btn btn-success" id="sub" />
             </div>
         </form>
