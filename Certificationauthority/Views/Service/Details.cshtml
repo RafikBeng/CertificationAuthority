@@ -4,36 +4,46 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+    <div class="bs-component">
+        <div class="alert  bg-gradient-primary text-dark">
+            <strong>Service Details</strong>
+        </div>
+    </div>
 <div class="container-fluid row">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
-        <table class="table table-responsive-sm">
+        <table class="table  table-responsive-sm table-hover text-dark">
             <tbody>
-
                 <tr>
-                    <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.Serial)</th>
-                    <td id="ser" class="bg-gradient-success">
+                    <th scope="row" class="bg-gradient-primary">@Html.DisplayNameFor(model => model.Id)</th>
+                    <td id="ser" class="bg-gradient-secondary">
+                        @Html.DisplayFor(model => model.Id)
+                    </td>
+
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-gradient-primary">@Html.DisplayNameFor(model => model.Serial)</th>
+                    <td id="ser" class="bg-gradient-secondary">
                         @Html.DisplayFor(model => model.Serial)
                     </td>
 
                 </tr>
 
                 <tr>
-                    <th scope="row" class="bg-gradient-success">@Html.DisplayNameFor(model => model.Object)</th>
-                    <td id="objec" class="bg-gradient-success">
+                    <th scope="row" class="bg-gradient-primary">@Html.DisplayNameFor(model => model.Object)</th>
+                    <td id="objec" class="bg-gradient-secondary">
                         @Html.DisplayFor(model => model.Object)
                     </td>
                 </tr>
-                <tr id="reas" class="bg-gradient-success">
+                <tr id="reas" class="bg-gradient-primary">
                     <th scope="row">@Html.DisplayNameFor(model => model.Reason)</th>
-                    <td class="bg-gradient-success">
+                    <td class="bg-gradient-secondary">
                         @Html.DisplayFor(model => model.Reason)
                     </td>
                 </tr>
             </tbody>
         </table>
-        <div class="container card-header">
+        <div class="card-header bg-gradient-primary text-dark">
             <input type="button" class="btn btn-success" id="create" value="Validate" onclick="location.href='@Url.Action("Validate", "Service", new { Serial = Model.Serial })'" />
             <input type="button" class="btn btn-warning" id="Delete" value="Delete" onclick="location.href='@Url.Action("Delete", "Service", new { id = Model.Id })'" />
         </div>

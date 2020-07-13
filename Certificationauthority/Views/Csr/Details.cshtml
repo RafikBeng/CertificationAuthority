@@ -5,92 +5,99 @@
 }
 
 
-    <div class="container">
-        <h1>CRS Details</h1>
-        <table class="table  table-responsive-sm">
-
-            <tbody>
-
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Distinguished Name</th>
-                    <td class="bg-gradient-success">
-                        @Html.DisplayFor(model => model.SubjectDN)
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Validity</th>
-                    <td class="bg-gradient-success">
-                        @Html.DisplayFor(model => model.Validity)
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Signature Algorithm</th>
-                    <td class="bg-gradient-success">
-                        @Html.DisplayFor(model => model.Signature)
-                    </td>
-
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Public key Algorithm</th>
-                    <td class="bg-gradient-success">
-                        @Html.DisplayFor(model => model.Algorithme)
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">key Size</th>
-                    <td class="bg-gradient-success">
-                        @Html.DisplayFor(model => model.KeySize)
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Thumbprint</th>
-                    <td class="bg-gradient-success">
-
-                        <TEXTAREA  rows="5" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Public Key</th>
-                    <td class="bg-gradient-success">
-                        <TEXTAREA  rows="12" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
-
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Private Key</th>
-                    <td class="bg-gradient-success">
-                        <TEXTAREA  rows="12" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
-
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Extensions</th>
-                    <td class="bg-gradient-success">
-                        <TEXTAREA  rows="12" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
-
-                    </td>
-
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-gradient-success">Certificate</th>
-                    <td class="bg-gradient-success">
-                        <TEXTAREA  rows="12" cols="30" readonly class="form-control text-monospace bg-gradient-info">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
-
-                    </td>
-
-                </tr>
-            </tbody>
-        </table>
+<div class="bs-component">
+    <div class="alert  bg-gradient-primary text-dark">
+        <strong>CSR Details</strong>
     </div>
-    <div class="container card-header">
+</div>
+<div class="container">
+    <table class="table  table-responsive-sm table-hover text-dark">
+
+        <tbody>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">Distinguished Name</th>
+                <td class="bg-gradient-secondary">
+                    @Html.DisplayFor(model => model.SubjectDN)
+                </td>
+
+            </tr>
+
+
+
+            <tr>
+                <th scope="row" class="bg-gradient-primary">Signature Algorithm</th>
+                <td class="bg-gradient-secondary">
+                    @Html.DisplayFor(model => model.Signature)
+                </td>
+
+
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">Public key Algorithm</th>
+                <td class="bg-gradient-secondary">
+                    @Html.DisplayFor(model => model.Algorithme)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">key Size</th>
+                <td class="bg-gradient-secondary">
+                    @Html.DisplayFor(model => model.KeySize)
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">Thumbprint</th>
+                <td class="bg-gradient-secondary">
+
+                    <TEXTAREA rows="5" cols="30" readonly class="form-control text-monospace bg-success">@Html.DisplayFor(model => model.Thumbprint)</TEXTAREA>
+
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">Public Key</th>
+                <td class="bg-gradient-secondary">
+
+                    <TEXTAREA rows="12" cols="30" readonly class="form-control text-monospace bg-success" id="public">@Html.DisplayFor(model => model.Publickey)</TEXTAREA>
+
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">Private Key</th>
+                <td class="bg-gradient-secondary">
+
+                    <TEXTAREA rows="12" cols="30" readonly class="form-control text-monospace bg-success" id="private">@Html.DisplayFor(model => model.Privatekey)</TEXTAREA>
+
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">Extensions</th>
+                <td class="bg-gradient-secondary">
+
+                    <TEXTAREA rows="12" cols="30" readonly class="form-control text-monospace bg-success">@Html.DisplayFor(model => model.Extensions)</TEXTAREA>
+
+                </td>
+
+            </tr>
+            <tr>
+                <th scope="row" class="bg-gradient-primary">CSR</th>
+                <td class="bg-gradient-secondary">
+
+                    <TEXTAREA rows="12" cols="30" readonly class="form-control text-monospace bg-success" id="csr">@Html.DisplayFor(model => model.Certificat)</TEXTAREA>
+
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <div class="card-header bg-gradient-primary text-dark">
         <input type="button" class="btn btn-success" value="Validate" onclick="location.href='@Url.Action("Validate", "Csr", new { id = Model.Id })'" />
         <input type="button" class="btn btn-warning" value="Delete" onclick="location.href='@Url.Action("Delete", "Csr", new { id = Model.Id })'" />
     </div>
+</div>
+
+
+

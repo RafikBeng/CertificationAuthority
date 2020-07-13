@@ -61,6 +61,28 @@ namespace Certificationauthority.Services
             
             return result;
         }
+        public IEnumerable<CsrModel> GetCsrs(string searchString)
+        {
+
+            FilterDefinition<CsrModel> filter = Builders<CsrModel>.Filter.Empty;
+
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Csr.Find<CsrModel>(filter).ToEnumerable();
+            List<CsrModel> filterList = new List<CsrModel>();
+            foreach (CsrModel item in result)
+            {
+                if (item.SubjectDN.Contains(searchString) || item.Id.ToString().Contains(searchString)) filterList.Add(item);
+            }
+            if (filterList.Count == 0)
+            {
+                return result;
+            }
+            else
+            {
+                return filterList;
+            }
+
+        }
         public long MaxSerial()
         {
            return  _Clr.AsQueryable<CrlModel>().Select(c => c.Serial).Max();
@@ -89,6 +111,28 @@ namespace Certificationauthority.Services
             //var projectionBuilder = Builders<CsrModel>.Projection;
             var result = _Cert.Find<CertModel>(filter).ToEnumerable();
             return result;
+        }
+        public IEnumerable<CertModel> GetCerts(string searchString)
+        {
+
+            FilterDefinition<CertModel> filter = Builders<CertModel>.Filter.Empty;
+
+            //var projectionBuilder = Builders<CsrModel>.Projection;
+            var result = _Cert.Find<CertModel>(filter).ToEnumerable();
+            List<CertModel> filterList = new List<CertModel>();
+            foreach (CertModel item in result)
+            {
+                if (item.SubjectDN.Contains(searchString) || item.Serial.ToString().Contains(searchString)) filterList.Add(item);
+            }
+            if (filterList.Count == 0)
+            {
+                return result;
+            }
+            else
+            {
+                return filterList;
+            }
+
         }
         public CsrModel GetCsr(string id)
         {

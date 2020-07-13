@@ -31,9 +31,9 @@ namespace Certificationauthority.Controllers
         }
 
         // GET: Service/Details/5
-        public ActionResult Details(long Serial)
+        public ActionResult Details(string id)
         {
-            ServiceModel model = _CertService.GetService(Serial);
+            ServiceModel model = _CertService.GetService(id);
             int reason = int.Parse(model.Reason);
             model.Reason = GetReasonCode(reason);
             return View(model);

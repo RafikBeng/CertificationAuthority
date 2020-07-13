@@ -4,45 +4,50 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+    <div class="bs-component">
+        <div class="alert  bg-gradient-primary text-dark">
+            <strong>Services</strong>
+        </div>
+    </div>
 
+    <div class="container">
+        <table class="table  table-responsive-sm  text-dark">
+            <thead class="bg-gradient-primary">
+                <tr>
+                    <th class="bg-gradient-primary">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th class="bg-gradient-primary">
+                        @Html.DisplayNameFor(model => model.Serial)
+                    </th>
 
-<div class="container">
-    <table class="table table-bordered table-hover table-striped table-sm">
-        <thead class="thead-light">
-            <tr>
+                    <th class="bg-gradient-primary">
+                        @Html.DisplayNameFor(model => model.Object)
+                    </th>
 
-                <th>
-                    @Html.DisplayNameFor(model => model.Serial)
-                </th>
-               
-                <th>
-                    @Html.DisplayNameFor(model => model.Object)
-                </th>
-               
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-            <tr>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(modelItem => item.Serial)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.Serial)
-                </td>
-              
-                <td>
-                    @Html.DisplayFor(modelItem => item.Object)
-                </td>
-                
-                <td>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(modelItem => item.Object)
+                    </td>
 
-                    @Html.ActionLink("Details", "Details", new { Serial = item.Serial })
-
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                    <td class="bg-gradient-secondary">
+                        <input type="button" class="btn btn-success" value="Details" onclick="location.href='@Url.Action("Details", "Service", new { id = item.Id })'" />
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 

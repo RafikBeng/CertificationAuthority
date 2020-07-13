@@ -8,131 +8,137 @@
 
 
 <div class="bs-component">
-    <div class="alert alert-dismissible alert-info">
-        <strong>Create RootCA</strong> 
+    <div class="alert  bg-gradient-primary text-dark">
+        <strong>Create RootCA</strong>
     </div>
 </div>
 <div class="container-fluid row">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-10">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="CommonName" class="control-label "></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="CommonName" class="control-label " style="font-weight:bold;"></label></div>
                 <div class="col-sm-9"><input asp-for="CommonName" class="form-control " /></div>
                 <span asp-validation-for="CommonName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="MAIL" class="control-label "></label></div>
-                <div class="col-sm-9"><input asp-for="MAIL" class="form-control " /></div>
+
+          
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"><label asp-for="MAIL" class="control-label" style="font-weight:bold;"></label></div>
+                <div class="col-sm-9"> <input asp-for="MAIL" class="form-control" /></div>
                 <span asp-validation-for="MAIL" class="text-danger"></span>
             </div>
-
-
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="OrganizationName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="OrganizationName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9"> <input asp-for="OrganizationName" class="form-control" /></div>
                 <span asp-validation-for="OrganizationName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"><label asp-for="OrganizationalUnitName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"><label asp-for="OrganizationalUnitName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">  <input asp-for="OrganizationalUnitName" class="form-control" /></div>
                 <span asp-validation-for="OrganizationalUnitName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"><label asp-for="CountryName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="CountryName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="CountryName" asp-items="Model.Countries" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="CountryName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"><label asp-for="StateName" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">  <label asp-for="StateName" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="StateName" asp-items="Model.states" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="StateName" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"><label asp-for="City" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"><label asp-for="City" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="City" asp-items="Model.cities" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="City" class="text-danger"></span>
+                <span asp-validation-for="City" class="text-danger "></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3"> <label asp-for="StreetAddress" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3"> <label asp-for="StreetAddress" class="control-label " style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">   <input asp-for="StreetAddress" class="form-control" /></div>
                 <span asp-validation-for="StreetAddress" class="text-danger"></span>
             </div>
 
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3">  <label asp-for="Validity" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">  <label asp-for="Validity" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Validity" asp-items="Model.Validitys" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="Validity" class="text-danger"></span>
+                <span asp-validation-for="Validity" class="text-danger text-dark"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3">  <label asp-for="Algorithme" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">  <label asp-for="Algorithme" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Algorithme" asp-items="Model.Algorithmes" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="Algorithme" class="text-danger"></span>
+                <span asp-validation-for="Algorithme" class="text-danger text-dark"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="KeySizeDiv">
-                <div class="col-sm-3"> 
-                <label asp-for="KeySize" class="control-label"></label>
-                <span id="ex6CurrentSliderValLabel">: <span id="ex6SliderVal">2048</span></span>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="KeySizeDiv">
+                <div class="col-sm-3">
+                    <label asp-for="KeySize" class="control-label" style="font-weight:bold;"></label>
+                    <span id="ex6CurrentSliderValLabel" style="font-weight:bold;">: <span id="ex6SliderVal" style="font-weight:bold;">2048</span></span>
                 </div>
 
-                <div class="col-sm-9"> <input type="text" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="16384" data-slider-step="256" data-slider-value="2048" /></div>
+                <div class="col-sm-9 text-dark">
+                    <input type="text" asp-for="KeySize" class="form-control-range" data-slider-min="1024" data-slider-max="16384" data-slider-step="256" data-slider-value="2048" />
+
+                </div>
+
                 <span asp-validation-for="KeySize" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="ECTypeDiv">
-                <div class="col-sm-3"> <label asp-for="ECType" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="ECTypeDiv">
+                <div class="col-sm-3"> <label asp-for="ECType" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="ECType" asp-items="Model.ECTypes" class="form-control">
                     </select>
                 </div>
-                <span asp-validation-for="ECType" class="text-danger"></span>
+                <span asp-validation-for="ECType" class="text-danger text-dark"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="CurveDiv">
-                <div class="col-sm-3"> <label asp-for="Curve" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="CurveDiv">
+                <div class="col-sm-3"> <label asp-for="Curve" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Curve" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <div class="col-sm-3">   <label asp-for="Hash" class="control-label"></label></div>
+            <div class="form-group card-header bg-gradient-secondary row text-dark">
+                <div class="col-sm-3">   <label asp-for="Hash" class="control-label" style="font-weight:bold;"></label></div>
                 <div class="col-sm-9">
                     <select asp-for="Hash" asp-items="Model.Hashs" class="form-control">
                     </select>
                 </div>
                 <span asp-validation-for="Hash" class="text-danger"></span>
             </div>
-            <div class="form-group card-header bg-gradient-success row">
-                <input type="button" value="Generate Keys" class="btn btn-warning" id="keygen" />
+            <div class="form-group card-header bg-gradient-primary row text-dark">
+                <input type="button" value="Generate Keys" class="btn btn-success" id="keygen" />
             </div>
 
-            <div class="form-group card-header bg-gradient-success row" id="privdiv">
-                <TEXTAREA asp-for="Privatekey" id="Private" wrap="hard" rows=10 class="form-control text-monospace bg-gradient-info" style="font-size: 13pt"></TEXTAREA>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="privdiv">
+                <TEXTAREA asp-for="Privatekey" id="Private" readonly class="form-control text-monospace bg-success" rows="10" style="font-size:small"></TEXTAREA>
+
             </div>
-            <div class="form-group card-header bg-gradient-success row" id="pubdiv">
-                <TEXTAREA asp-for="Publickey" id="Public" rows=9 class="form-control text-monospace bg-gradient-info" style="font-size: 13pt"></TEXTAREA>
+            <div class="form-group card-header bg-gradient-secondary row text-dark" id="pubdiv">
+                <TEXTAREA asp-for="Publickey" id="Public" readonly class="form-control text-monospace bg-success" rows="5" style="font-size:small"></TEXTAREA>
             </div>
 
-
-            <div class="form-group card-header row">
-                <input type="submit" value="Create RootCA" class="btn btn-success" id="sub" />
+            
+          
+            <div class="form-group card-header row bg-gradient-primary text-dark">
+                <input type="submit" value="Generate RootCA" class="btn btn-success" id="sub" />
             </div>
         </form>
     </div>
@@ -144,7 +150,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
             $("#keygen").click(function () {
                 this.disabled = true;
@@ -321,5 +327,5 @@
                 });
     });
 
-</script>
+    </script>
 }

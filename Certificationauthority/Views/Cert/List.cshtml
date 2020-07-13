@@ -4,51 +4,60 @@
     ViewData["Title"] = "List";
 }
 
-<h1>List</h1>
+
+<div class="bs-component">
+    <div class="alert  bg-gradient-primary text-dark">
+        <strong>Certificates List</strong>
+    </div>
+</div>
 
 <div class="container">
-    <table class="table table-bordered table-hover table-striped table-sm">
-        <thead class="thead-light">
+
+    <form class="form-inline my-2 my-lg-0" asp-controller="Cert" asp-action="List">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="SearchString">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <table class="table  table-responsive-sm  text-dark">
+
+        <thead class="bg-gradient-primary">
             <tr>
-                <th>
+                <th class="bg-gradient-primary">
                     @Html.DisplayNameFor(model => model.Serial)
                 </th>
-                <th>
+                <th class="bg-gradient-primary">
                     @Html.DisplayNameFor(model => model.SubjectDN)
                 </th>
-                <th>
+                <th class="bg-gradient-primary">
                     @Html.DisplayNameFor(model => model.NotBefore)
                 </th>
-                <th>
+                <th class="bg-gradient-primary">
                     @Html.DisplayNameFor(model => model.NotAfter)
                 </th>
-                
+
 
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Serial)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.SubjectDN)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NotBefore)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NotAfter)
-                </td>
+                <tr>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(modelItem => item.Serial)
+                    </td>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(modelItem => item.SubjectDN)
+                    </td>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(modelItem => item.NotBefore)
+                    </td>
+                    <td class="bg-gradient-secondary">
+                        @Html.DisplayFor(modelItem => item.NotAfter)
+                    </td>
 
-                <td>
-
-                    @Html.ActionLink("Detail", "Detail", new { Serial = item.Serial })
-
-                </td>
-            </tr>
+                    <td class="bg-gradient-secondary">
+                        <input type="button" class="btn btn-success" value="Details" onclick="location.href='@Url.Action("Detail", "Cert", new { Serial = item.Serial })'" />
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

@@ -4,21 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
 
+<div class="bs-component">
+    <div class="alert  bg-gradient-primary text-dark">
+        <strong>CRL List</strong>
+    </div>
+</div>
 
 <div class="container">
-    <table class="table table-bordered table-hover table-striped table-sm">
-        <thead class="thead-light">
+    <table class="table  table-responsive-sm  text-dark">
+        <thead class="bg-gradient-primary">
             <tr>
-                <th>
+                <th class="bg-gradient-primary">
                     @Html.DisplayNameFor(model => model.Serial)
                 </th>
-               
-                <th>
+
+                <th class="bg-gradient-primary">
                     @Html.DisplayNameFor(model => model.ThisUpdate)
                 </th>
-                <th>
+                <th class="bg-gradient-primary">
                     @Html.DisplayNameFor(model => model.NextUpdate)
                 </th>
 
@@ -28,24 +32,20 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Serial)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ThisUpdate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NextUpdate)
-                    </td>
-                    
-
-                    <td>
-
-                        @Html.ActionLink("Details", "Details", new { Serial = item.Serial })
-
-                    </td>
-                </tr>
+            <tr>
+                <td class="bg-gradient-secondary">
+                    @Html.DisplayFor(modelItem => item.Serial)
+                </td>
+                <td class="bg-gradient-secondary">
+                    @Html.DisplayFor(modelItem => item.ThisUpdate)
+                </td>
+                <td class="bg-gradient-secondary">
+                    @Html.DisplayFor(modelItem => item.NextUpdate)
+                </td>
+                <td class="bg-gradient-secondary ">
+                    <input type="button" class="btn btn-success container" value="Details" onclick="location.href='@Url.Action("Details", "Crl", new { Serial = item.Serial })'" />
+                </td>
+            </tr>
             }
         </tbody>
     </table>

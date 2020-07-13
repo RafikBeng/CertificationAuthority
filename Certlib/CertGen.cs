@@ -436,7 +436,7 @@ namespace Certlib
             crlGenerator.SetNextUpdate(dateTime.AddMonths(1));
             crlGenerator.AddCrlEntry(Certificate.SerialNumber, dateTime, Reason);
             crlGenerator.AddExtension(X509Extensions.AuthorityKeyIdentifier, false, new AuthorityKeyIdentifierStructure(RootCA));
-            crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.One));
+            crlGenerator.AddExtension(X509Extensions.CrlNumber, false, new CrlNumber(BigInteger.Zero));
             string algorithme = RootCA.SigAlgName;
             if (!algorithme.Contains("SHA3-")) algorithme = algorithme.Remove(algorithme.IndexOf("-"), 1);
             SecureRandom random = new SecureRandom();

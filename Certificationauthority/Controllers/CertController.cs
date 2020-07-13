@@ -84,9 +84,17 @@ namespace Certificationauthority.Controllers
             return Json(new { s = Private, h = Public });
         }
 
-        public ActionResult List()
+        public ActionResult List(string searchString)
         {
-            return View(_CertService.GetCerts());
+            if (String.IsNullOrEmpty(searchString))
+            {
+                 return View(_CertService.GetCerts());
+            }
+            else
+            {
+                return View(_CertService.GetCerts(searchString));
+            }
+          
         }
         // GET: Cert
         public ActionResult Index()

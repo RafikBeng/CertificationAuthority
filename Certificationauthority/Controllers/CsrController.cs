@@ -29,9 +29,17 @@ namespace Certificationauthority.Controllers
             _CertService = CertService;
         }
         // GET: ListCsr
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            return View(_CertService.GetCsrs());
+            if (String.IsNullOrEmpty(searchString))
+            {
+                return View(_CertService.GetCsrs());
+            }
+            else
+            {
+                return View(_CertService.GetCsrs(searchString));
+            }
+           
         }
 
         // GET: ListCsr/Details/5
