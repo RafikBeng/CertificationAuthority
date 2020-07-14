@@ -75,7 +75,7 @@ body {
 .main-image {
     height: 440px;
     width: 100%; /* responsive */
-    background-image: url('../images/secure.jpg');
+    background-image: url('../images/Cybersecurity.jpg');
     background-size: cover;
     background-position: 100% 100%;
 }

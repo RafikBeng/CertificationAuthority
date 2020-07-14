@@ -26,10 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="BouncyCastle">
       <HintPath>..\BouncyCastle.dll</HintPath>
     </Reference>
