@@ -78,7 +78,8 @@ namespace Certificationauthority.Controllers
                 X509Certificate NewCertificate = RenewCertificate(certificate, key);
                 Cert.NotAfter = NewCertificate.NotAfter;
                 Cert.NotBefore = NewCertificate.NotBefore;
-               // _CertService.DelCert(Cert.Id);
+
+                _CertService.DelCert(Cert.Id);
                 _CertService.Create(Cert);
                 _CertService.DelServices(service.Id);
                 return View("../Cert/Details", Cert);
